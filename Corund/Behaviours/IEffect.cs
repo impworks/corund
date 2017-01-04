@@ -16,6 +16,6 @@
         /// 0 = just started.
         /// 1 = completed.
         /// </summary>
-        float? State { get; }
+        float? Progress { get; }
     }
 }

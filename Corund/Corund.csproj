@@ -38,7 +38,6 @@
     <Folder Include="Behaviours\Interaction\" />
     <Folder Include="Behaviours\Misc\" />
     <Folder Include="Behaviours\Movement\" />
-    <Folder Include="Behaviours\Tweening\" />
     <Folder Include="Geometry\" />
     <Folder Include="Sprites\" />
     <Folder Include="Visuals\Special\" />
@@ -49,6 +48,11 @@
     <Compile Include="Behaviours\Fade\IFadeInEffect.cs" />
     <Compile Include="Behaviours\Fade\IFadeOutEffect.cs" />
     <Compile Include="Behaviours\IEffect.cs" />
+    <Compile Include="Behaviours\Tweening\ColorAnimation.cs" />
+    <Compile Include="Behaviours\Tweening\FloatAnimation.cs" />
+    <Compile Include="Behaviours\Tweening\IPropertyAnimation.cs" />
+    <Compile Include="Behaviours\Tweening\PropertyAnimationBase.cs" />
+    <Compile Include="Behaviours\Tweening\Vector2Animation.cs" />
     <Compile Include="Engine\Config\GameEngineOptions.cs" />
     <Compile Include="Engine\Config\ResolutionAdaptationMode.cs" />
     <Compile Include="Engine\GameEngine.cs" />
