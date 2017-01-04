@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4DE7642C-E0EA-4240-BBFB-D0B083F6AB43}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Corund</RootNamespace>
+    <AssemblyName>Corund</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile259</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .NET Framework is automatically included -->
+    <Folder Include="Behaviours\Interaction\" />
+    <Folder Include="Behaviours\Misc\" />
+    <Folder Include="Behaviours\Movement\" />
+    <Folder Include="Behaviours\Tweening\" />
+    <Folder Include="Geometry\" />
+    <Folder Include="Sprites\" />
+    <Folder Include="Visuals\Special\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Behaviours\BehaviourManager.cs" />
+    <Compile Include="Behaviours\BehaviourBase.cs" />
+    <Compile Include="Behaviours\Fade\IFadeInEffect.cs" />
+    <Compile Include="Behaviours\Fade\IFadeOutEffect.cs" />
+    <Compile Include="Behaviours\IEffect.cs" />
+    <Compile Include="Engine\Config\GameEngineOptions.cs" />
+    <Compile Include="Engine\Config\ResolutionAdaptationMode.cs" />
+    <Compile Include="Engine\GameEngine.cs" />
+    <Compile Include="Frames\Camera.cs" />
+    <Compile Include="Frames\FrameBase.cs" />
+    <Compile Include="Managers\DebugManager.cs" />
+    <Compile Include="Managers\FrameManager.cs" />
+    <Compile Include="Managers\ScreenManager.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\TransformInfo.cs" />
+    <Compile Include="Tools\Helpers\NumericHelper.cs" />
+    <Compile Include="Tools\Helpers\VectorHelper.cs" />
+    <Compile Include="Tools\Interpolation\Interpolate.cs" />
+    <Compile Include="Tools\Interpolation\InterpolationMethod.cs" />
+    <Compile Include="Tools\Jitter\JitteryValue.cs" />
+    <Compile Include="Tools\Jitter\JitteryVector2.cs" />
+    <Compile Include="Tools\PauseMode.cs" />
+    <Compile Include="Tools\Helpers\RandomHelper.cs" />
+    <Compile Include="Managers\TimelineManager.cs" />
+    <Compile Include="Visuals\ObjectGroup.cs" />
+    <Compile Include="Visuals\Primitives\DynamicObject.cs" />
+    <Compile Include="Visuals\Primitives\ObjectBase.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MonoGame.Framework, Version=3.1.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\MonoGame.Framework.Portable.3.2.99.1-Beta\lib\portable-net40+sl50+win+wpa81+wp80+MonoAndroid10+MonoTouch10\MonoGame.Framework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Managers\TimelineManager.TimelineRecord.cs" />
+    <Compile Include="Engine\GameEngine.Current.cs" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

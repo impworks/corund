@@ -1,0 +1,182 @@
+﻿using System;
+using Corund.Behaviours;
+using Corund.Behaviours.Fade;
+using Corund.Engine;
+using Corund.Tools;
+using Corund.Tools.Helpers;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+
+namespace Corund.Visuals.Primitives
+{
+    /// <summary>
+    /// An object that can move, rotate, scale and change transparency.
+    /// </summary>
+    public abstract class DynamicObject : ObjectBase
+    {
+        #region Constructors
+
+        protected DynamicObject()
+        {
+            Behaviours = new BehaviourManager(this);
+            BlendState = BlendState.AlphaBlend;
+        }
+
+        #endregion
+
+        #region Fields
+
+        /// <summary>
+        /// Angle derivative.
+        /// Sprite is rotated by this value each second.
+        /// </summary>
+        public float Rotation;
+
+        /// <summary>
+        /// Sprite momentum.
+        /// Sprite is moved by this value each second.
+        /// </summary>
+        public Vector2 Momentum;
+
+        /// <summary>
+        /// Sprite tint color.
+        /// Default is White (No tint).
+        /// </summary>
+        public Color TintColor = Color.White;
+
+        /// <summary>
+        /// The behaviour manager for current object.
+        /// </summary>
+        public readonly BehaviourManager Behaviours;
+
+        /// <summary>
+        /// Blending mode.
+        /// </summary>
+        public BlendState BlendState;
+
+        /// <summary>
+        /// Sprite transparency: 0 = fully transparent, 1 = fully opaque.
+        /// Default is 1.
+        /// </summary>
+        public float Opacity
+        {
+            get { return TintColor.A / 255.0f; }
+            set
+            {
+                var b = (byte)(MathHelper.Clamp(value, 0, 1) * 255);
+                TintColor.A = TintColor.R = TintColor.G = TintColor.B = b;
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets object's speed.
+        /// </summary>
+        public float Speed
+        {
+            get { return Momentum.Length(); }
+            set
+            {
+                if (Momentum.X.IsAlmostNull() && Momentum.Y.IsAlmostNull())
+                {
+                    Momentum = new Vector2(value, 0);
+                }
+                else
+                {
+                    Momentum.Normalize();
+                    Momentum *= value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Speed derivative.
+        /// </summary>
+        public float Acceleration;
+
+        /// <summary>
+        /// Gets or sets the object's direction.
+        /// </summary>
+        public float Direction
+        {
+            get { return (float)Math.Atan2(Momentum.Y, Momentum.X); }
+            set { Momentum = VectorHelper.FromLength(Momentum.Length(), value); }
+        }
+
+        /// <summary>
+        /// Checks if a particular object is paused.
+        /// </summary>
+        public PauseMode PauseMode;
+
+        /// <summary>
+        /// Has the object been disposed already?
+        /// </summary>
+        public bool IsFadingOut { get; protected set; }
+
+        #endregion
+
+        #region ObjectBase overrides
+
+        /// <summary>
+        /// Applies value derivatives to values.
+        /// </summary>
+        public override void Update()
+        {
+            var pm = PauseMode | GameEngine.Frames.PauseMode;
+
+            if ((pm & PauseMode.Behaviours) == 0)
+                Behaviours.Update();
+
+            var delta = GameEngine.Delta;
+
+            if ((pm & PauseMode.Momentum) == 0)
+            {
+                if (!Rotation.IsAlmostNull())
+                    Angle += delta * Rotation;
+
+                if (!Acceleration.IsAlmostNull())
+                    Speed += delta * Acceleration;
+
+                if (!Momentum.X.IsAlmostNull() || !Momentum.Y.IsAlmostNull())
+                    Position += delta * Momentum;
+            }
+        }
+
+        public override void Draw(SpriteBatch batch)
+        {
+            // todo:
+            // 
+        }
+
+        #endregion
+
+        /// <summary>
+        /// Remove the object by applying fadeout effects.
+        /// </summary>
+        public void FadeOut()
+        {
+            if (IsFadingOut)
+                return;
+
+            IsFadingOut = true;
+
+            var timeout = 0f;
+            foreach (var curr in Behaviours)
+            {
+                var fadeOut = curr as IFadeOutEffect;
+                if (fadeOut != null)
+                {
+                    // no break intended: activate ALL the effects! \o/
+                    fadeOut.ActivateFadeOut();
+
+                    if (fadeOut.Duration > timeout)
+                        timeout = fadeOut.Duration;
+                }
+            }
+
+            if (timeout.IsAlmostNull())
+                Remove();
+            else
+                GameEngine.Current.Timeline.Add(timeout, Remove);
+        }
+    }
+}
