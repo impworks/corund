@@ -139,25 +139,20 @@ namespace Corund.Visuals
         {
             base.Update();
 
-            var previousPause = GameEngine.Frames.PauseMode;
-            GameEngine.Frames.PauseMode |= PauseMode;
+            var previousPause = GameEngine.Current.PauseMode;
+            GameEngine.Current.PauseMode |= PauseMode;
 
             foreach (var curr in Children)
                 curr.Update();
 
-            GameEngine.Frames.PauseMode = previousPause;
+            GameEngine.Current.PauseMode = previousPause;
         }
 
         /// <summary>
         /// Redraw all the items inside the batch.
         /// </summary>
-        public override void Draw(SpriteBatch batch)
+        protected override void DrawInternal(SpriteBatch batch)
         {
-            base.Draw(batch);
-
-            if (!IsVisible)
-                return;
-
             // draw in reverse: bottom to top
             for (var idx = Children.Count - 1; idx >= 0; idx--)
                 Children[idx].Draw(batch);

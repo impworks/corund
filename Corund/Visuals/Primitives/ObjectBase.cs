@@ -27,7 +27,7 @@ namespace Corund.Visuals.Primitives
         /// <summary>
         /// Visual object position relative to it's parent (scene, batch, etc).
         /// </summary>
-        public virtual Vector2 Position { get; set; }
+        public Vector2 Position;
 
         /// <summary>
         /// Scale coefficient.
@@ -42,12 +42,12 @@ namespace Corund.Visuals.Primitives
         /// <summary>
         /// Scale coefficient that can be different for X and Y axis.
         /// </summary>
-        public virtual Vector2 ScaleVector { get; set; }
+        public Vector2 ScaleVector;
 
         /// <summary>
         /// Rotation angle in radians.
         /// </summary>
-        public virtual float Angle { get; set; }
+        public float Angle;
 
         /// <summary>
         /// Base object, to which current object is relative.
@@ -71,7 +71,18 @@ namespace Corund.Visuals.Primitives
         /// <summary>
         /// The update screen method.
         /// </summary>
-        public abstract void Draw(SpriteBatch batch);
+        public virtual void Draw(SpriteBatch batch)
+        {
+            if (!IsVisible)
+                return;
+
+            DrawInternal(batch);
+        }
+
+        /// <summary>
+        /// Renders the current object to current render target.
+        /// </summary>
+        protected abstract void DrawInternal(SpriteBatch batch);
 
         #endregion
 
@@ -80,7 +91,7 @@ namespace Corund.Visuals.Primitives
         /// <summary>
         /// Returns the absolute position of the object.
         /// </summary>
-        public TransformInfo GetAbsolutePosition()
+        public TransformInfo GetTransformInfo()
         {
             var position = Position;
             var scale = ScaleVector;

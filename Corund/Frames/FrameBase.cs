@@ -35,6 +35,11 @@ namespace Corund.Frames
         /// </summary>
         private float _zOrder;
 
+        /// <summary>
+        /// Current blend state.
+        /// </summary>
+        private BlendState _blendState;
+
         #endregion
 
         #region Properties
@@ -101,8 +106,6 @@ namespace Corund.Frames
         {
             GameEngine.GraphicsDevice.SetRenderTarget(RenderTarget);
             GameEngine.GraphicsDevice.Clear(BackgroundColor);
-
-            // todo
         }
 
         /// <summary>
@@ -124,7 +127,7 @@ namespace Corund.Frames
 
         public override void Update()
         {
-            var pm = GameEngine.Frames.PauseMode | PauseMode;
+            var pm = GameEngine.Current.PauseMode | PauseMode;
 
             if((pm & PauseMode.Timeline) != 0)
                 Timeline.Update();

@@ -1,5 +1,6 @@
 ﻿using Corund.Frames;
 using Corund.Managers;
+using Corund.Tools;
 
 namespace Corund.Engine
 {
@@ -11,14 +12,19 @@ namespace Corund.Engine
         public static class Current
         {
             /// <summary>
-            /// Shortcut to frame.
+            /// Currently drawn frame.
             /// </summary>
-            public static FrameBase Frame => Frames.Current;
+            public static FrameBase Frame;
+
+            /// <summary>
+            /// Current pause mode.
+            /// </summary>
+            public static PauseMode PauseMode;
 
             /// <summary>
             /// Shortcut to frame's timer.
             /// </summary>
-            public static TimelineManager Timeline => Frames.Current.Timeline;
+            public static TimelineManager Timeline => Frame.Timeline;
         }
     }
 }

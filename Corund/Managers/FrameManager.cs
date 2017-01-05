@@ -36,16 +36,6 @@ namespace Corund.Managers
         /// </summary>
         private readonly SpriteBatch _mainSpriteBatch;
 
-        /// <summary>
-        /// The frame that is being currently executed.
-        /// </summary>
-        public FrameBase Current { get; private set; }
-
-        /// <summary>
-        /// The current pause mode, descended from top frame to bottom.
-        /// </summary>
-        public PauseMode PauseMode;
-
         #endregion
 
         #region Frame stack handling
@@ -100,13 +90,13 @@ namespace Corund.Managers
         /// </summary>
         public void Update()
         {
-            PauseMode = PauseMode.None;
+            GameEngine.Current.PauseMode = PauseMode.None;
 
             // update frames from top to bottom
             for (var idx = _frames.Count - 1; idx >= 0; idx--)
             {
-                Current = _frames[idx];
-                Current.Update();
+                var curr = GameEngine.Current.Frame = _frames[idx];
+                curr.Update();
             }
         }
 
@@ -118,10 +108,11 @@ namespace Corund.Managers
             // pass 1: Render all frames to their respective render targets (bottom to top)
             for (var idx = 0; idx < _frames.Count; idx++)
             {
-                Current = _frames[idx];
-                Current.BeginDraw();
-                Current.Draw(Current.SpriteBatch);
-                Current.EndDraw();
+                var curr = GameEngine.Current.Frame = _frames[idx];
+
+                curr.BeginDraw();
+                curr.Draw(curr.SpriteBatch);
+                curr.EndDraw();
             }
 
             // pass 2: draw rendertargets to screen

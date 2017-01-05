@@ -20,6 +20,7 @@ namespace Corund.Visuals.Primitives
         {
             Behaviours = new BehaviourManager(this);
             BlendState = BlendState.AlphaBlend;
+            TintColor = Color.White;
         }
 
         #endregion
@@ -42,7 +43,7 @@ namespace Corund.Visuals.Primitives
         /// Sprite tint color.
         /// Default is White (No tint).
         /// </summary>
-        public Color TintColor = Color.White;
+        public Color TintColor;
 
         /// <summary>
         /// The behaviour manager for current object.
@@ -61,11 +62,7 @@ namespace Corund.Visuals.Primitives
         public float Opacity
         {
             get { return TintColor.A / 255.0f; }
-            set
-            {
-                var b = (byte)(MathHelper.Clamp(value, 0, 1) * 255);
-                TintColor.A = TintColor.R = TintColor.G = TintColor.B = b;
-            }
+            set { TintColor.A = (byte)(MathHelper.Clamp(value, 0, 1) * 255); }
         }
 
         /// <summary>
@@ -103,7 +100,7 @@ namespace Corund.Visuals.Primitives
         }
 
         /// <summary>
-        /// Checks if a particular object is paused.
+        /// Pause mode for current object.
         /// </summary>
         public PauseMode PauseMode;
 
@@ -121,7 +118,7 @@ namespace Corund.Visuals.Primitives
         /// </summary>
         public override void Update()
         {
-            var pm = PauseMode | GameEngine.Frames.PauseMode;
+            var pm = GameEngine.Current.PauseMode | PauseMode;
 
             if ((pm & PauseMode.Behaviours) == 0)
                 Behaviours.Update();
@@ -141,7 +138,7 @@ namespace Corund.Visuals.Primitives
             }
         }
 
-        public override void Draw(SpriteBatch batch)
+        protected override void DrawInternal(SpriteBatch batch)
         {
             // todo:
             // 
