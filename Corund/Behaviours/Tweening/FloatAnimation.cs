@@ -1,15 +1,18 @@
 ﻿using System;
+using System.Linq.Expressions;
 using Corund.Tools.Interpolation;
+using Corund.Visuals.Primitives;
 
 namespace Corund.Behaviours.Tweening
 {
     /// <summary>
     /// Animation for float values.
     /// </summary>
-    public class FloatAnimation: PropertyAnimationBase<float>
+    public class FloatAnimation<TObject>: PropertyAnimationBase<TObject, float>
+        where TObject: DynamicObject
     {
-        public FloatAnimation(float initial, float target, float duration, Action<float> setter, InterpolationMethod interpolation = null)
-            : base(initial, target, duration, setter, interpolation)
+        public FloatAnimation(Expression<Func<TObject, float>> property, float targetValue, float duration, InterpolationMethod interpolation = null)
+            : base(property, targetValue, duration, interpolation)
         { }
 
         protected override float getValue()

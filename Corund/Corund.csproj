@@ -63,7 +63,10 @@
     <Compile Include="Managers\RenderManager.cs" />
     <Compile Include="Managers\ScreenManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tools\Helpers\DynamicObjectHelper.cs" />
+    <Compile Include="Tools\Helpers\PropertyHelper.cs" />
     <Compile Include="Tools\Helpers\RandomHelper.cs" />
+    <Compile Include="Tools\PropertyDescriptor.cs" />
     <Compile Include="Tools\TransformInfo.cs" />
     <Compile Include="Tools\Helpers\NumericHelper.cs" />
     <Compile Include="Tools\Helpers\VectorHelper.cs" />

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq.Expressions;
 using Corund.Tools.Interpolation;
+using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 
 namespace Corund.Behaviours.Tweening
@@ -7,10 +9,11 @@ namespace Corund.Behaviours.Tweening
     /// <summary>
     /// Animation for vector2 values.
     /// </summary>
-    public class Vector2Animation: PropertyAnimationBase<Vector2>
+    public class Vector2Animation<TObject> : PropertyAnimationBase<TObject, Vector2>
+       where TObject : DynamicObject
     {
-        public Vector2Animation(Vector2 initial, Vector2 target, float duration, Action<Vector2> setter, InterpolationMethod interpolation = null)
-            : base(initial, target, duration, setter, interpolation)
+        public Vector2Animation(Expression<Func<TObject, Vector2>> property, Vector2 targetValue, float duration, InterpolationMethod interpolation = null)
+            : base(property, targetValue, duration, interpolation)
         { }
 
         protected override Vector2 getValue()

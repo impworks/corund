@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Reflection;
 using Corund.Visuals.Primitives;
 
 namespace Corund.Behaviours
@@ -41,7 +42,7 @@ namespace Corund.Behaviours
         /// <summary>
         /// Adds the behaviour to the list of objects.
         /// </summary>
-        public void Add(BehaviourBase behaviour)
+        public new void Add(BehaviourBase behaviour)
         {
             behaviour.Bind(_parent);
             base.Add(behaviour);
@@ -78,6 +79,15 @@ namespace Corund.Behaviours
                     return;
                 }
             }
+        }
+
+        /// <summary>
+        /// Removes all behaviours which are derived from the specified type.
+        /// </summary>
+        public void RemoveAll<T>() where T : BehaviourBase
+        {
+            var type = typeof(T).GetTypeInfo();
+            RemoveAll(x => x.GetType().GetTypeInfo().IsAssignableFrom(type));
         }
 
         #endregion

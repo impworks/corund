@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Linq.Expressions;
 using Corund.Tools.Interpolation;
+using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 
 namespace Corund.Behaviours.Tweening
@@ -7,10 +9,11 @@ namespace Corund.Behaviours.Tweening
     /// <summary>
     /// Animation for color properties.
     /// </summary>
-    public class ColorAnimation: PropertyAnimationBase<Color>
+    public class ColorAnimation<TObject> : PropertyAnimationBase<TObject, Color>
+        where TObject : DynamicObject
     {
-        public ColorAnimation(Color initial, Color target, float duration, Action<Color> setter, InterpolationMethod interpolation = null)
-            : base(initial, target, duration, setter, interpolation)
+        public ColorAnimation(Expression<Func<TObject, Color>> property, Color targetValue, float duration, InterpolationMethod interpolation = null)
+            : base(property, targetValue, duration, interpolation)
         { }
 
         protected override Color getValue()

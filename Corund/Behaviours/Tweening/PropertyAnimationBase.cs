@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Linq.Expressions;
 using Corund.Engine;
+using Corund.Tools;
+using Corund.Tools.Helpers;
 using Corund.Tools.Interpolation;
 using Corund.Visuals.Primitives;
 
@@ -8,16 +11,17 @@ namespace Corund.Behaviours.Tweening
     /// <summary>
     /// Base class for property animation behaviours.
     /// </summary>
-    public abstract class PropertyAnimationBase<T>: BehaviourBase, IPropertyAnimation
+    public abstract class PropertyAnimationBase<TObject, TProperty>: BehaviourBase, IPropertyAnimation
+        where TObject: DynamicObject
     {
         #region Constructor
 
-        protected PropertyAnimationBase(T initial, T target, float duration, Action<T> setter, InterpolationMethod interpolation = null)
+        protected PropertyAnimationBase(Expression<Func<TObject, TProperty>> property, TProperty targetValue, float duration, InterpolationMethod interpolation = null)
         {
-            _initialValue = initial;
-            _targetValue = target;
+            _descriptor = PropertyHelper.GetDescriptor(property);
+
+            _targetValue = targetValue;
             _duration = duration;
-            _setter = setter;
             _interpolation = interpolation ?? Interpolate.Linear;
         }
 
@@ -28,12 +32,12 @@ namespace Corund.Behaviours.Tweening
         /// <summary>
         /// Value of the property at the start of the animation.
         /// </summary>
-        protected readonly T _initialValue;
+        protected TProperty _initialValue;
 
         /// <summary>
         /// Value of the property when the animation is complete.
         /// </summary>
-        protected readonly T _targetValue;
+        protected readonly TProperty _targetValue;
 
         /// <summary>
         /// Estimated time of the effect.
@@ -46,9 +50,9 @@ namespace Corund.Behaviours.Tweening
         private readonly InterpolationMethod _interpolation;
 
         /// <summary>
-        /// Property setter.
+        /// Property getter.
         /// </summary>
-        private readonly Action<T> _setter;
+        private readonly PropertyDescriptor<TObject, TProperty> _descriptor;
 
         /// <summary>
         /// Currently elapsed time.
@@ -58,6 +62,11 @@ namespace Corund.Behaviours.Tweening
         #endregion
 
         #region Properties
+
+        /// <summary>
+        /// Name of the property handled by current animator.
+        /// </summary>
+        public string PropertyName => _descriptor.Name;
 
         /// <summary>
         /// Duration of the effect.
@@ -74,6 +83,14 @@ namespace Corund.Behaviours.Tweening
         #region Methods
 
         /// <summary>
+        /// Sets the initial object value.
+        /// </summary>
+        public override void Bind(DynamicObject obj)
+        {
+            _initialValue = _descriptor.Getter((TObject) obj);
+        }
+
+        /// <summary>
         /// Advances the property animation.
         /// </summary>
         public override void UpdateObjectState(DynamicObject obj)
@@ -88,16 +105,18 @@ namespace Corund.Behaviours.Tweening
             if (_elapsedTime > _duration)
                 _elapsedTime = _duration;
 
-            _setter(getValue());
+            _descriptor.Setter((TObject) obj, getValue());
         }
 
         /// <summary>
         /// Skips the animation, setting the property to target value.
         /// </summary>
-        public void SkipAnimation(DynamicObject obj)
+        public void StopAnimation(DynamicObject obj, bool skipToFinalValue)
         {
             _elapsedTime = _duration;
-            _setter(_targetValue);
+
+            if(skipToFinalValue)
+                _descriptor.Setter((TObject)obj, _targetValue);
         }
 
         /// <summary>
@@ -111,7 +130,7 @@ namespace Corund.Behaviours.Tweening
         /// <summary>
         /// Gets the intermediate value between initial and target.
         /// </summary>
-        protected abstract T getValue();
+        protected abstract TProperty getValue();
 
         #endregion
     }
