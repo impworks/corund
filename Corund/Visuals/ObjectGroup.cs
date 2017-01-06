@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Corund.Engine;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace Corund.Visuals
 {
@@ -151,11 +150,11 @@ namespace Corund.Visuals
         /// <summary>
         /// Redraw all the items inside the batch.
         /// </summary>
-        protected override void DrawInternal(SpriteBatch batch)
+        protected override void DrawInternal()
         {
             // draw in reverse: bottom to top
             for (var idx = Children.Count - 1; idx >= 0; idx--)
-                Children[idx].Draw(batch);
+                Children[idx].Draw();
         }
 
         #endregion

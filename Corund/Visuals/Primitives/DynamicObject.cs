@@ -138,10 +138,12 @@ namespace Corund.Visuals.Primitives
             }
         }
 
-        protected override void DrawInternal(SpriteBatch batch)
+        /// <summary>
+        /// Renders the object to the screen.
+        /// </summary>
+        protected override void DrawInternal()
         {
-            // todo:
-            // 
+            // does nothing per se
         }
 
         #endregion

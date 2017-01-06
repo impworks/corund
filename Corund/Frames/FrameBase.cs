@@ -60,11 +60,6 @@ namespace Corund.Frames
         public Color BackgroundColor { get; protected set; }
 
         /// <summary>
-        /// Sprite batch for current scene.
-        /// </summary>
-        public SpriteBatch SpriteBatch { get; private set; }
-
-        /// <summary>
         /// Render target where all scene contents is drawn into.
         /// Is later composed with other scenes on the graphic device itself.
         /// </summary>
@@ -92,11 +87,11 @@ namespace Corund.Frames
         /// <summary>
         /// Draws the current frame.
         /// </summary>
-        public override void Draw(SpriteBatch batch)
+        public override void Draw()
         {
             _zOrder = 1;
 
-            base.Draw(batch);
+            base.Draw();
         }
 
         /// <summary>
@@ -104,8 +99,7 @@ namespace Corund.Frames
         /// </summary>
         public virtual void BeginDraw()
         {
-            GameEngine.GraphicsDevice.SetRenderTarget(RenderTarget);
-            GameEngine.GraphicsDevice.Clear(BackgroundColor);
+            GameEngine.Render.PushContext(RenderTarget, BackgroundColor);
         }
 
         /// <summary>
@@ -113,13 +107,13 @@ namespace Corund.Frames
         /// </summary>
         public void EndDraw()
         {
-            SpriteBatch.End();
+            GameEngine.Render.PopContext();
         }
 
         /// <summary>
         /// Draws the frame's RenderTarget to the actual screen.
         /// </summary>
-        public abstract void FinalizeDraw(SpriteBatch batch, float angle, Vector2 position, Vector2 screenSize);
+        public abstract void FinalizeDraw();
 
         #endregion
 

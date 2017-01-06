@@ -4,7 +4,6 @@ using Corund.Engine;
 using Corund.Frames;
 using Corund.Tools;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace Corund.Managers
 {
@@ -18,8 +17,6 @@ namespace Corund.Managers
         public FrameManager()
         {
             _frames = new List<FrameBase>();
-
-            _mainSpriteBatch = new SpriteBatch(GameEngine.GraphicsDevice);
         }
 
         #endregion
@@ -30,11 +27,6 @@ namespace Corund.Managers
         /// The list of currently executed frames.
         /// </summary>
         private readonly List<FrameBase> _frames;
-
-        /// <summary>
-        /// The sprite batch for composing frames on the screen.
-        /// </summary>
-        private readonly SpriteBatch _mainSpriteBatch;
 
         #endregion
 
@@ -105,21 +97,25 @@ namespace Corund.Managers
         /// </summary>
         public void Draw()
         {
-            // pass 1: Render all frames to their respective render targets (bottom to top)
-            for (var idx = 0; idx < _frames.Count; idx++)
-            {
-                var curr = GameEngine.Current.Frame = _frames[idx];
+            GameEngine.Render.PushContext(null, Color.Black);
 
-                curr.BeginDraw();
-                curr.Draw(curr.SpriteBatch);
-                curr.EndDraw();
+            // pass 1: Render all frames to their respective render targets (bottom to top)
+            foreach (var frame in _frames)
+            {
+                GameEngine.Current.Frame = frame;
+
+                frame.BeginDraw();
+                frame.Draw();
+                frame.EndDraw();
+
+                GameEngine.Render.EndBatch();
             }
 
             // pass 2: draw rendertargets to screen
-            GameEngine.GraphicsDevice.SetRenderTarget(null);
-            GameEngine.GraphicsDevice.Clear(Color.Black);
+            GameEngine.Render.PopContext();
 
-            // todo: finalize
+            foreach (var frame in _frames)
+                frame.FinalizeDraw();
         }
 
         #endregion

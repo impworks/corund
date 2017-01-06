@@ -3,7 +3,6 @@ using Corund.Frames;
 using Corund.Tools;
 using Corund.Tools.Helpers;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace Corund.Visuals.Primitives
 {
@@ -71,18 +70,18 @@ namespace Corund.Visuals.Primitives
         /// <summary>
         /// The update screen method.
         /// </summary>
-        public virtual void Draw(SpriteBatch batch)
+        public virtual void Draw()
         {
             if (!IsVisible)
                 return;
 
-            DrawInternal(batch);
+            DrawInternal();
         }
 
         /// <summary>
         /// Renders the current object to current render target.
         /// </summary>
-        protected abstract void DrawInternal(SpriteBatch batch);
+        protected abstract void DrawInternal();
 
         #endregion
 

@@ -32,6 +32,7 @@ namespace Corund.Engine
             Frames = new FrameManager();
             Debug = new DebugManager();
             Screen = new ScreenManager(opts);
+            Render = new RenderManager(opts.GraphicsDeviceManager.GraphicsDevice);
 
             _deferredActions = new List<Action>();
         }
@@ -49,11 +50,6 @@ namespace Corund.Engine
         /// Gets the current timer delta value.
         /// </summary>
         public static float Delta { get; private set; }
-
-        /// <summary>
-        /// The current graphics device used for all rendering.
-        /// </summary>
-        public static GraphicsDevice GraphicsDevice { get; private set; }
 
         /// <summary>
         /// The options for rendering.
@@ -74,6 +70,11 @@ namespace Corund.Engine
         /// The screen manager.
         /// </summary>
         public static ScreenManager Screen { get; private set; }
+
+        /// <summary>
+        /// The render manager.
+        /// </summary>
+        public static RenderManager Render { get; private set; }
 
         /// <summary>
         /// List of actions to execute after all update loops have completed.
@@ -103,9 +104,6 @@ namespace Corund.Engine
         public static void Draw(GameTime time)
         {
             Delta = (float)time.ElapsedGameTime.TotalSeconds;
-
-            GraphicsDevice.SetRenderTarget(null);
-            GraphicsDevice.Clear(Color.Red);
 
             Frames.Draw();
         }

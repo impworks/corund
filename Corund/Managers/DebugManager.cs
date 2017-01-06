@@ -14,7 +14,7 @@ namespace Corund.Managers
 
         public DebugManager()
         {
-            _boxTexture = new Texture2D(GameEngine.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
+            _boxTexture = new Texture2D(GameEngine.Render.Device, 1, 1, false, SurfaceFormat.Color);
             _boxTexture.SetData(new[] { Color.Red });
         }
 
