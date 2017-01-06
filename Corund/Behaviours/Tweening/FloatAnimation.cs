@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq.Expressions;
+﻿using Corund.Tools;
 using Corund.Tools.Interpolation;
 using Corund.Visuals.Primitives;
 
@@ -11,8 +10,8 @@ namespace Corund.Behaviours.Tweening
     public class FloatAnimation<TObject>: PropertyAnimationBase<TObject, float>
         where TObject: DynamicObject
     {
-        public FloatAnimation(Expression<Func<TObject, float>> property, float targetValue, float duration, InterpolationMethod interpolation = null)
-            : base(property, targetValue, duration, interpolation)
+        public FloatAnimation(PropertyDescriptor<TObject, float> descriptor, float targetValue, float duration, InterpolationMethod interpolation = null)
+            : base(descriptor, targetValue, duration, interpolation)
         { }
 
         protected override float getValue()

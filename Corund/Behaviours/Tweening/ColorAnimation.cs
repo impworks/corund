@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq.Expressions;
+﻿using Corund.Tools;
 using Corund.Tools.Interpolation;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
@@ -12,8 +11,8 @@ namespace Corund.Behaviours.Tweening
     public class ColorAnimation<TObject> : PropertyAnimationBase<TObject, Color>
         where TObject : DynamicObject
     {
-        public ColorAnimation(Expression<Func<TObject, Color>> property, Color targetValue, float duration, InterpolationMethod interpolation = null)
-            : base(property, targetValue, duration, interpolation)
+        public ColorAnimation(PropertyDescriptor<TObject, Color> descriptor, Color targetValue, float duration, InterpolationMethod interpolation = null)
+            : base(descriptor, targetValue, duration, interpolation)
         { }
 
         protected override Color getValue()

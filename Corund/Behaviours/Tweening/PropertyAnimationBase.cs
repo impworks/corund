@@ -16,10 +16,9 @@ namespace Corund.Behaviours.Tweening
     {
         #region Constructor
 
-        protected PropertyAnimationBase(Expression<Func<TObject, TProperty>> property, TProperty targetValue, float duration, InterpolationMethod interpolation = null)
+        protected PropertyAnimationBase(PropertyDescriptor<TObject, TProperty> descriptor, TProperty targetValue, float duration, InterpolationMethod interpolation = null)
         {
-            _descriptor = PropertyHelper.GetDescriptor(property);
-
+            _descriptor = descriptor;
             _targetValue = targetValue;
             _duration = duration;
             _interpolation = interpolation ?? Interpolate.Linear;

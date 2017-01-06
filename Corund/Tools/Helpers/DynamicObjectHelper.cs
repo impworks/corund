@@ -18,7 +18,8 @@ namespace Corund.Tools.Helpers
         public static void Animate<T>(this T obj, Expression<Func<T, float>> property, float target, float duration, InterpolationMethod interpolation = null)
             where T: DynamicObject
         {
-            obj.Behaviours.Add(new FloatAnimation<T>(property, target, duration, interpolation));
+            var descriptor = PropertyHelper.GetDescriptor(property);
+            obj.Behaviours.Add(new FloatAnimation<T>(descriptor, target, duration, interpolation));
         }
 
         /// <summary>
@@ -27,7 +28,8 @@ namespace Corund.Tools.Helpers
         public static void Animate<T>(this T obj, Expression<Func<T, Vector2>> property, Vector2 target, float duration, InterpolationMethod interpolation = null)
             where T : DynamicObject
         {
-            obj.Behaviours.Add(new Vector2Animation<T>(property, target, duration, interpolation));
+            var descriptor = PropertyHelper.GetDescriptor(property);
+            obj.Behaviours.Add(new Vector2Animation<T>(descriptor, target, duration, interpolation));
         }
 
         /// <summary>
@@ -36,7 +38,8 @@ namespace Corund.Tools.Helpers
         public static void Animate<T>(this T obj, Expression<Func<T, Color>> property, Color target, float duration, InterpolationMethod interpolation = null)
             where T : DynamicObject
         {
-            obj.Behaviours.Add(new ColorAnimation<T>(property, target, duration, interpolation));
+            var descriptor = PropertyHelper.GetDescriptor(property);
+            obj.Behaviours.Add(new ColorAnimation<T>(descriptor, target, duration, interpolation));
         }
 
         /// <summary>
