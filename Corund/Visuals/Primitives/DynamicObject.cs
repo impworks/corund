@@ -141,7 +141,7 @@ namespace Corund.Visuals.Primitives
                 if (fadeOut != null)
                 {
                     // no break intended: activate ALL the effects! \o/
-                    fadeOut.ActivateFadeOut();
+                    fadeOut.ActivateFadeOut(this);
 
                     if (fadeOut.Duration > timeout)
                         timeout = fadeOut.Duration;

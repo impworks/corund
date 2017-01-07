@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
+using Corund.Engine;
 using Corund.Visuals.Primitives;
 
 namespace Corund.Behaviours
@@ -32,7 +33,14 @@ namespace Corund.Behaviours
         public void Update()
         {
             foreach (var behaviour in this)
+            {
                 behaviour.UpdateObjectState(_parent);
+
+                // effect has completed
+                var effect = behaviour as IEffect;
+                if(effect?.Progress == 1)
+                    GameEngine.InvokeDeferred(() => Remove(behaviour));
+            }
         }
 
         #endregion

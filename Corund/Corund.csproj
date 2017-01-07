@@ -45,6 +45,9 @@
   <ItemGroup>
     <Compile Include="Behaviours\BehaviourManager.cs" />
     <Compile Include="Behaviours\BehaviourBase.cs" />
+    <Compile Include="Behaviours\Fade\FadeInBehaviour.cs" />
+    <Compile Include="Behaviours\Fade\FadeOutBehaviour.cs" />
+    <Compile Include="Behaviours\Fade\FadeStyle.cs" />
     <Compile Include="Behaviours\Fade\IFadeInEffect.cs" />
     <Compile Include="Behaviours\Fade\IFadeOutEffect.cs" />
     <Compile Include="Behaviours\IEffect.cs" />

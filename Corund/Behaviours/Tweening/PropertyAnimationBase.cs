@@ -1,4 +1,6 @@
-﻿using Corund.Engine;
+﻿using System;
+using Corund.Engine;
+using Corund.Tools.Helpers;
 using Corund.Tools.Interpolation;
 using Corund.Tools.Properties;
 using Corund.Visuals.Primitives;
@@ -15,6 +17,9 @@ namespace Corund.Behaviours.Tweening
 
         protected PropertyAnimationBase(IPropertyDescriptor<TObject, TProperty> descriptor, TProperty targetValue, float duration, InterpolationMethod interpolation = null)
         {
+            if(duration.IsAlmostNull())
+                throw new ArgumentException("Effect duration cannot be null.", nameof(duration));
+
             _descriptor = descriptor;
             _targetValue = targetValue;
             _duration = duration;
@@ -91,12 +96,6 @@ namespace Corund.Behaviours.Tweening
         /// </summary>
         public override void UpdateObjectState(DynamicObject obj)
         {
-            if (_elapsedTime == _duration)
-            {
-                GameEngine.InvokeDeferred(() => obj.Behaviours.Remove(this));
-                return;
-            }
-
             _elapsedTime += GameEngine.Delta;
             if (_elapsedTime > _duration)
                 _elapsedTime = _duration;
