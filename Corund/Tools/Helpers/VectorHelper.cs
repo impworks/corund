@@ -34,5 +34,14 @@ namespace Corund.Tools.Helpers
                 (float)(Math.Sin(angle) * length)
             );
         }
+
+        /// <summary>
+        /// Calculates the direction between two points.
+        /// </summary>
+        public static float AngleTo(this Vector2 p1, Vector2 p2)
+        {
+            var vec = p2 - p1;
+            return (float) Math.Atan2(vec.Y, vec.X);
+        }
     }
 }

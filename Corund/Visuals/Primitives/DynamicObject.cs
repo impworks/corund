@@ -5,7 +5,6 @@ using Corund.Engine;
 using Corund.Tools;
 using Corund.Tools.Helpers;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace Corund.Visuals.Primitives
 {
@@ -19,13 +18,16 @@ namespace Corund.Visuals.Primitives
         protected DynamicObject()
         {
             Behaviours = new BehaviourManager(this);
-            BlendState = BlendState.AlphaBlend;
-            TintColor = Color.White;
         }
 
         #endregion
 
         #region Fields
+
+        /// <summary>
+        /// The behaviour manager for current object.
+        /// </summary>
+        public readonly BehaviourManager Behaviours;
 
         /// <summary>
         /// Angle derivative.
@@ -38,32 +40,6 @@ namespace Corund.Visuals.Primitives
         /// Sprite is moved by this value each second.
         /// </summary>
         public Vector2 Momentum;
-
-        /// <summary>
-        /// Sprite tint color.
-        /// Default is White (No tint).
-        /// </summary>
-        public Color TintColor;
-
-        /// <summary>
-        /// The behaviour manager for current object.
-        /// </summary>
-        public readonly BehaviourManager Behaviours;
-
-        /// <summary>
-        /// Blending mode.
-        /// </summary>
-        public BlendState BlendState;
-
-        /// <summary>
-        /// Sprite transparency: 0 = fully transparent, 1 = fully opaque.
-        /// Default is 1.
-        /// </summary>
-        public float Opacity
-        {
-            get { return TintColor.A / 255.0f; }
-            set { TintColor.A = (byte)(MathHelper.Clamp(value, 0, 1) * 255); }
-        }
 
         /// <summary>
         /// Gets or sets object's speed.

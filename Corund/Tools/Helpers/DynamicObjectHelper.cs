@@ -1,7 +1,6 @@
-﻿using System;
-using System.Linq.Expressions;
-using Corund.Behaviours.Tweening;
+﻿using Corund.Behaviours.Tweening;
 using Corund.Tools.Interpolation;
+using Corund.Tools.Properties;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 
@@ -12,43 +11,42 @@ namespace Corund.Tools.Helpers
     /// </summary>
     public static class DynamicObjectHelper
     {
+        #region Animated properties
+
         /// <summary>
         /// Animates a float property.
         /// </summary>
-        public static void Animate<T>(this T obj, Expression<Func<T, float>> property, float target, float duration, InterpolationMethod interpolation = null)
+        public static void Animate<T>(this T obj, IPropertyDescriptor<T, float> descriptor, float target, float duration, InterpolationMethod interpolation = null)
             where T: DynamicObject
         {
-            var descriptor = PropertyHelper.GetDescriptor(property);
             obj.Behaviours.Add(new FloatAnimation<T>(descriptor, target, duration, interpolation));
         }
 
         /// <summary>
         /// Animates a vector property.
         /// </summary>
-        public static void Animate<T>(this T obj, Expression<Func<T, Vector2>> property, Vector2 target, float duration, InterpolationMethod interpolation = null)
+        public static void Animate<T>(this T obj, IPropertyDescriptor<T, Vector2> descriptor, Vector2 target, float duration, InterpolationMethod interpolation = null)
             where T : DynamicObject
         {
-            var descriptor = PropertyHelper.GetDescriptor(property);
             obj.Behaviours.Add(new Vector2Animation<T>(descriptor, target, duration, interpolation));
         }
 
         /// <summary>
         /// Animates a color property.
         /// </summary>
-        public static void Animate<T>(this T obj, Expression<Func<T, Color>> property, Color target, float duration, InterpolationMethod interpolation = null)
+        public static void Animate<T>(this T obj, IPropertyDescriptor<T, Color> descriptor, Color target, float duration, InterpolationMethod interpolation = null)
             where T : DynamicObject
         {
-            var descriptor = PropertyHelper.GetDescriptor(property);
             obj.Behaviours.Add(new ColorAnimation<T>(descriptor, target, duration, interpolation));
         }
 
         /// <summary>
         /// Stops animating a property.
         /// </summary>
-        public static void StopAnimating<T>(this T obj, Expression<Func<T, Color>> property, bool skipToFinalValue = true)
+        public static void StopAnimating<T, TProperty>(this T obj, IPropertyDescriptor<T, TProperty> descriptor, bool skipToFinalValue = true)
             where T: DynamicObject
         {
-            var name = PropertyHelper.GetPropertyName(property);
+            var name = descriptor.Name;
             foreach (var behaviour in obj.Behaviours)
             {
                 var ptyAnimator = behaviour as IPropertyAnimation;
@@ -71,5 +69,42 @@ namespace Corund.Tools.Helpers
                 ptyAnimator?.StopAnimation(obj, skipToFinalValue);
             }
         }
+
+        #endregion
+
+        #region Movement
+
+        /// <summary>
+        /// Stops the object's movements.
+        /// </summary>
+        public static void Stop(this DynamicObject obj)
+        {
+            obj.Momentum = Vector2.Zero;
+            obj.Acceleration = 0;
+            obj.StopAnimating(AnimatedProperty.Position);
+        }
+
+        /// <summary>
+        /// Moves with given speed in the direction specified by the angle (absolute).
+        /// </summary>
+        public static void Move(this DynamicObject obj, float speed, float angle)
+        {
+            obj.Momentum = VectorHelper.FromLength(speed, angle);
+        }
+
+        /// <summary>
+        /// Moves to given point over the specified timespan.
+        /// </summary>
+        /// <param name="obj">Object to apply movement to.</param>
+        /// <param name="point">Desired point (in local coordinates).</param>
+        /// <param name="time">Desired duration of travel.</param>
+        /// <param name="interpolation">Interpolation method to use.</param>
+        public static void MoveTo(this DynamicObject obj, Vector2 point, float time, InterpolationMethod interpolation = null)
+        {
+            obj.Direction = obj.Position.AngleTo(point);
+            obj.Animate(AnimatedProperty.Position, point, time, interpolation);
+        }
+
+        #endregion
     }
 }

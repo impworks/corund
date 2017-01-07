@@ -1,5 +1,5 @@
-﻿using Corund.Tools;
-using Corund.Tools.Interpolation;
+﻿using Corund.Tools.Interpolation;
+using Corund.Tools.Properties;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 
@@ -11,7 +11,7 @@ namespace Corund.Behaviours.Tweening
     public class Vector2Animation<TObject> : PropertyAnimationBase<TObject, Vector2>
        where TObject : DynamicObject
     {
-        public Vector2Animation(PropertyDescriptor<TObject, Vector2> descriptor, Vector2 targetValue, float duration, InterpolationMethod interpolation = null)
+        public Vector2Animation(IPropertyDescriptor<TObject, Vector2> descriptor, Vector2 targetValue, float duration, InterpolationMethod interpolation = null)
             : base(descriptor, targetValue, duration, interpolation)
         { }
 

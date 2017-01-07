@@ -1,5 +1,5 @@
-﻿using Corund.Tools;
-using Corund.Tools.Interpolation;
+﻿using Corund.Tools.Interpolation;
+using Corund.Tools.Properties;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 
@@ -11,7 +11,7 @@ namespace Corund.Behaviours.Tweening
     public class ColorAnimation<TObject> : PropertyAnimationBase<TObject, Color>
         where TObject : DynamicObject
     {
-        public ColorAnimation(PropertyDescriptor<TObject, Color> descriptor, Color targetValue, float duration, InterpolationMethod interpolation = null)
+        public ColorAnimation(IPropertyDescriptor<TObject, Color> descriptor, Color targetValue, float duration, InterpolationMethod interpolation = null)
             : base(descriptor, targetValue, duration, interpolation)
         { }
 

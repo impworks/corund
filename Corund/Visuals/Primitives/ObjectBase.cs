@@ -17,6 +17,7 @@ namespace Corund.Visuals.Primitives
         {
             IsVisible = true;
             ScaleVector = new Vector2(1);
+            Tint = Color.White;
         }
 
         #endregion
@@ -47,6 +48,22 @@ namespace Corund.Visuals.Primitives
         /// Rotation angle in radians.
         /// </summary>
         public float Angle;
+
+        /// <summary>
+        /// Tint color.
+        /// Default is White (no tint).
+        /// </summary>
+        public Color Tint;
+
+        /// <summary>
+        /// Opacity coefficient.
+        /// Default is 1 (fully opaque).
+        /// </summary>
+        public float Opacity
+        {
+            get { return (float)(Tint.A/255.0); }
+            set { Tint.A = (byte) (value*255); }
+        }
 
         /// <summary>
         /// Base object, to which current object is relative.

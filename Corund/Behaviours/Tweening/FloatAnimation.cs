@@ -1,5 +1,5 @@
-﻿using Corund.Tools;
-using Corund.Tools.Interpolation;
+﻿using Corund.Tools.Interpolation;
+using Corund.Tools.Properties;
 using Corund.Visuals.Primitives;
 
 namespace Corund.Behaviours.Tweening
@@ -10,7 +10,7 @@ namespace Corund.Behaviours.Tweening
     public class FloatAnimation<TObject>: PropertyAnimationBase<TObject, float>
         where TObject: DynamicObject
     {
-        public FloatAnimation(PropertyDescriptor<TObject, float> descriptor, float targetValue, float duration, InterpolationMethod interpolation = null)
+        public FloatAnimation(IPropertyDescriptor<TObject, float> descriptor, float targetValue, float duration, InterpolationMethod interpolation = null)
             : base(descriptor, targetValue, duration, interpolation)
         { }
 

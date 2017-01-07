@@ -16,6 +16,8 @@ namespace Corund.Managers
         {
             _boxTexture = new Texture2D(GameEngine.Render.Device, 1, 1, false, SurfaceFormat.Color);
             _boxTexture.SetData(new[] { Color.Red });
+
+
         }
 
         #endregion

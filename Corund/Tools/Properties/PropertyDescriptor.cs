@@ -1,11 +1,11 @@
 ﻿using System;
 
-namespace Corund.Tools
+namespace Corund.Tools.Properties
 {
     /// <summary>
     /// A descriptor for property that can get and set values.
     /// </summary>
-    public class PropertyDescriptor<TObject, TProperty>
+    public class PropertyDescriptor<TObject, TProperty>: IPropertyDescriptor<TObject, TProperty>
     {
         #region Constructor
 
@@ -21,19 +21,19 @@ namespace Corund.Tools
         #region Properties
 
         /// <summary>
-        /// Compiled getter function.
+        /// A function that returns the property's current value.
         /// </summary>
-        public readonly Func<TObject, TProperty> Getter;
+        public Func<TObject, TProperty> Getter { get; }
 
         /// <summary>
-        /// Compiled setter function.
+        /// A function that updates the property's current value.
         /// </summary>
-        public readonly Action<TObject, TProperty> Setter;
+        public Action<TObject, TProperty> Setter { get; }
 
         /// <summary>
-        /// Expression as string.
+        /// Property name.
         /// </summary>
-        public readonly string Name;
+        public string Name { get; }
 
         #endregion
     }

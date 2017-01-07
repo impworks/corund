@@ -1,9 +1,6 @@
-﻿using System;
-using System.Linq.Expressions;
-using Corund.Engine;
-using Corund.Tools;
-using Corund.Tools.Helpers;
+﻿using Corund.Engine;
 using Corund.Tools.Interpolation;
+using Corund.Tools.Properties;
 using Corund.Visuals.Primitives;
 
 namespace Corund.Behaviours.Tweening
@@ -16,7 +13,7 @@ namespace Corund.Behaviours.Tweening
     {
         #region Constructor
 
-        protected PropertyAnimationBase(PropertyDescriptor<TObject, TProperty> descriptor, TProperty targetValue, float duration, InterpolationMethod interpolation = null)
+        protected PropertyAnimationBase(IPropertyDescriptor<TObject, TProperty> descriptor, TProperty targetValue, float duration, InterpolationMethod interpolation = null)
         {
             _descriptor = descriptor;
             _targetValue = targetValue;
@@ -51,7 +48,7 @@ namespace Corund.Behaviours.Tweening
         /// <summary>
         /// Property getter.
         /// </summary>
-        private readonly PropertyDescriptor<TObject, TProperty> _descriptor;
+        private readonly IPropertyDescriptor<TObject, TProperty> _descriptor;
 
         /// <summary>
         /// Currently elapsed time.
