@@ -37,7 +37,6 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
     <Folder Include="Behaviours\Interaction\" />
     <Folder Include="Behaviours\Misc\" />
-    <Folder Include="Behaviours\Movement\" />
     <Folder Include="Geometry\" />
     <Folder Include="Sprites\" />
     <Folder Include="Visuals\Special\" />
@@ -51,6 +50,7 @@
     <Compile Include="Behaviours\Fade\IFadeInEffect.cs" />
     <Compile Include="Behaviours\Fade\IFadeOutEffect.cs" />
     <Compile Include="Behaviours\IEffect.cs" />
+    <Compile Include="Behaviours\Movement\PathBehaviourBase.cs" />
     <Compile Include="Behaviours\Tweening\ColorAnimation.cs" />
     <Compile Include="Behaviours\Tweening\FloatAnimation.cs" />
     <Compile Include="Behaviours\Tweening\IPropertyAnimation.cs" />
