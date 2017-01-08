@@ -50,6 +50,11 @@
     <Compile Include="Behaviours\Fade\IFadeInEffect.cs" />
     <Compile Include="Behaviours\Fade\IFadeOutEffect.cs" />
     <Compile Include="Behaviours\IEffect.cs" />
+    <Compile Include="Behaviours\Movement\BezierMovementBehaviour.cs" />
+    <Compile Include="Behaviours\Movement\BezierSegment.cs" />
+    <Compile Include="Behaviours\Movement\IPathSegment.cs" />
+    <Compile Include="Behaviours\Movement\LineMovementBehaviour.cs" />
+    <Compile Include="Behaviours\Movement\LineSegment.cs" />
     <Compile Include="Behaviours\Movement\PathBehaviourBase.cs" />
     <Compile Include="Behaviours\Tweening\ColorAnimation.cs" />
     <Compile Include="Behaviours\Tweening\FloatAnimation.cs" />
