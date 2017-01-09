@@ -1,7 +1,7 @@
 ﻿using Corund.Engine.Config;
 using Microsoft.Xna.Framework;
 
-namespace Corund.Managers
+namespace Corund.Engine
 {
     /// <summary>
     /// Various helpers for getting screen properties.

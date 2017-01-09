@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Corund.Engine.Config;
-using Corund.Managers;
+using Corund.Frames;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;

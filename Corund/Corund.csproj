@@ -66,10 +66,10 @@
     <Compile Include="Engine\GameEngine.cs" />
     <Compile Include="Frames\Camera.cs" />
     <Compile Include="Frames\FrameBase.cs" />
-    <Compile Include="Managers\DebugManager.cs" />
-    <Compile Include="Managers\FrameManager.cs" />
-    <Compile Include="Managers\RenderManager.cs" />
-    <Compile Include="Managers\ScreenManager.cs" />
+    <Compile Include="Engine\DebugManager.cs" />
+    <Compile Include="Frames\FrameManager.cs" />
+    <Compile Include="Engine\RenderManager.cs" />
+    <Compile Include="Engine\ScreenManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\Helpers\DynamicObjectHelper.cs" />
     <Compile Include="Tools\Helpers\RandomHelper.cs" />
@@ -84,7 +84,7 @@
     <Compile Include="Tools\Jitter\JitteryValue.cs" />
     <Compile Include="Tools\Jitter\JitteryVector2.cs" />
     <Compile Include="Tools\PauseMode.cs" />
-    <Compile Include="Managers\TimelineManager.cs" />
+    <Compile Include="Engine\TimelineManager.cs" />
     <Compile Include="Visuals\ObjectGroup.cs" />
     <Compile Include="Visuals\Primitives\DynamicObject.cs" />
     <Compile Include="Visuals\Primitives\ObjectBase.cs" />
@@ -96,7 +96,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Managers\TimelineManager.TimelineRecord.cs" />
+    <Compile Include="Engine\TimelineManager.TimelineRecord.cs" />
     <Compile Include="Engine\GameEngine.Current.cs" />
     <None Include="packages.config" />
   </ItemGroup>

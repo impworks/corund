@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Corund.Managers
+namespace Corund.Engine
 {
     public partial class TimelineManager
     {

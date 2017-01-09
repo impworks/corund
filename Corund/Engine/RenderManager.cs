@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
-using Corund.Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Corund.Managers
+namespace Corund.Engine
 {
     /// <summary>
     /// A wrapper around the GraphicDevice.

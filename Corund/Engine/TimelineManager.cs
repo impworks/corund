@@ -1,8 +1,7 @@
-﻿using Corund.Engine;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace Corund.Managers
+namespace Corund.Engine
 {
     /// <summary>
     /// A class that can execute events at given points of time.

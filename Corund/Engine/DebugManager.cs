@@ -1,9 +1,8 @@
 ﻿using System.Diagnostics;
-using Corund.Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Corund.Managers
+namespace Corund.Engine
 {
     /// <summary>
     /// Methods to help debug the game.

@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Corund.Behaviours.Fade;
 using Corund.Engine;
-using Corund.Frames;
 using Corund.Tools;
 using Microsoft.Xna.Framework;
 
-namespace Corund.Managers
+namespace Corund.Frames
 {
     /// <summary>
     /// The manager class for all frames currently running in the game.
