@@ -37,7 +37,6 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
     <Folder Include="Behaviours\Interaction\" />
     <Folder Include="Behaviours\Misc\" />
-    <Folder Include="Geometry\" />
     <Folder Include="Sprites\" />
     <Folder Include="Visuals\Special\" />
   </ItemGroup>
@@ -70,12 +69,15 @@
     <Compile Include="Frames\FrameManager.cs" />
     <Compile Include="Engine\RenderManager.cs" />
     <Compile Include="Engine\ScreenManager.cs" />
+    <Compile Include="Geometry\CollisionDetector.cs" />
+    <Compile Include="Geometry\RectPolygon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\Helpers\DynamicObjectHelper.cs" />
     <Compile Include="Tools\Helpers\RandomHelper.cs" />
     <Compile Include="Tools\Properties\IPropertyDescriptor.cs" />
     <Compile Include="Tools\Properties\AnimatedProperty.cs" />
     <Compile Include="Tools\Properties\PropertyDescriptor.cs" />
+    <Compile Include="Tools\Range.cs" />
     <Compile Include="Tools\TransformInfo.cs" />
     <Compile Include="Tools\Helpers\NumericHelper.cs" />
     <Compile Include="Tools\Helpers\VectorHelper.cs" />
