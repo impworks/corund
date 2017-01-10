@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Corund.Tools.Helpers;
+using Microsoft.Xna.Framework;
 
 namespace Corund.Tools
 {
@@ -7,6 +8,8 @@ namespace Corund.Tools
     /// </summary>
     public struct TransformInfo
     {
+        #region Constructor
+
         public TransformInfo(Vector2 position, float angle, Vector2 scale)
         {
             Position = position;
@@ -14,8 +17,37 @@ namespace Corund.Tools
             ScaleVector = scale;
         }
 
+        #endregion
+
+        #region Fields
+
+        /// <summary>
+        /// Total position offset.
+        /// </summary>
         public readonly Vector2 Position;
+
+        /// <summary>
+        /// Total angle offset.
+        /// </summary>
         public readonly float Angle;
+
+        /// <summary>
+        /// Total scale offset.
+        /// </summary>
         public readonly Vector2 ScaleVector;
+
+        #endregion
+
+        #region Methods
+
+        /// <summary>
+        /// Translates a point according to transform info.
+        /// </summary>
+        public Vector2 Translate(Vector2 point)
+        {
+            return point.Rotate(Angle)*ScaleVector + Position;
+        }
+
+        #endregion
     }
 }

@@ -70,6 +70,9 @@
     <Compile Include="Engine\RenderManager.cs" />
     <Compile Include="Engine\ScreenManager.cs" />
     <Compile Include="Geometry\CollisionDetector.cs" />
+    <Compile Include="Geometry\GeometryRect.cs" />
+    <Compile Include="Geometry\GeometryRectGroup.cs" />
+    <Compile Include="Geometry\IGeometry.cs" />
     <Compile Include="Geometry\RectPolygon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools\Helpers\DynamicObjectHelper.cs" />
