@@ -17,7 +17,7 @@ namespace Corund.Geometry
         public static bool IsPointInsideRect(RectPolygon rect, Vector2 point)
         {
             // rotate everything around (0, 0) to axis-align the rect
-            var leftUp = rect.LeftUpper.Rotate(rect.Angle);
+            var leftUp = rect.LeftUpper.Rotate(rect.Angle); 
             var rightLow = rect.RightLower.Rotate(rect.Angle);
             var pt = point.Rotate(rect.Angle);
 
