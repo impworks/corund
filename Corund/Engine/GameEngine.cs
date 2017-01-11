@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using Corund.Engine.Config;
 using Corund.Frames;
+using Corund.Sound;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
 
 namespace Corund.Engine
 {
@@ -33,6 +33,7 @@ namespace Corund.Engine
             Debug = new DebugManager();
             Screen = new ScreenManager(opts);
             Render = new RenderManager(opts.GraphicsDeviceManager.GraphicsDevice);
+            Sound = new SoundManager();
 
             _deferredActions = new List<Action>();
         }
@@ -75,6 +76,11 @@ namespace Corund.Engine
         /// The render manager.
         /// </summary>
         public static RenderManager Render { get; private set; }
+
+        /// <summary>
+        /// The sound manager.
+        /// </summary>
+        public static SoundManager Sound { get; private set; }
 
         /// <summary>
         /// List of actions to execute after all update loops have completed.

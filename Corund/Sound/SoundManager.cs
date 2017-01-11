@@ -8,11 +8,11 @@ namespace Corund.Sound
     /// <summary>
     /// The class that handles sound playback.
     /// </summary>
-    public static class SoundManager
+    public class SoundManager
     {
         #region Constructor
 
-        static SoundManager()
+        public SoundManager()
         {
             _soundCache = new Dictionary<string, SoundEffectInfo>();
         }
@@ -21,18 +21,18 @@ namespace Corund.Sound
 
         #region Fields
 
-        private static bool _soundEnabled;
-        private static bool _musicEnabled;
+        private bool _soundEnabled;
+        private bool _musicEnabled;
 
         /// <summary>
         /// List of sound effect instances currently initialized.
         /// </summary>
-        private static readonly Dictionary<string, SoundEffectInfo> _soundCache;
+        private readonly Dictionary<string, SoundEffectInfo> _soundCache;
 
         /// <summary>
         /// The music effect.
         /// </summary>
-        private static Song _music;
+        private Song _music;
 
         #endregion
 
@@ -41,12 +41,12 @@ namespace Corund.Sound
         /// <summary>
         /// Gets the flag indicating that game is in focus and can play sounds.
         /// </summary>
-        public static bool CanPlayMusic => MediaPlayer.GameHasControl;
+        public bool CanPlayMusic => MediaPlayer.GameHasControl;
 
         /// <summary>
         /// Gets or sets sound playback availability.
         /// </summary>
-        public static bool SoundEnabled
+        public bool SoundEnabled
         {
             get { return _soundEnabled; }
             set
@@ -60,7 +60,7 @@ namespace Corund.Sound
         /// <summary>
         /// Gets or sets background music availability.
         /// </summary>
-        public static bool MusicEnabled
+        public bool MusicEnabled
         {
             get { return _musicEnabled; }
             set
@@ -82,7 +82,7 @@ namespace Corund.Sound
         /// Load a sound to the current
         /// </summary>
         /// <param name="assetName">Sound asset name.</param>
-        public static void LoadSound(string assetName)
+        public void LoadSound(string assetName)
         {
             if (_soundCache.ContainsKey(assetName))
                 return;
@@ -98,7 +98,7 @@ namespace Corund.Sound
         /// <param name="assetName">Sound effect's asset name.</param>
         /// <param name="allowOverlap">Whether many instances of the same sound can be played simultaneously or not.</param>
         /// <param name="volume">Volume of the sample (0..1).</param>
-        public static void PlaySound(string assetName, bool allowOverlap = false, float volume = 1)
+        public void PlaySound(string assetName, bool allowOverlap = false, float volume = 1)
         {
             if (!SoundEnabled)
                 return;
@@ -112,7 +112,7 @@ namespace Corund.Sound
         /// <summary>
         /// Checks if sound is playing.
         /// </summary>
-        public static bool IsSoundPlaying(string assetName)
+        public bool IsSoundPlaying(string assetName)
         {
             return _soundCache.ContainsKey(assetName) && _soundCache[assetName].IsPlaying;
         }
@@ -120,7 +120,7 @@ namespace Corund.Sound
         /// <summary>
         /// Checks if any sound is playing.
         /// </summary>
-        public static bool IsAnySoundPlaying()
+        public bool IsAnySoundPlaying()
         {
             if (_soundCache.Count > 0)
                 foreach (var curr in _soundCache.Values)
@@ -133,7 +133,7 @@ namespace Corund.Sound
         /// <summary>
         /// Stop a sound playing.
         /// </summary>
-        public static void StopSound(string assetName)
+        public void StopSound(string assetName)
         {
             if (!_soundCache.ContainsKey(assetName))
                 return;
@@ -145,7 +145,7 @@ namespace Corund.Sound
         /// <summary>
         /// Stop all sounds playing.
         /// </summary>
-        public static void StopAllSounds()
+        public void StopAllSounds()
         {
             foreach (var sound in _soundCache.Values)
                 sound.Stop();
@@ -158,7 +158,7 @@ namespace Corund.Sound
         /// <summary>
         /// Load the music.
         /// </summary>
-        public static void LoadMusic(string assetName)
+        public void LoadMusic(string assetName)
         {
             _music = GameEngine.Content.Load<Song>(assetName);
         }
@@ -166,7 +166,7 @@ namespace Corund.Sound
         /// <summary>
         /// Play a background music.
         /// </summary>
-        public static void PlayMusic(bool force = false)
+        public void PlayMusic(bool force = false)
         {
             if (!MusicEnabled || _music == null)
                 return;
@@ -185,7 +185,7 @@ namespace Corund.Sound
         /// <summary>
         /// Stop music playing.
         /// </summary>
-        public static void StopMusic()
+        public void StopMusic()
         {
             if (CanPlayMusic && IsMusicPlaying())
                 MediaPlayer.Pause();
@@ -194,7 +194,7 @@ namespace Corund.Sound
         /// <summary>
         /// Checks if music is playing.
         /// </summary>
-        public static bool IsMusicPlaying()
+        public bool IsMusicPlaying()
         {
             return MediaPlayer.State == MediaState.Playing;
         }
