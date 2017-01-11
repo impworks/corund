@@ -37,7 +37,7 @@ namespace Corund.Geometry
         /// <summary>
         /// Checks if current geometry contains specified point after applying transformations.
         /// </summary>
-        public bool ContainsPoint(Vector2 point, TransformInfo selfTransform)
+        public bool ContainsPoint(Vector2 point, TransformInfo? selfTransform)
         {
             var rect = CreateRectPolygon(selfTransform);
             return CollisionDetector.IsPointInsideRect(rect, point);
@@ -47,7 +47,7 @@ namespace Corund.Geometry
         /// Checks if current rectangle overlaps another unspecified geometry.
         /// Used for double dispatching.
         /// </summary>
-        public bool Overlaps(IGeometry other, TransformInfo selfTransform, TransformInfo otherTransform)
+        public bool Overlaps(IGeometry other, TransformInfo? selfTransform, TransformInfo? otherTransform)
         {
             return (other as GeometryRect)?.Overlaps(this, otherTransform, selfTransform)
                 ?? other.Overlaps(this, otherTransform, selfTransform);
@@ -56,9 +56,9 @@ namespace Corund.Geometry
         /// <summary>
         /// Checks if current rectangle overlaps another rectangle.
         /// </summary>
-        public bool Overlaps(GeometryRect other, TransformInfo selftTransform, TransformInfo otherTransform)
+        public bool Overlaps(GeometryRect other, TransformInfo? selfTransform, TransformInfo? otherTransform)
         {
-            var poly = CreateRectPolygon(selftTransform);
+            var poly = CreateRectPolygon(selfTransform);
             var otherPoly = other.CreateRectPolygon(otherTransform);
             return CollisionDetector.AreRectsOverlapping(poly, otherPoly);
         }
@@ -70,19 +70,22 @@ namespace Corund.Geometry
         /// <summary>
         /// Converts the rectangle points to scene coordinates.
         /// </summary>
-        public RectPolygon CreateRectPolygon(TransformInfo transform)
+        public RectPolygon CreateRectPolygon(TransformInfo? transform)
         {
             var lu = Position;
             var ru = new Vector2(Position.X + Size.X, Position.Y);
             var rl = Position + Size;
             var ll = new Vector2(Position.X, Position.X + Size.Y);
 
+            if (!transform.HasValue)
+                return new RectPolygon(lu, ru, rl, ll, 0);
+
             return new RectPolygon(
-                transform.Translate(lu),
-                transform.Translate(ru),
-                transform.Translate(rl),
-                transform.Translate(ll),
-                transform.Angle
+                transform.Value.Translate(lu),
+                transform.Value.Translate(ru),
+                transform.Value.Translate(rl),
+                transform.Value.Translate(ll),
+                transform.Value.Angle
             );
         }
 

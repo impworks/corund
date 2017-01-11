@@ -92,6 +92,7 @@
     <Compile Include="Engine\TimelineManager.cs" />
     <Compile Include="Visuals\ObjectGroup.cs" />
     <Compile Include="Visuals\Primitives\DynamicObject.cs" />
+    <Compile Include="Visuals\Primitives\InteractiveObject.cs" />
     <Compile Include="Visuals\Primitives\ObjectBase.cs" />
   </ItemGroup>
   <ItemGroup>

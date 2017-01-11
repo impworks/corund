@@ -31,7 +31,7 @@ namespace Corund.Geometry
         /// <summary>
         /// Checks if any of the rectangles in the group contain the point.
         /// </summary>
-        public bool ContainsPoint(Vector2 point, TransformInfo selfTransform)
+        public bool ContainsPoint(Vector2 point, TransformInfo? selfTransform)
         {
             for(var idx = 0; idx < Rectangles.Length; idx++)
             {
@@ -45,7 +45,7 @@ namespace Corund.Geometry
         /// <summary>
         /// Checks if the group overlaps another geometry.
         /// </summary>
-        public bool Overlaps(IGeometry other, TransformInfo selfTransform, TransformInfo otherTransform)
+        public bool Overlaps(IGeometry other, TransformInfo? selfTransform, TransformInfo? otherTransform)
         {
             var otherRect = other as GeometryRect;
             if (otherRect != null)
@@ -61,7 +61,7 @@ namespace Corund.Geometry
         /// <summary>
         /// Checks if the group overlaps another rectangle.
         /// </summary>
-        public bool Overlaps(GeometryRect other, TransformInfo selfTransform, TransformInfo otherTransform)
+        public bool Overlaps(GeometryRect other, TransformInfo? selfTransform, TransformInfo? otherTransform)
         {
             var otherPoly = other.CreateRectPolygon(otherTransform);
 
@@ -78,7 +78,7 @@ namespace Corund.Geometry
         /// <summary>
         /// Checks if the group overlaps another rectangle.
         /// </summary>
-        public bool Overlaps(GeometryRectGroup other, TransformInfo selfTransform, TransformInfo otherTransform)
+        public bool Overlaps(GeometryRectGroup other, TransformInfo? selfTransform, TransformInfo? otherTransform)
         {
             // pre-transform all rects
             var polys = new RectPolygon[Rectangles.Length];
