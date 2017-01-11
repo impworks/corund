@@ -75,6 +75,8 @@
     <Compile Include="Geometry\IGeometry.cs" />
     <Compile Include="Geometry\RectPolygon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Sound\SoundEffectInfo.cs" />
+    <Compile Include="Sound\SoundManager.cs" />
     <Compile Include="Tools\Helpers\DynamicObjectHelper.cs" />
     <Compile Include="Tools\Helpers\RandomHelper.cs" />
     <Compile Include="Tools\Properties\IPropertyDescriptor.cs" />
