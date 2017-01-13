@@ -1,4 +1,6 @@
-﻿using Corund.Visuals.Primitives;
+﻿using Corund.Sprites;
+using Corund.Visuals;
+using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 
 namespace Corund.Tools.Properties
@@ -107,6 +109,46 @@ namespace Corund.Tools.Properties
             x => x.Direction,
             (x, v) => x.Direction = v,
             nameof(DynamicObject.Direction)
+        );
+
+        #endregion
+
+        #region SpriteObject
+
+        /// <summary>
+        /// Descriptor for SpriteObject.CurrentSprite.HotSpot.
+        /// </summary>
+        public static IPropertyDescriptor<SpriteObject, Vector2> SpriteHotSpot = new PropertyDescriptor<SpriteObject, Vector2>(
+            x => x.CurrentSprite.HotSpot,
+            (x, v) => x.CurrentSprite.HotSpot = v,
+            nameof(SpriteObject.CurrentSprite) + "." + nameof(SpriteBase.HotSpot)
+        );
+
+        /// <summary>
+        /// Descriptor for SpriteObject.CurrentSprite.FrameDelay (for animated sprites).
+        /// </summary>
+        public static IPropertyDescriptor<SpriteObject, float> AnimatedSpriteFrameDelay = new PropertyDescriptor<SpriteObject, float>(
+            x => ((AnimatedSprite)x.CurrentSprite).FrameDelay,
+            (x, v) => ((AnimatedSprite)x.CurrentSprite).FrameDelay = v,
+            nameof(SpriteObject.CurrentSprite) + "." + nameof(AnimatedSprite.FrameDelay)
+        );
+
+        /// <summary>
+        /// Descriptor for SpriteObject.CurrentSprite.EffectiveSize (for tiled sprites).
+        /// </summary>
+        public static IPropertyDescriptor<SpriteObject, Vector2> TiledSpriteEffectiveSize = new PropertyDescriptor<SpriteObject, Vector2>(
+            x => ((ITiledSprite)x.CurrentSprite).EffectiveSize,
+            (x, v) => ((ITiledSprite)x.CurrentSprite).EffectiveSize = v,
+            nameof(SpriteObject.CurrentSprite) + "." + nameof(ITiledSprite.EffectiveSize)
+        );
+
+        /// <summary>
+        /// Descriptor for SpriteObject.CurrentSprite.TextureOffset (for tiled sprites).
+        /// </summary>
+        public static IPropertyDescriptor<SpriteObject, Vector2> TiledSpriteTextureOffset = new PropertyDescriptor<SpriteObject, Vector2>(
+            x => ((ITiledSprite)x.CurrentSprite).TextureOffset,
+            (x, v) => ((ITiledSprite)x.CurrentSprite).TextureOffset = v,
+            nameof(SpriteObject.CurrentSprite) + "." + nameof(ITiledSprite.TextureOffset)
         );
 
         #endregion
