@@ -59,7 +59,7 @@ namespace Corund.Engine
         /// <summary>
         /// Begins a new batch or uses current if the settings are intact.
         /// </summary>
-        public void TryBeginBatch(BlendState blendState, bool tileMode)
+        public void TryBeginBatch(BlendState blendState, bool tileMode = false)
         {
             var isModified = _blendState != blendState || _tileMode != tileMode;
             if(!isModified)

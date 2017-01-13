@@ -125,17 +125,15 @@ namespace Corund.Sprites
         /// </summary>
         public override void Draw(TransformInfo transform, Color tint, float zOrder)
         {
-            base.Draw(transform, tint, zOrder);
-
+            GameEngine.Render.TryBeginBatch(BlendState);
             GameEngine.Render.SpriteBatch.Draw(
                 Texture,
                 transform.Position,
-                TileRectangle,
                 _currentBounds,
-                HotSpot,
-                transform.Angle,
-                transform.ScaleVector,
                 tint,
+                transform.Angle,
+                HotSpot,
+                transform.ScaleVector,
                 SpriteEffects.None,
                 zOrder
             );

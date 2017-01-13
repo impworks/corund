@@ -77,8 +77,10 @@
     <Compile Include="Sound\SoundEffectInfo.cs" />
     <Compile Include="Sound\SoundManager.cs" />
     <Compile Include="Sprites\AnimatedSprite.cs" />
+    <Compile Include="Sprites\ITiledSprite.cs" />
     <Compile Include="Sprites\Sprite.cs" />
     <Compile Include="Sprites\SpriteBase.cs" />
+    <Compile Include="Sprites\TiledSprite.cs" />
     <Compile Include="Tools\Helpers\DynamicObjectHelper.cs" />
     <Compile Include="Tools\Helpers\RandomHelper.cs" />
     <Compile Include="Tools\Properties\IPropertyDescriptor.cs" />
