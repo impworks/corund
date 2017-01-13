@@ -12,7 +12,7 @@ namespace Corund.Visuals.Primitives
         /// <summary>
         /// Geometry of the current object.
         /// </summary>
-        public IGeometry Geometry { get; }
+        public abstract IGeometry Geometry { get; }
 
         #endregion
 

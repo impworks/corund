@@ -102,6 +102,7 @@ namespace Corund.Frames
             foreach (var frame in _frames)
             {
                 GameEngine.Current.Frame = frame;
+                GameEngine.Current.ZOrderFunction = frame.ZOrderFunction;
 
                 frame.BeginDraw();
                 frame.Draw();

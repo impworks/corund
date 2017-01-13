@@ -1,5 +1,7 @@
-﻿using Corund.Frames;
+﻿using System;
+using Corund.Frames;
 using Corund.Tools;
+using Corund.Visuals.Primitives;
 
 namespace Corund.Engine
 {
@@ -24,6 +26,11 @@ namespace Corund.Engine
             /// Shortcut to frame's timer.
             /// </summary>
             public static TimelineManager Timeline => Frame.Timeline;
+
+            /// <summary>
+            /// Z-coordinate sort function.
+            /// </summary>
+            public static Func<DynamicObject, float> ZOrderFunction;
         }
     }
 }

@@ -100,6 +100,7 @@
     <Compile Include="Visuals\Primitives\DynamicObject.cs" />
     <Compile Include="Visuals\Primitives\InteractiveObject.cs" />
     <Compile Include="Visuals\Primitives\ObjectBase.cs" />
+    <Compile Include="Visuals\SpriteObject.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework, Version=3.1.2.0, Culture=neutral, processorArchitecture=MSIL">

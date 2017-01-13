@@ -23,6 +23,12 @@ namespace Corund.Frames
         {
             Width = width;
             Height = height;
+
+            BackgroundColor = Color.Black;
+            RenderTarget = new RenderTarget2D(GameEngine.Render.Device, Width, Height);
+            Timeline = new TimelineManager();
+            Camera = new Camera();
+            ZOrderFunction = obj => _zOrder += 0.0001f;
         }
          
         #endregion
@@ -62,22 +68,22 @@ namespace Corund.Frames
         /// Render target where all scene contents is drawn into.
         /// Is later composed with other scenes on the graphic device itself.
         /// </summary>
-        public RenderTarget2D RenderTarget { get; private set; }
+        public readonly RenderTarget2D RenderTarget;
 
         /// <summary>
         /// The list of timed events of current frame.
         /// </summary>
-        public TimelineManager Timeline { get; private set; }
+        public readonly TimelineManager Timeline;
 
         /// <summary>
         /// The frame's camera.
         /// </summary>
-        public Camera Camera { get; private set; }
+        public Camera Camera { get; protected set; }
 
         /// <summary>
         /// Current z-order function.
         /// </summary>
-        public Func<DynamicObject, float> ZOrderFunction { get; set; }
+        public readonly Func<DynamicObject, float> ZOrderFunction;
 
         #endregion
 
