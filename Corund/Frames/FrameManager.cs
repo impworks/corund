@@ -104,9 +104,7 @@ namespace Corund.Frames
                 GameEngine.Current.Frame = frame;
                 GameEngine.Current.ZOrderFunction = frame.ZOrderFunction;
 
-                frame.BeginDraw();
                 frame.Draw();
-                frame.EndDraw();
 
                 GameEngine.Render.EndBatch();
             }

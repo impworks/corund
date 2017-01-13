@@ -27,7 +27,7 @@ namespace Corund.Visuals.Primitives
         /// <summary>
         /// Visual object position relative to it's parent (scene, batch, etc).
         /// </summary>
-        public Vector2 Position;
+        public virtual Vector2 Position { get; set; }
 
         /// <summary>
         /// Scale coefficient.
@@ -42,12 +42,12 @@ namespace Corund.Visuals.Primitives
         /// <summary>
         /// Scale coefficient that can be different for X and Y axis.
         /// </summary>
-        public Vector2 ScaleVector;
+        public virtual Vector2 ScaleVector { get; set; }
 
         /// <summary>
         /// Rotation angle in radians.
         /// </summary>
-        public float Angle;
+        public virtual float Angle { get; set; }
 
         /// <summary>
         /// Tint color.
@@ -116,19 +116,9 @@ namespace Corund.Visuals.Primitives
             var curr = Parent;
             while (curr != null)
             {
-                var frame = curr as FrameBase;
-                if (frame != null)
-                {
-                    angle -= frame.Camera.Angle;
-                    scale *= frame.Camera.ScaleVector;
-                    position = position.Rotate(-frame.Camera.Angle)*frame.Camera.ScaleVector - frame.Camera.Position;
-                }
-                else
-                {
-                    angle += curr.Angle;
-                    scale *= curr.ScaleVector;
-                    position = position.Rotate(curr.Angle)*curr.ScaleVector + curr.Position;
-                }
+                angle += curr.Angle;
+                scale *= curr.ScaleVector;
+                position = position.Rotate(curr.Angle)*curr.ScaleVector + curr.Position;
 
                 curr = curr.Parent;
             }

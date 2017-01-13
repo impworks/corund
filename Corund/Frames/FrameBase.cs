@@ -81,6 +81,33 @@ namespace Corund.Frames
         public Camera Camera { get; protected set; }
 
         /// <summary>
+        /// Special binding for camera-related position.
+        /// </summary>
+        public override Vector2 Position
+        {
+            get { return -Camera.Position; }
+            set { Camera.Position = -value; }
+        }
+
+        /// <summary>
+        /// Direct binding for camera scale.
+        /// </summary>
+        public override Vector2 ScaleVector
+        {
+            get { return Camera.ScaleVector; }
+            set { Camera.ScaleVector = value; }
+        }
+
+        /// <summary>
+        /// Direct binding for camera angle.
+        /// </summary>
+        public override float Angle
+        {
+            get { return Camera.Angle; }
+            set { Camera.Angle = value; }
+        }
+
+        /// <summary>
         /// Current z-order function.
         /// </summary>
         public readonly Func<DynamicObject, float> ZOrderFunction;
@@ -94,24 +121,11 @@ namespace Corund.Frames
         /// </summary>
         public override void Draw()
         {
-            _zOrder = 1;
-
-            base.Draw();
-        }
-
-        /// <summary>
-        /// Sets graphic mode properties for drawing the frame to its RenderTarget.
-        /// </summary>
-        public virtual void BeginDraw()
-        {
             GameEngine.Render.PushContext(RenderTarget, BackgroundColor);
-        }
 
-        /// <summary>
-        /// Finished drawing the frame to its RenderTarget.
-        /// </summary>
-        public void EndDraw()
-        {
+            _zOrder = 1;
+            base.Draw();
+
             GameEngine.Render.PopContext();
         }
 
@@ -124,6 +138,9 @@ namespace Corund.Frames
 
         #region Update
 
+        /// <summary>
+        /// Updates all objects in the current frame.
+        /// </summary>
         public override void Update()
         {
             var pm = GameEngine.Current.PauseMode | PauseMode;
