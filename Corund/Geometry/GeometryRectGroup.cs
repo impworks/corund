@@ -68,7 +68,7 @@ namespace Corund.Geometry
             for (var idx = 0; idx < Rectangles.Length; idx++)
             {
                 var poly = Rectangles[idx].CreateRectPolygon(selfTransform);
-                if (CollisionDetector.AreRectsOverlapping(poly, otherPoly))
+                if (GeometryHelper.AreRectsOverlapping(poly, otherPoly))
                     return true;
             }
 
@@ -92,12 +92,42 @@ namespace Corund.Geometry
                 var otherPoly = other.Rectangles[idx].CreateRectPolygon(otherTransform);
                 for (var idx2 = 0; idx2 < polys.Length; idx2++)
                 {
-                    if (CollisionDetector.AreRectsOverlapping(polys[idx2], otherPoly))
+                    if (GeometryHelper.AreRectsOverlapping(polys[idx2], otherPoly))
                         return true;
                 }
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Checks if the current geometry is inside bounds.
+        /// </summary>
+        public bool IsInsideBounds(Rectangle bounds, TransformInfo? selfTransform)
+        {
+            for (var idx = 0; idx < Rectangles.Length; idx++)
+            {
+                var poly = Rectangles[idx].CreateRectPolygon(selfTransform);
+                if (!GeometryHelper.IsRectInsideBounds(poly, bounds))
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Checks if the current geometry is inside bounds.
+        /// </summary>
+        public bool IsOutsideBounds(Rectangle bounds, TransformInfo? selfTransform)
+        {
+            for (var idx = 0; idx < Rectangles.Length; idx++)
+            {
+                var poly = Rectangles[idx].CreateRectPolygon(selfTransform);
+                if (!GeometryHelper.IsRectOutsideBounds(poly, bounds))
+                    return false;
+            }
+
+            return true;
         }
 
         #endregion

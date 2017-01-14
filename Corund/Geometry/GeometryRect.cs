@@ -40,7 +40,7 @@ namespace Corund.Geometry
         public bool ContainsPoint(Vector2 point, TransformInfo? selfTransform)
         {
             var rect = CreateRectPolygon(selfTransform);
-            return CollisionDetector.IsPointInsideRect(rect, point);
+            return GeometryHelper.IsPointInsideRect(rect, point);
         }
 
         /// <summary>
@@ -60,7 +60,25 @@ namespace Corund.Geometry
         {
             var poly = CreateRectPolygon(selfTransform);
             var otherPoly = other.CreateRectPolygon(otherTransform);
-            return CollisionDetector.AreRectsOverlapping(poly, otherPoly);
+            return GeometryHelper.AreRectsOverlapping(poly, otherPoly);
+        }
+
+        /// <summary>
+        /// Checks if the current geometry is inside bounds.
+        /// </summary>
+        public bool IsInsideBounds(Rectangle bounds, TransformInfo? selfTransform)
+        {
+            var poly = CreateRectPolygon(selfTransform);
+            return GeometryHelper.IsRectInsideBounds(poly, bounds);
+        }
+
+        /// <summary>
+        /// Checks if the current geometry is inside bounds.
+        /// </summary>
+        public bool IsOutsideBounds(Rectangle bounds, TransformInfo? selfTransform)
+        {
+            var poly = CreateRectPolygon(selfTransform);
+            return GeometryHelper.IsRectOutsideBounds(poly, bounds);
         }
 
         #endregion

@@ -1,4 +1,6 @@
-﻿using Corund.Tools;
+﻿using System;
+using System.Collections.Generic;
+using Corund.Tools;
 using Corund.Tools.Helpers;
 using Microsoft.Xna.Framework;
 
@@ -7,9 +9,9 @@ namespace Corund.Geometry
     /// <summary>
     /// A collection of methods to detect collisions between geometry objects.
     /// </summary>
-    public static class CollisionDetector
+    public static class GeometryHelper
     {
-        #region Point inside rectangle
+        #region Point inside RectPolygon
 
         /// <summary>
         /// Checks if the point is inside the rectangle.
@@ -29,7 +31,7 @@ namespace Corund.Geometry
 
         #endregion
 
-        #region Rectangle collision
+        #region RectPolygon collision
 
         /// <summary>
         /// Checks if two rects overlap.
@@ -83,6 +85,65 @@ namespace Corund.Geometry
                    && HasProjectionOverlapOnAxis(rect1.RightUpper - rect1.RightLower, points1, points2)
                    && HasProjectionOverlapOnAxis(rect2.LeftUpper - rect2.LeftLower, points1, points2)
                    && HasProjectionOverlapOnAxis(rect2.LeftUpper - rect2.RightUpper, points1, points2);
+        }
+
+        #endregion
+
+        #region Geometry combination
+
+        /// <summary>
+        /// Combines geometries into one.
+        /// </summary>
+        public static GeometryRectGroup Combine(params IGeometry[] items)
+        {
+            var result = new List<GeometryRect>(items.Length);
+
+            foreach (var item in items)
+            {
+                var rect = item as GeometryRect;
+                if (rect != null)
+                {
+                    result.Add(rect);
+                    continue;
+                }
+
+                var group = item as GeometryRectGroup;
+                if (group != null)
+                {
+                    result.AddRange(group.Rectangles);
+                    continue;
+                }
+
+                throw new ArgumentException($"Unknown item type: '{item.GetType()}'");
+            }
+
+            return new GeometryRectGroup(result.ToArray());
+        }
+
+        #endregion
+
+        #region Bound checking
+
+        /// <summary>
+        /// Checks if the polygon is completely inside the rectangle.
+        /// </summary>
+        public static bool IsRectInsideBounds(RectPolygon rect, Rectangle bounds)
+        {
+            return bounds.Contains(rect.LeftUpper)
+                   && bounds.Contains(rect.RightUpper)
+                   && bounds.Contains(rect.RightLower)
+                   && bounds.Contains(rect.LeftLower);
+        }
+
+        /// <summary>
+        /// Checks if the polygon is completely outside the rectangle.
+        /// </summary>
+        public static bool IsRectOutsideBounds(RectPolygon rect, Rectangle bounds)
+        {
+            return !bounds.Contains(rect.LeftUpper)
+                   && !bounds.Contains(rect.RightUpper)
+                   && !bounds.Contains(rect.RightLower)
+                   && !bounds.Contains(rect.LeftLower);
         }
 
         #endregion

@@ -68,7 +68,7 @@
     <Compile Include="Frames\FrameManager.cs" />
     <Compile Include="Engine\RenderManager.cs" />
     <Compile Include="Engine\ScreenManager.cs" />
-    <Compile Include="Geometry\CollisionDetector.cs" />
+    <Compile Include="Geometry\GeometryHelper.cs" />
     <Compile Include="Geometry\GeometryRect.cs" />
     <Compile Include="Geometry\GeometryRectGroup.cs" />
     <Compile Include="Geometry\IGeometry.cs" />

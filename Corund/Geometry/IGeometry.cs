@@ -17,5 +17,15 @@ namespace Corund.Geometry
         /// Checks if current geometry contains specified point after applying transformations.
         /// </summary>
         bool ContainsPoint(Vector2 point, TransformInfo? selfTransform);
+
+        /// <summary>
+        /// Checks if current geometry is completely inside bounds.
+        /// </summary>
+        bool IsInsideBounds(Rectangle bounds, TransformInfo? selfTransform);
+
+        /// <summary>
+        /// Checks if current geometry is completely outside bounds.
+        /// </summary>
+        bool IsOutsideBounds(Rectangle bounds, TransformInfo? selfTransform);
     }
 }
