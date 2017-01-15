@@ -85,8 +85,8 @@ namespace Corund.Frames
         /// </summary>
         public override Vector2 Position
         {
-            get { return -Camera.Position; }
-            set { Camera.Position = -value; }
+            get { return -Camera.Offset; }
+            set { throw new InvalidOperationException("To scroll frame, use Camera instead."); }
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ namespace Corund.Frames
         public override Vector2 ScaleVector
         {
             get { return Camera.ScaleVector; }
-            set { Camera.ScaleVector = value; }
+            set { throw new InvalidOperationException("To scale frame, use Camera instead."); }
         }
 
         /// <summary>
@@ -104,7 +104,7 @@ namespace Corund.Frames
         public override float Angle
         {
             get { return Camera.Angle; }
-            set { Camera.Angle = value; }
+            set { throw new InvalidOperationException("To rotate frame, use Camera instead."); }
         }
 
         /// <summary>
