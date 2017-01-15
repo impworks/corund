@@ -40,7 +40,7 @@ namespace Corund.Visuals.Primitives
         }
 
         /// <summary>
-        /// Checks if the object is inside bounds.
+        /// Checks if the object is completely inside bounds.
         /// </summary>
         public bool IsInside(Rectangle bounds)
         {
@@ -48,11 +48,27 @@ namespace Corund.Visuals.Primitives
         }
 
         /// <summary>
-        /// Checks if the object is inside bounds.
+        /// Checks if the object is completely outside bounds.
         /// </summary>
         public bool IsOutside(Rectangle bounds)
         {
             return Geometry?.IsOutsideBounds(bounds, GetTransformInfo()) ?? false;
+        }
+
+        /// <summary>
+        /// Checks if the current object is completely inside the frame.
+        /// </summary>
+        public bool IsInsideFrame()
+        {
+            return IsInside(GameEngine.Current.Frame.Bounds);
+        }
+
+        /// <summary>
+        /// Checks if the current object is completely outside the frame.
+        /// </summary>
+        public bool IsOutsideFrame()
+        {
+            return IsOutside(GameEngine.Current.Frame.Bounds);
         }
 
         #endregion

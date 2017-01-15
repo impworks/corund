@@ -21,11 +21,11 @@ namespace Corund.Frames
 
         public FrameBase(int width, int height)
         {
-            Width = width;
-            Height = height;
+            Size = new Vector2(width, height);
+            Bounds = new Rectangle(0, 0, width, height);
+            RenderTarget = new RenderTarget2D(GameEngine.Render.Device, width, height);
 
             BackgroundColor = Color.Black;
-            RenderTarget = new RenderTarget2D(GameEngine.Render.Device, Width, Height);
             Timeline = new TimelineManager();
             Camera = new Camera();
             ZOrderFunction = obj => _zOrder += 0.0001f;
@@ -50,14 +50,14 @@ namespace Corund.Frames
         #region Properties
 
         /// <summary>
-        /// The width of current frame in pixels.
+        /// Size of the frame.
         /// </summary>
-        public int Width { get; protected set; }
+        public readonly Vector2 Size;
 
         /// <summary>
-        /// The height of current frame in pixels.
+        /// Scene bounds rectangle.
         /// </summary>
-        public int Height { get; protected set; }
+        public readonly Rectangle Bounds;
 
         /// <summary>
         /// Color to fill the frame's background.
