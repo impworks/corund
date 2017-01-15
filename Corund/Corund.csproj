@@ -63,11 +63,13 @@
     <Compile Include="Engine\Config\ResolutionAdaptationMode.cs" />
     <Compile Include="Engine\GameEngine.cs" />
     <Compile Include="Frames\Camera.cs" />
+    <Compile Include="Frames\Frame.cs" />
     <Compile Include="Frames\FrameBase.cs" />
     <Compile Include="Engine\DebugManager.cs" />
     <Compile Include="Frames\FrameManager.cs" />
     <Compile Include="Engine\RenderManager.cs" />
     <Compile Include="Engine\ScreenManager.cs" />
+    <Compile Include="Frames\Window.cs" />
     <Compile Include="Geometry\GeometryHelper.cs" />
     <Compile Include="Geometry\GeometryRect.cs" />
     <Compile Include="Geometry\GeometryRectGroup.cs" />

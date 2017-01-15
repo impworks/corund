@@ -15,15 +15,15 @@ namespace Corund.Frames
     {
         #region Constructors
 
-        public FrameBase()
-            : this(GameEngine.Screen.Rect.Width, GameEngine.Screen.Rect.Height)
-        { }
-
-        public FrameBase(int width, int height)
+        public FrameBase(int width, int height, int? viewWidth = null, int? viewHeight = null)
         {
             Size = new Vector2(width, height);
             Bounds = new Rectangle(0, 0, width, height);
-            RenderTarget = new RenderTarget2D(GameEngine.Render.Device, width, height);
+            ViewSize = GetViewSize(viewWidth, viewHeight);
+            
+            RenderTarget = new RenderTarget2D(GameEngine.Render.Device, (int)ViewSize.X, (int)ViewSize.Y);
+            HotSpot = ViewSize/2;
+            Position = GameEngine.Screen.Size/2;
 
             BackgroundColor = Color.Black;
             Timeline = new TimelineManager();
@@ -60,6 +60,16 @@ namespace Corund.Frames
         public readonly Rectangle Bounds;
 
         /// <summary>
+        /// Size of the window through which the frame is displayed.
+        /// </summary>
+        public readonly Vector2 ViewSize;
+
+        /// <summary>
+        /// Origin point around which the frame is scaled and rotated in post-rendering.
+        /// </summary>
+        public Vector2 HotSpot;
+
+        /// <summary>
         /// Color to fill the frame's background.
         /// </summary>
         public Color BackgroundColor { get; protected set; }
@@ -79,33 +89,6 @@ namespace Corund.Frames
         /// The frame's camera.
         /// </summary>
         public Camera Camera { get; protected set; }
-
-        /// <summary>
-        /// Special binding for camera-related position.
-        /// </summary>
-        public override Vector2 Position
-        {
-            get { return -Camera.Offset; }
-            set { throw new InvalidOperationException("To scroll frame, use Camera instead."); }
-        }
-
-        /// <summary>
-        /// Direct binding for camera scale.
-        /// </summary>
-        public override Vector2 ScaleVector
-        {
-            get { return Camera.ScaleVector; }
-            set { throw new InvalidOperationException("To scale frame, use Camera instead."); }
-        }
-
-        /// <summary>
-        /// Direct binding for camera angle.
-        /// </summary>
-        public override float Angle
-        {
-            get { return Camera.Angle; }
-            set { throw new InvalidOperationException("To rotate frame, use Camera instead."); }
-        }
 
         /// <summary>
         /// Current z-order function.
@@ -132,7 +115,7 @@ namespace Corund.Frames
         /// <summary>
         /// Draws the frame's RenderTarget to the actual screen.
         /// </summary>
-        public abstract void FinalizeDraw();
+        public abstract void FinalizeDraw(float zOrder);
 
         #endregion
 
@@ -149,6 +132,25 @@ namespace Corund.Frames
                 Timeline.Update();
 
             base.Update();
+        }
+
+        #endregion
+
+        #region Helper methods
+
+        /// <summary>
+        /// Calculates proper view size from optional sizes.
+        /// </summary>
+        private Vector2 GetViewSize(int? viewWidth, int? viewHeight)
+        {
+            var screen = GameEngine.Screen.Size;
+            if(viewWidth < 1 || viewWidth > screen.X)
+                throw new ArgumentException($"View width must be within the range of 1..{screen.X}.");
+
+            if (viewHeight < 1 || viewHeight > screen.Y)
+                throw new ArgumentException($"View height must be within the range of 1..{screen.Y}.");
+
+            return new Vector2(viewWidth ?? screen.X, viewHeight ?? screen.Y);
         }
 
         #endregion
