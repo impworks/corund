@@ -1,4 +1,5 @@
-﻿using Corund.Sprites;
+﻿using Corund.Frames;
+using Corund.Sprites;
 using Corund.Visuals;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
@@ -149,6 +150,19 @@ namespace Corund.Tools.Properties
             x => ((ITiledSprite)x.CurrentSprite).TextureOffset,
             (x, v) => ((ITiledSprite)x.CurrentSprite).TextureOffset = v,
             nameof(SpriteObject.CurrentSprite) + "." + nameof(ITiledSprite.TextureOffset)
+        );
+
+        #endregion
+
+        #region Window
+
+        /// <summary>
+        /// Descriptor for SpriteObject.CurrentSprite.HotSpot.
+        /// </summary>
+        public static IPropertyDescriptor<Window, Color> WindowShadowColor = new PropertyDescriptor<Window, Color>(
+            x => x.ShadowColor,
+            (x, v) => x.ShadowColor = v,
+            nameof(Window.ShadowColor)
         );
 
         #endregion
