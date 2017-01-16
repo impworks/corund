@@ -34,6 +34,7 @@ namespace Corund.Engine
             Screen = new ScreenManager(opts);
             Render = new RenderManager(opts.GraphicsDeviceManager.GraphicsDevice);
             Sound = new SoundManager();
+            Touch = new TouchManager();
 
             _deferredActions = new List<Action>();
         }
@@ -81,6 +82,11 @@ namespace Corund.Engine
         /// The sound manager.
         /// </summary>
         public static SoundManager Sound { get; private set; }
+
+        /// <summary>
+        /// The touch manager.
+        /// </summary>
+        public static TouchManager Touch { get; private set; }
 
         /// <summary>
         /// List of actions to execute after all update loops have completed.

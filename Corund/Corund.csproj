@@ -62,6 +62,7 @@
     <Compile Include="Engine\Config\GameEngineOptions.cs" />
     <Compile Include="Engine\Config\ResolutionAdaptationMode.cs" />
     <Compile Include="Engine\GameEngine.cs" />
+    <Compile Include="Engine\TouchManager.cs" />
     <Compile Include="Frames\Camera.cs" />
     <Compile Include="Frames\Frame.cs" />
     <Compile Include="Frames\FrameBase.cs" />
