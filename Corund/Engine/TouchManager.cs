@@ -15,7 +15,7 @@ namespace Corund.Engine
 
         public TouchManager()
         {
-            _touches = new List<TouchLocation>(4);
+            Touches = new List<TouchLocation>(4);
             _handledTouches = new Dictionary<int, InteractiveObject>(4);
         }
 
@@ -24,14 +24,18 @@ namespace Corund.Engine
         #region Fields
 
         /// <summary>
-        /// Currently active touches.
-        /// </summary>
-        private List<TouchLocation> _touches;
-
-        /// <summary>
         /// List of touches that have been handled by an object.
         /// </summary>
         private Dictionary<int, InteractiveObject> _handledTouches;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Currently active touches.
+        /// </summary>
+        public readonly List<TouchLocation> Touches;
 
         #endregion
 
@@ -43,10 +47,10 @@ namespace Corund.Engine
         public void Update()
         {
             _handledTouches.Clear();
-            _touches.Clear();
+            Touches.Clear();
 
             foreach(var location in TouchPanel.GetState())
-                _touches.Add(location);
+                Touches.Add(location);
         }
 
         /// <summary>

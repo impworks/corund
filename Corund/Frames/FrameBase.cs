@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using Corund.Engine;
 using Corund.Tools;
 using Corund.Visuals;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace Corund.Frames
 {
@@ -95,6 +97,11 @@ namespace Corund.Frames
         /// </summary>
         public readonly Func<DynamicObject, float> ZOrderFunction;
 
+        /// <summary>
+        /// Touch locations translated to current frame.
+        /// </summary>
+        public readonly List<TouchLocation> Touches;
+
         #endregion
 
         #region Drawing
@@ -130,6 +137,14 @@ namespace Corund.Frames
 
             if((pm & PauseMode.Timeline) != 0)
                 Timeline.Update();
+
+            Touches.Clear();
+            foreach (var globalTouch in GameEngine.Touch.Touches)
+            {
+                var localTouch = GameEngine.Touch.TranslateToFrame(globalTouch, this);
+                if(localTouch != null)
+                    Touches.Add(localTouch.Value);
+            }
 
             base.Update();
         }
