@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Corund.Frames;
+using Corund.Tools.Helpers;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework.Input.Touch;
 
@@ -70,9 +70,21 @@ namespace Corund.Engine
         /// <summary>
         /// Translates the touch coordinates to frame.
         /// </summary>
-        public TouchLocation TranslateToFrame(TouchLocation touch, FrameBase frame)
+        public TouchLocation? TranslateToFrame(TouchLocation touch, FrameBase frame)
         {
-            throw new NotImplementedException();
+            // align point to frame
+            var leftTop = frame.Position - frame.HotSpot;
+            var rightBottom = leftTop + frame.ViewSize;
+            var point = (touch.Position - frame.Position).Rotate(-frame.Angle);
+
+            // point does not fit the viewport
+            if (point.X < leftTop.X || point.X > rightBottom.X || point.Y < leftTop.Y || point.Y > rightBottom.Y)
+                return null;
+
+            var pointInView = point - leftTop;
+            // todo: camera rotation, scale, scroll
+
+            return new TouchLocation(touch.Id, touch.State, pointInView);
         }
 
         #endregion
