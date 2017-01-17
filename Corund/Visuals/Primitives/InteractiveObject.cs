@@ -1,6 +1,7 @@
 ﻿using Corund.Engine;
 using Corund.Geometry;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input.Touch;
 
 namespace Corund.Visuals.Primitives
 {
@@ -18,7 +19,7 @@ namespace Corund.Visuals.Primitives
 
         #endregion
 
-        #region Methods
+        #region Collision detection
 
         /// <summary>
         /// Checks if two objects overlap via their geometries.
@@ -38,6 +39,10 @@ namespace Corund.Visuals.Primitives
 
             return Geometry.Overlaps(other.Geometry, transform, otherTransform);
         }
+
+        #endregion
+
+        #region Bounds
 
         /// <summary>
         /// Checks if the object is completely inside bounds.
@@ -69,6 +74,32 @@ namespace Corund.Visuals.Primitives
         public bool IsOutsideFrame()
         {
             return IsOutside(GameEngine.Current.Frame.Bounds);
+        }
+
+        #endregion
+
+        #region Touch
+
+        /// <summary>
+        /// Attempts to get a touch location for current object.
+        /// </summary>
+        /// <param name="tapThrough">Flag indicating that touch should be available for underlying objects as well.</param>
+        public TouchLocation? TryGetTouch(bool tapThrough = false)
+        {
+            if (Geometry == null)
+                return null;
+
+            var transform = GetTransformInfo();
+            foreach (var touch in GameEngine.Current.Touches)
+            {
+                if (!GameEngine.Touch.CanHandleTouch(touch, this))
+                    continue;
+
+                if (Geometry.ContainsPoint(touch.Position, transform))
+                    return touch;
+            }
+
+            return null;
         }
 
         #endregion
