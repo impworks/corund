@@ -64,7 +64,9 @@ namespace Corund.Frames
 
             if (!AllowBackgroundTouches)
             {
-                // todo...
+                var touches = GameEngine.Touch.Touches;
+                foreach(var touch in touches)
+                    GameEngine.Touch.HandleTouch(touch, this);
             }
         }
 

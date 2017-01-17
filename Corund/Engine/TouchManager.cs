@@ -16,7 +16,7 @@ namespace Corund.Engine
         public TouchManager()
         {
             Touches = new List<TouchLocation>(4);
-            _handledTouches = new Dictionary<int, InteractiveObject>(4);
+            _handledTouches = new Dictionary<int, ObjectBase>(4);
         }
 
         #endregion
@@ -26,7 +26,7 @@ namespace Corund.Engine
         /// <summary>
         /// List of touches that have been handled by an object.
         /// </summary>
-        private Dictionary<int, InteractiveObject> _handledTouches;
+        private Dictionary<int, ObjectBase> _handledTouches;
 
         #endregion
 
@@ -56,7 +56,7 @@ namespace Corund.Engine
         /// <summary>
         /// Checks if the current object can handle this touch.
         /// </summary>
-        public bool CanHandleTouch(TouchLocation touch, InteractiveObject obj)
+        public bool CanHandleTouch(TouchLocation touch, ObjectBase obj)
         {
             return !_handledTouches.ContainsKey(touch.Id)
                    || ReferenceEquals(obj, _handledTouches[touch.Id]);
@@ -65,7 +65,7 @@ namespace Corund.Engine
         /// <summary>
         /// Registers the touch location as handled by a specific object.
         /// </summary>
-        public void HandleTouch(TouchLocation touch, InteractiveObject obj)
+        public void HandleTouch(TouchLocation touch, ObjectBase obj)
         {
             if (!_handledTouches.ContainsKey(touch.Id))
                 _handledTouches[touch.Id] = obj;
