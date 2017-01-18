@@ -1,6 +1,6 @@
 version: 0.1.{build}
 before_build:
-- cmd: nuget restore  
+- cmd: nuget restore Corund 
 nuget:
   disable_publish_on_pr: true
 build:
