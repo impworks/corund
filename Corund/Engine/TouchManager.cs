@@ -85,10 +85,12 @@ namespace Corund.Engine
             if (point.X < leftTop.X || point.X > rightBottom.X || point.Y < leftTop.Y || point.Y > rightBottom.Y)
                 return null;
 
-            var pointInView = point - leftTop;
-            // todo: camera rotation, scale, scroll
+            // transform point into frame coordinates
+            var cam = frame.Camera;
+            var viewPoint = point - leftTop;
+            var framePoint = viewPoint.Rotate(-cam.Angle)/cam.ScaleVector - cam.Offset;
 
-            return new TouchLocation(touch.Id, touch.State, pointInView);
+            return new TouchLocation(touch.Id, touch.State, framePoint);
         }
 
         #endregion

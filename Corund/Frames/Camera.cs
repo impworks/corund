@@ -1,4 +1,5 @@
 ﻿using Corund.Visuals.Primitives;
+using Microsoft.Xna.Framework;
 
 namespace Corund.Frames
 {
@@ -7,6 +8,13 @@ namespace Corund.Frames
     /// </summary>
     public class Camera: DynamicObject
     {
-        // todo?
+        #region Properties
+
+        /// <summary>
+        /// Scrolling offset (from the top left corner).
+        /// </summary>
+        public virtual Vector2 Offset => Position;
+
+        #endregion
     }
 }

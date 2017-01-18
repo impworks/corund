@@ -126,7 +126,7 @@ namespace Corund.Visuals.Primitives
             var camera = (curr as FrameBase).Camera;
             angle += camera.Angle;
             scale *= camera.ScaleVector;
-            position = position.Rotate(camera.Angle)*camera.ScaleVector - camera.Position;
+            position = position.Rotate(camera.Angle)*camera.ScaleVector - camera.Offset;
 
             return new TransformInfo(position, angle, scale);
         }
