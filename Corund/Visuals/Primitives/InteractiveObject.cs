@@ -1,4 +1,5 @@
-﻿using Corund.Engine;
+﻿using System.Collections.Generic;
+using Corund.Engine;
 using Corund.Geometry;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input.Touch;
@@ -100,6 +101,30 @@ namespace Corund.Visuals.Primitives
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Attempts to get all touch locations for current object.
+        /// </summary>
+        /// <param name="tapThrough">Flag indicating that touch should be available for underlying objects as well.</param>
+        public IList<TouchLocation> TryGetTouches(bool tapThrough = false)
+        {
+            var result = new List<TouchLocation>();
+
+            if (Geometry == null)
+                return result;
+
+            var transform = GetTransformInfo();
+            foreach (var touch in GameEngine.Current.Touches)
+            {
+                if (!GameEngine.Touch.CanHandleTouch(touch, this))
+                    continue;
+
+                if (Geometry.ContainsPoint(touch.Position, transform))
+                    result.Add(touch);
+            }
+
+            return result;
         }
 
         #endregion
