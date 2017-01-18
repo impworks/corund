@@ -7,11 +7,11 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("Corund")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("2D Game Engine for MonoGame")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Impworks")]
 [assembly: AssemblyProduct("Corund")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCopyright("Copyright 2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: NeutralResourcesLanguage("en")]
