@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>$id$</id>
+    <version>$version$</version>
+    <title>$title$</title>
+    <authors>Impworks</authors>
+    <owners>Impworks</owners>
+    <licenseUrl>https://github.com/impworks/corund/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/impworks/corund</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Simple 2D game engine for MonoGame.</description>
+    <releaseNotes>Pre-release version.</releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags>GameEngine 2D Scene Render Geometry</tags>
+    <dependencies>
+        <dependency id="MonoGame.Framework.Portable" version="3.2.99" />
+    </dependencies>
+  </metadata>
+</package>
