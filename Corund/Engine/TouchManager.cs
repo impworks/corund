@@ -77,11 +77,12 @@ namespace Corund.Engine
         public TouchLocation? TranslateToFrame(TouchLocation touch, FrameBase frame)
         {
             // align point to frame
-            var leftTop = frame.Position - frame.HotSpot;
-            var rightBottom = leftTop + frame.ViewSize;
-            var point = (touch.Position - frame.Position).Rotate(-frame.Angle);
+            var pointFromCenter = touch.Position - frame.Position;
+            var point = pointFromCenter.Rotate(-frame.Angle)/frame.ScaleVector + frame.Position;
 
             // point does not fit the viewport
+            var leftTop = frame.Position - frame.HotSpot;
+            var rightBottom = leftTop + frame.ViewSize;
             if (point.X < leftTop.X || point.X > rightBottom.X || point.Y < leftTop.Y || point.Y > rightBottom.Y)
                 return null;
 
