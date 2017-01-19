@@ -62,7 +62,7 @@ namespace Corund.Visuals.Primitives
         public float Opacity
         {
             get { return (float)(Tint.A/255.0); }
-            set { Tint.A = (byte) (value*255); }
+            set { Tint.A = Tint.R = Tint.G = Tint.B = (byte) MathHelper.Clamp(value*255, 0, 255); }
         }
 
         /// <summary>
