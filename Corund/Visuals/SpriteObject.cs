@@ -75,7 +75,7 @@ namespace Corund.Visuals
             if (CurrentSprite == null)
                 return;
 
-            var transform = GetTransformInfo();
+            var transform = GetTransformInfo(true);
             var zOrder = GameEngine.Current.ZOrderFunction(this);
             CurrentSprite.Draw(transform, Tint, zOrder);
         }

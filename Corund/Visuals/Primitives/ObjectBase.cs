@@ -107,7 +107,7 @@ namespace Corund.Visuals.Primitives
         /// <summary>
         /// Returns the absolute position of the object.
         /// </summary>
-        public TransformInfo GetTransformInfo()
+        public TransformInfo GetTransformInfo(bool toScreen)
         {
             var position = Position;
             var scale = ScaleVector;
@@ -123,10 +123,13 @@ namespace Corund.Visuals.Primitives
                 curr = curr.Parent;
             }
 
-            var camera = (curr as FrameBase).Camera;
-            angle += camera.Angle;
-            scale *= camera.ScaleVector;
-            position = position.Rotate(camera.Angle)*camera.ScaleVector - camera.Offset;
+            if (toScreen)
+            {
+                var camera = (curr as FrameBase).Camera;
+                angle += camera.Angle;
+                scale *= camera.ScaleVector;
+                position = position.Rotate(camera.Angle)*camera.ScaleVector - camera.Offset;
+            }
 
             return new TransformInfo(position, angle, scale);
         }

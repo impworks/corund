@@ -35,8 +35,8 @@ namespace Corund.Visuals.Primitives
             if (other.Parent == Parent)
                 return Geometry.Overlaps(other.Geometry, null, null);
 
-            var transform = GetTransformInfo();
-            var otherTransform = other.GetTransformInfo();
+            var transform = GetTransformInfo(false);
+            var otherTransform = other.GetTransformInfo(false);
 
             return Geometry.Overlaps(other.Geometry, transform, otherTransform);
         }
@@ -50,7 +50,7 @@ namespace Corund.Visuals.Primitives
         /// </summary>
         public bool IsInside(Rectangle bounds)
         {
-            return Geometry?.IsInsideBounds(bounds, GetTransformInfo()) ?? false;
+            return Geometry?.IsInsideBounds(bounds, GetTransformInfo(false)) ?? false;
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace Corund.Visuals.Primitives
         /// </summary>
         public bool IsOutside(Rectangle bounds)
         {
-            return Geometry?.IsOutsideBounds(bounds, GetTransformInfo()) ?? false;
+            return Geometry?.IsOutsideBounds(bounds, GetTransformInfo(false)) ?? false;
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Corund.Visuals.Primitives
             if (Geometry == null)
                 return null;
 
-            var transform = GetTransformInfo();
+            var transform = GetTransformInfo(false);
             foreach (var touch in GameEngine.Current.Touches)
             {
                 if (!GameEngine.Touch.CanHandleTouch(touch, this))
@@ -114,7 +114,7 @@ namespace Corund.Visuals.Primitives
             if (Geometry == null)
                 return result;
 
-            var transform = GetTransformInfo();
+            var transform = GetTransformInfo(false);
             foreach (var touch in GameEngine.Current.Touches)
             {
                 if (!GameEngine.Touch.CanHandleTouch(touch, this))

@@ -82,7 +82,7 @@ namespace Corund.Engine
             if (geometry == null)
                 return;
 
-            var transform = obj.GetTransformInfo();
+            var transform = obj.GetTransformInfo(true);
 
             var rect = geometry as GeometryRect;
             if (rect != null)
