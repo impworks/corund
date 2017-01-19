@@ -23,18 +23,12 @@ namespace Corund.Engine
             Options = opts;
             Content = opts.Content;
 
-            var mgr = Options.GraphicsDeviceManager;
-            mgr.SupportedOrientations = opts.Orientation;
-            mgr.IsFullScreen = true;
-            mgr.SynchronizeWithVerticalRetrace = true;
-            mgr.ApplyChanges();
-
-            Render = new RenderManager(opts.GraphicsDeviceManager.GraphicsDevice);
+            Render = new RenderManager(opts);
             Frames = new FrameManager();
             Screen = new ScreenManager(opts);
             Sound = new SoundManager();
             Touch = new TouchManager();
-            Debug = new DebugManager(opts.GraphicsDeviceManager.GraphicsDevice);
+            Debug = new DebugManager(Render.Device);
 
             _deferredActions = new List<Action>();
         }

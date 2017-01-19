@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Corund.Engine.Config;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -11,10 +12,16 @@ namespace Corund.Engine
     {
         #region Constructor
 
-        public RenderManager(GraphicsDevice device)
+        public RenderManager(GameEngineOptions opts)
         {
-            Device = device;
-            SpriteBatch = new SpriteBatch(device);
+            DeviceManager = opts.GraphicsDeviceManager;
+            Device = DeviceManager.GraphicsDevice;
+            SpriteBatch = new SpriteBatch(Device);
+
+            DeviceManager.SupportedOrientations = opts.Orientation;
+            DeviceManager.IsFullScreen = true;
+            DeviceManager.SynchronizeWithVerticalRetrace = true;
+            DeviceManager.ApplyChanges();
 
             _renderStack = new Stack<RenderTarget2D>(4);
         }
@@ -27,6 +34,11 @@ namespace Corund.Engine
         /// Reference to graphics device.
         /// </summary>
         public readonly GraphicsDevice Device;
+
+        /// <summary>
+        /// Reference to graphic device manager.
+        /// </summary>
+        public readonly GraphicsDeviceManager DeviceManager;
 
         /// <summary>
         /// The game's spritebatch.

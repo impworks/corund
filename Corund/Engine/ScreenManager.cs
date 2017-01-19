@@ -12,15 +12,12 @@ namespace Corund.Engine
 
         public ScreenManager(GameEngineOptions options)
         {
-            // IsRotated = options.Orientation == DisplayOrientation.Portrait;
+            Orientation = options.Orientation;
 
             var viewport = options.GraphicsDeviceManager.GraphicsDevice.Viewport;
             Size = options.ResolutionAdaptationMode == ResolutionAdaptationMode.Adjust
                 ? new Vector2(viewport.Width, viewport.Height)
                 : options.DesiredScreenSize;
-
-            // if (IsRotated && options.ResolutionAdaptationMode == ResolutionAdaptationMode.Adjust)
-            //     Size = new Vector2(Size.Y, Size.X);
 
             Rect = new Rectangle(0, 0, (int)Size.X, (int)Size.Y);
         }
@@ -30,9 +27,9 @@ namespace Corund.Engine
         #region Properties
 
         /// <summary>
-        /// Gets the flag indicating that current screen resolution is rotated relative to "default orientation".
+        /// Desired orientation of the device.
         /// </summary>
-        public readonly bool IsRotated;
+        public readonly DisplayOrientation Orientation;
 
         /// <summary>
         /// Gets the screen size in pixels.
