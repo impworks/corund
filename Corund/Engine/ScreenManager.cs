@@ -12,15 +12,15 @@ namespace Corund.Engine
 
         public ScreenManager(GameEngineOptions options)
         {
-            IsRotated = options.Orientation == DisplayOrientation.Portrait;
+            // IsRotated = options.Orientation == DisplayOrientation.Portrait;
 
             var viewport = options.GraphicsDeviceManager.GraphicsDevice.Viewport;
             Size = options.ResolutionAdaptationMode == ResolutionAdaptationMode.Adjust
                 ? new Vector2(viewport.Width, viewport.Height)
                 : options.DesiredScreenSize;
 
-            if (IsRotated && options.ResolutionAdaptationMode == ResolutionAdaptationMode.Adjust)
-                Size = new Vector2(Size.Y, Size.X);
+            // if (IsRotated && options.ResolutionAdaptationMode == ResolutionAdaptationMode.Adjust)
+            //     Size = new Vector2(Size.Y, Size.X);
 
             Rect = new Rectangle(0, 0, (int)Size.X, (int)Size.Y);
         }

@@ -15,6 +15,7 @@ namespace Corund.Sprites
         protected SpriteBase(Texture2D texture)
         {
             Texture = texture;
+            BlendState = BlendState.AlphaBlend;
         }
 
         #endregion

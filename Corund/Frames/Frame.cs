@@ -10,7 +10,13 @@ namespace Corund.Frames
     {
         #region Constructor
 
-        public Frame(int width, int height, int? viewWidth = null, int? viewHeight = null)
+        public Frame()
+            : base(GameEngine.Screen.Size.X, GameEngine.Screen.Size.Y)
+        {
+            // nothing to do here?
+        }
+
+        public Frame(float width, float height, int? viewWidth = null, int? viewHeight = null)
             : base(width, height, viewWidth, viewHeight)
         {
             // nothing to do here?

@@ -11,12 +11,10 @@ namespace Corund.Engine
     {
         #region Constructor
 
-        public DebugManager()
+        public DebugManager(GraphicsDevice device)
         {
-            _boxTexture = new Texture2D(GameEngine.Render.Device, 1, 1, false, SurfaceFormat.Color);
+            _boxTexture = new Texture2D(device, 1, 1, false, SurfaceFormat.Color);
             _boxTexture.SetData(new[] { Color.Red });
-
-
         }
 
         #endregion
@@ -55,12 +53,14 @@ namespace Corund.Engine
             if (DisplayFPS)
             {
                 _fps++;
+                _fpsElapsedTime += GameEngine.Delta;
 
                 if (_fpsElapsedTime >= 1)
                 {
+                    Debug.WriteLine($"FPS: {_fps}");
+
                     _fps = 0;
                     _fpsElapsedTime = 0;
-                    Debug.WriteLine($"FPS: {_fps}");
                 }
             }
         }

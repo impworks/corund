@@ -97,8 +97,6 @@ namespace Corund.Frames
         /// </summary>
         public void Draw()
         {
-            GameEngine.Render.PushContext(null, Color.Black);
-
             // pass 1: Render all frames to their respective render targets (bottom to top)
             foreach (var frame in _frames)
             {
@@ -109,7 +107,7 @@ namespace Corund.Frames
             }
 
             // pass 2: draw rendertargets to screen
-            GameEngine.Render.PopContext();
+            GameEngine.Render.PushContext(null, Color.Black);
             GameEngine.Render.TryBeginBatch(BlendState.AlphaBlend);
 
             var count = _frames.Count;
@@ -120,7 +118,7 @@ namespace Corund.Frames
                 frame.FinalizeDraw(zOrder);
             }
 
-            GameEngine.Render.EndBatch();
+            GameEngine.Render.PopContext();
         }
 
         #endregion

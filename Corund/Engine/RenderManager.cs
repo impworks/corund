@@ -14,6 +14,7 @@ namespace Corund.Engine
         public RenderManager(GraphicsDevice device)
         {
             Device = device;
+            SpriteBatch = new SpriteBatch(device);
 
             _renderStack = new Stack<RenderTarget2D>(4);
         }
@@ -62,7 +63,7 @@ namespace Corund.Engine
         public void TryBeginBatch(BlendState blendState, bool tileMode = false)
         {
             var isModified = _blendState != blendState || _tileMode != tileMode;
-            if(!isModified)
+            if(_isStarted && !isModified)
                 return;
 
             if(_isStarted)
@@ -114,7 +115,10 @@ namespace Corund.Engine
             EndBatch();
 
             var target = _renderStack.Pop();
-            Device.SetRenderTarget(_renderStack.Peek());
+
+            if(_renderStack.Count > 0)
+                Device.SetRenderTarget(_renderStack.Peek());
+
             return target;
         }
 

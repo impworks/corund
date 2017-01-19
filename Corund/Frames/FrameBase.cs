@@ -17,10 +17,10 @@ namespace Corund.Frames
     {
         #region Constructors
 
-        public FrameBase(int width, int height, int? viewWidth = null, int? viewHeight = null)
+        public FrameBase(float width, float height, int? viewWidth = null, int? viewHeight = null)
         {
             Size = new Vector2(width, height);
-            Bounds = new Rectangle(0, 0, width, height);
+            Bounds = new Rectangle(0, 0, (int)width, (int)height);
             ViewSize = GetViewSize(viewWidth, viewHeight);
             
             RenderTarget = new RenderTarget2D(GameEngine.Render.Device, (int)ViewSize.X, (int)ViewSize.Y);
@@ -28,9 +28,10 @@ namespace Corund.Frames
             Position = GameEngine.Screen.Size/2;
 
             BackgroundColor = Color.Black;
+            Touches = new List<TouchLocation>();
             Timeline = new TimelineManager();
             Camera = new Camera();
-            ZOrderFunction = obj => _zOrder += 0.0001f;
+            ZOrderFunction = obj => _zOrder -= 0.0001f;
         }
          
         #endregion

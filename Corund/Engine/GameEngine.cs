@@ -29,12 +29,12 @@ namespace Corund.Engine
             mgr.SynchronizeWithVerticalRetrace = true;
             mgr.ApplyChanges();
 
-            Frames = new FrameManager();
-            Debug = new DebugManager();
-            Screen = new ScreenManager(opts);
             Render = new RenderManager(opts.GraphicsDeviceManager.GraphicsDevice);
+            Frames = new FrameManager();
+            Screen = new ScreenManager(opts);
             Sound = new SoundManager();
             Touch = new TouchManager();
+            Debug = new DebugManager(opts.GraphicsDeviceManager.GraphicsDevice);
 
             _deferredActions = new List<Action>();
         }
