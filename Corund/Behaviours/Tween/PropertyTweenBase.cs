@@ -8,7 +8,7 @@ using Corund.Visuals.Primitives;
 namespace Corund.Behaviours.Tween
 {
     /// <summary>
-    /// Base class for property animation behaviours.
+    /// Base class for property tween behaviours.
     /// </summary>
     public abstract class PropertyTweenBase<TObject, TProperty>: BehaviourBase, IPropertyTween
         where TObject: DynamicObject
@@ -65,7 +65,7 @@ namespace Corund.Behaviours.Tween
         #region Properties
 
         /// <summary>
-        /// Name of the property handled by current animator.
+        /// Name of the property handled by current tween.
         /// </summary>
         public string PropertyName => _descriptor.Name;
 
