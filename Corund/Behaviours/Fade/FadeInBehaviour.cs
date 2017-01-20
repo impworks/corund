@@ -52,13 +52,13 @@ namespace Corund.Behaviours.Fade
             if (_style == FadeStyle.Fade || _style == FadeStyle.ZoomAndFade || _style == FadeStyle.InverseZoomAndFade)
             {
                 obj.Opacity = 0;
-                obj.Animate(AnimatedProperty.Opacity, opacity, Duration, _interpolation);
+                obj.Tween(Property.Opacity, opacity, Duration, _interpolation);
             }
 
             if (_style == FadeStyle.Zoom || _style == FadeStyle.ZoomAndFade || _style == FadeStyle.InverseZoomAndFade)
             {
                 obj.Scale = _style == FadeStyle.InverseZoomAndFade ? 2 : 0;
-                obj.Animate(AnimatedProperty.Scale, scale, Duration, _interpolation);
+                obj.Tween(Property.Scale, scale, Duration, _interpolation);
             }
         }
 

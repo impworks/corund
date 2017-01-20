@@ -54,11 +54,11 @@
     <Compile Include="Behaviours\Movement\LineMovementBehaviour.cs" />
     <Compile Include="Behaviours\Movement\LineSegment.cs" />
     <Compile Include="Behaviours\Movement\PathBehaviourBase.cs" />
-    <Compile Include="Behaviours\Tweening\ColorAnimation.cs" />
-    <Compile Include="Behaviours\Tweening\FloatAnimation.cs" />
-    <Compile Include="Behaviours\Tweening\IPropertyAnimation.cs" />
-    <Compile Include="Behaviours\Tweening\PropertyAnimationBase.cs" />
-    <Compile Include="Behaviours\Tweening\Vector2Animation.cs" />
+    <Compile Include="Behaviours\Tween\ColorTween.cs" />
+    <Compile Include="Behaviours\Tween\FloatTween.cs" />
+    <Compile Include="Behaviours\Tween\IPropertyTween.cs" />
+    <Compile Include="Behaviours\Tween\PropertyTweenBase.cs" />
+    <Compile Include="Behaviours\Tween\Vector2Tween.cs" />
     <Compile Include="Engine\Config\GameEngineOptions.cs" />
     <Compile Include="Engine\Config\ResolutionAdaptationMode.cs" />
     <Compile Include="Engine\GameEngine.cs" />
@@ -87,7 +87,7 @@
     <Compile Include="Tools\Helpers\DynamicObjectHelper.cs" />
     <Compile Include="Tools\Helpers\RandomHelper.cs" />
     <Compile Include="Tools\Properties\IPropertyDescriptor.cs" />
-    <Compile Include="Tools\Properties\AnimatedProperty.cs" />
+    <Compile Include="Tools\Properties\Property.cs" />
     <Compile Include="Tools\Properties\PropertyDescriptor.cs" />
     <Compile Include="Tools\Range.cs" />
     <Compile Include="Tools\TransformInfo.cs" />

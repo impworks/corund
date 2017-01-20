@@ -3,15 +3,15 @@ using Corund.Tools.Properties;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 
-namespace Corund.Behaviours.Tweening
+namespace Corund.Behaviours.Tween
 {
     /// <summary>
     /// Animation for color properties.
     /// </summary>
-    public class ColorAnimation<TObject> : PropertyAnimationBase<TObject, Color>
+    public class ColorTween<TObject> : PropertyTweenBase<TObject, Color>
         where TObject : DynamicObject
     {
-        public ColorAnimation(IPropertyDescriptor<TObject, Color> descriptor, Color targetValue, float duration, InterpolationMethod interpolation = null)
+        public ColorTween(IPropertyDescriptor<TObject, Color> descriptor, Color targetValue, float duration, InterpolationMethod interpolation = null)
             : base(descriptor, targetValue, duration, interpolation)
         { }
 

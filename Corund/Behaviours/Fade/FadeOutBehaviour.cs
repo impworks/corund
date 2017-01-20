@@ -58,10 +58,10 @@ namespace Corund.Behaviours.Fade
             _elapsedTime = 0;
 
             if (_style == FadeStyle.Fade || _style == FadeStyle.ZoomAndFade || _style == FadeStyle.InverseZoomAndFade)
-                obj.Animate(AnimatedProperty.Opacity, 0, Duration, _interpolation);
+                obj.Tween(Property.Opacity, 0, Duration, _interpolation);
 
             if (_style == FadeStyle.Zoom || _style == FadeStyle.ZoomAndFade || _style == FadeStyle.InverseZoomAndFade)
-                obj.Animate(AnimatedProperty.Scale, _style == FadeStyle.InverseZoomAndFade ? 2 : 0, Duration, _interpolation);
+                obj.Tween(Property.Scale, _style == FadeStyle.InverseZoomAndFade ? 2 : 0, Duration, _interpolation);
         }
 
         /// <summary>

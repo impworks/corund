@@ -9,7 +9,7 @@ namespace Corund.Tools.Properties
     /// <summary>
     /// The list of known property descriptors.
     /// </summary>
-    public static class AnimatedProperty
+    public static class Property
     {
         #region DynamicObject
 

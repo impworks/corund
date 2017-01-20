@@ -1,4 +1,4 @@
-﻿using Corund.Behaviours.Tweening;
+﻿using Corund.Behaviours.Tween;
 using Corund.Tools.Interpolation;
 using Corund.Tools.Properties;
 using Corund.Visuals.Primitives;
@@ -14,59 +14,59 @@ namespace Corund.Tools.Helpers
         #region Animated properties
 
         /// <summary>
-        /// Animates a float property.
+        /// Tweens a float property.
         /// </summary>
-        public static void Animate<T>(this T obj, IPropertyDescriptor<T, float> descriptor, float target, float duration, InterpolationMethod interpolation = null)
+        public static void Tween<T>(this T obj, IPropertyDescriptor<T, float> descriptor, float target, float duration, InterpolationMethod interpolation = null)
             where T: DynamicObject
         {
-            obj.Behaviours.Add(new FloatAnimation<T>(descriptor, target, duration, interpolation));
+            obj.Behaviours.Add(new FloatTween<T>(descriptor, target, duration, interpolation));
         }
 
         /// <summary>
-        /// Animates a vector property.
+        /// Tweens a vector property.
         /// </summary>
-        public static void Animate<T>(this T obj, IPropertyDescriptor<T, Vector2> descriptor, Vector2 target, float duration, InterpolationMethod interpolation = null)
+        public static void Tween<T>(this T obj, IPropertyDescriptor<T, Vector2> descriptor, Vector2 target, float duration, InterpolationMethod interpolation = null)
             where T : DynamicObject
         {
-            obj.Behaviours.Add(new Vector2Animation<T>(descriptor, target, duration, interpolation));
+            obj.Behaviours.Add(new Vector2Tween<T>(descriptor, target, duration, interpolation));
         }
 
         /// <summary>
-        /// Animates a color property.
+        /// Tweens a color property.
         /// </summary>
-        public static void Animate<T>(this T obj, IPropertyDescriptor<T, Color> descriptor, Color target, float duration, InterpolationMethod interpolation = null)
+        public static void Tween<T>(this T obj, IPropertyDescriptor<T, Color> descriptor, Color target, float duration, InterpolationMethod interpolation = null)
             where T : DynamicObject
         {
-            obj.Behaviours.Add(new ColorAnimation<T>(descriptor, target, duration, interpolation));
+            obj.Behaviours.Add(new ColorTween<T>(descriptor, target, duration, interpolation));
         }
 
         /// <summary>
-        /// Stops animating a property.
+        /// Stops tweening a property.
         /// </summary>
-        public static void StopAnimating<T, TProperty>(this T obj, IPropertyDescriptor<T, TProperty> descriptor, bool skipToFinalValue = true)
+        public static void StopTweening<T, TProperty>(this T obj, IPropertyDescriptor<T, TProperty> descriptor, bool skipToFinalValue = true)
             where T: DynamicObject
         {
             var name = descriptor.Name;
             foreach (var behaviour in obj.Behaviours)
             {
-                var ptyAnimator = behaviour as IPropertyAnimation;
-                if (ptyAnimator == null || ptyAnimator.PropertyName != name)
+                var tween = behaviour as IPropertyTween;
+                if (tween == null || tween.PropertyName != name)
                     continue;
 
-                ptyAnimator.StopAnimation(obj, skipToFinalValue);
+                tween.StopTween(obj, skipToFinalValue);
             }
         }
 
         /// <summary>
-        /// Stops animating all properties.
+        /// Stops tweening all properties.
         /// </summary>
-        public static void StopAnimatingAll<T>(this T obj, bool skipToFinalValue = true)
+        public static void StopTweeningAll<T>(this T obj, bool skipToFinalValue = true)
              where T : DynamicObject
         {
             foreach (var behaviour in obj.Behaviours)
             {
-                var ptyAnimator = behaviour as IPropertyAnimation;
-                ptyAnimator?.StopAnimation(obj, skipToFinalValue);
+                var ptyAnimator = behaviour as IPropertyTween;
+                ptyAnimator?.StopTween(obj, skipToFinalValue);
             }
         }
 
@@ -81,7 +81,7 @@ namespace Corund.Tools.Helpers
         {
             obj.Momentum = Vector2.Zero;
             obj.Acceleration = 0;
-            obj.StopAnimating(AnimatedProperty.Position);
+            obj.StopTweening(Property.Position);
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace Corund.Tools.Helpers
         public static void MoveTo(this DynamicObject obj, Vector2 point, float time, InterpolationMethod interpolation = null)
         {
             obj.Direction = obj.Position.AngleTo(point);
-            obj.Animate(AnimatedProperty.Position, point, time, interpolation);
+            obj.Tween(Property.Position, point, time, interpolation);
         }
 
         #endregion

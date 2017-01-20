@@ -1,21 +1,21 @@
-﻿using System;
+using System;
 using Corund.Engine;
 using Corund.Tools.Helpers;
 using Corund.Tools.Interpolation;
 using Corund.Tools.Properties;
 using Corund.Visuals.Primitives;
 
-namespace Corund.Behaviours.Tweening
+namespace Corund.Behaviours.Tween
 {
     /// <summary>
     /// Base class for property animation behaviours.
     /// </summary>
-    public abstract class PropertyAnimationBase<TObject, TProperty>: BehaviourBase, IPropertyAnimation
+    public abstract class PropertyTweenBase<TObject, TProperty>: BehaviourBase, IPropertyTween
         where TObject: DynamicObject
     {
         #region Constructor
 
-        protected PropertyAnimationBase(IPropertyDescriptor<TObject, TProperty> descriptor, TProperty targetValue, float duration, InterpolationMethod interpolation = null)
+        protected PropertyTweenBase(IPropertyDescriptor<TObject, TProperty> descriptor, TProperty targetValue, float duration, InterpolationMethod interpolation = null)
         {
             if(duration.IsAlmostNull())
                 throw new ArgumentException("Effect duration cannot be null.", nameof(duration));
@@ -106,7 +106,7 @@ namespace Corund.Behaviours.Tweening
         /// <summary>
         /// Skips the animation, setting the property to target value.
         /// </summary>
-        public void StopAnimation(DynamicObject obj, bool skipToFinalValue)
+        public void StopTween(DynamicObject obj, bool skipToFinalValue)
         {
             _elapsedTime = _duration;
 
