@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
 using Corund.Engine;
 using Corund.Visuals.Primitives;
@@ -48,12 +49,21 @@ namespace Corund.Behaviours
         #region List manipulation
 
         /// <summary>
-        /// Adds the behaviour to the list of objects.
+        /// Adds the behaviour to the list.
         /// </summary>
         public new void Add(BehaviourBase behaviour)
         {
             behaviour.Bind(_parent);
             base.Add(behaviour);
+        }
+
+        /// <summary>
+        /// Inserts a behaviour at the specified position.
+        /// </summary>
+        public new void Insert(int position, BehaviourBase behaviour)
+        {
+            behaviour.Bind(_parent);
+            base.Insert(position, behaviour);
         }
 
         /// <summary>
@@ -69,6 +79,26 @@ namespace Corund.Behaviours
                     return (T)behaviour;
 
             return null;
+        }
+
+        /// <summary>
+        /// Removes the behaviour from the list.
+        /// </summary>
+        public new void Remove(BehaviourBase behaviour)
+        {
+            behaviour.Unbind(_parent);
+            base.Remove(behaviour);
+        }
+
+        /// <summary>
+        /// Removes the behaviour from the list by its position.
+        /// </summary>
+        public new void RemoveAt(int index)
+        {
+            if(index >= 0 && index < Count)
+                this[index].Unbind(_parent);
+
+            base.RemoveAt(index);
         }
 
         /// <summary>

@@ -17,6 +17,15 @@ namespace Corund.Behaviours
         }
 
         /// <summary>
+        /// Invoked once when the behaviour is removed from the object.
+        /// Can discard changes made to object properties.
+        /// To be overridden in children.
+        /// </summary>
+        public virtual void Unbind(DynamicObject obj)
+        {
+        }
+
+        /// <summary>
         /// Apply the behaviour to the object.
         /// </summary>
         public abstract void UpdateObjectState(DynamicObject obj);
