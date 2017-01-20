@@ -1,4 +1,6 @@
-﻿using Corund.Behaviours.Tween;
+﻿using Corund.Behaviours.Jitter;
+using Corund.Behaviours.Tween;
+using Corund.Engine;
 using Corund.Tools.Interpolation;
 using Corund.Tools.Properties;
 using Corund.Visuals.Primitives;
@@ -11,7 +13,7 @@ namespace Corund.Tools.Helpers
     /// </summary>
     public static class DynamicObjectHelper
     {
-        #region Animated properties
+        #region Tweened properties
 
         /// <summary>
         /// Tweens a float property.
@@ -65,8 +67,70 @@ namespace Corund.Tools.Helpers
         {
             foreach (var behaviour in obj.Behaviours)
             {
-                var ptyAnimator = behaviour as IPropertyTween;
-                ptyAnimator?.StopTween(obj, skipToFinalValue);
+                var tween = behaviour as IPropertyTween;
+                tween?.StopTween(obj, skipToFinalValue);
+            }
+        }
+
+        #endregion
+
+        #region Jitter
+
+        /// <summary>
+        /// Add jitter effect to a float property.
+        /// </summary>
+        public static void Jitter<T>(this T obj, IPropertyDescriptor<T, float> descriptor, float delay, float range, bool isRelative = false)
+            where T : DynamicObject
+        {
+            obj.Behaviours.Add(new FloatJitter<T>(descriptor, delay, range, isRelative));
+        }
+
+        /// <summary>
+        /// Add jitter effect to a vector property.
+        /// </summary>
+        public static void Jitter<T>(this T obj, IPropertyDescriptor<T, Vector2> descriptor, float delay, float xRange, float yRange, bool isRelative = false)
+            where T : DynamicObject
+        {
+            obj.Behaviours.Add(new Vector2Jitter<T>(descriptor, delay, xRange, yRange, isRelative));
+        }
+
+        /// <summary>
+        /// Add jitter effect to a color property.
+        /// </summary>
+        public static void Jitter<T>(this T obj, IPropertyDescriptor<T, Color> descriptor, float delay, Vector4 range, bool isRelative = false)
+            where T : DynamicObject
+        {
+            obj.Behaviours.Add(new ColorJitter<T>(descriptor, delay, range, isRelative));
+        }
+
+        /// <summary>
+        /// Stops jittering a property.
+        /// </summary>
+        public static void StopJittering<T, TProperty>(this T obj, IPropertyDescriptor<T, TProperty> descriptor)
+            where T : DynamicObject
+        {
+            var name = descriptor.Name;
+            foreach (var behaviour in obj.Behaviours)
+            {
+                var jitter = behaviour as IPropertyJitter;
+                if (jitter == null || jitter.PropertyName != name)
+                    continue;
+
+                GameEngine.InvokeDeferred(() => obj.Behaviours.Remove(behaviour));
+            }
+        }
+
+        /// <summary>
+        /// Stops jittering all properties.
+        /// </summary>
+        public static void StopJitteringAll<T>(this T obj, bool skipToFinalValue = true)
+             where T : DynamicObject
+        {
+            foreach (var behaviour in obj.Behaviours)
+            {
+                var jitter = behaviour as IPropertyJitter;
+                if(jitter != null)
+                    GameEngine.InvokeDeferred(() => obj.Behaviours.Remove(behaviour));
             }
         }
 
