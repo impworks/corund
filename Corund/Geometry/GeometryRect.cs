@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 namespace Corund.Geometry
 {
     /// <summary>
-    /// A single 
+    /// A single rectangle that can be tested for collision.
     /// </summary>
     public class GeometryRect: IGeometry
     {
@@ -23,12 +23,12 @@ namespace Corund.Geometry
         /// <summary>
         /// Position of the top left corner of the rectangle.
         /// </summary>
-        public readonly Vector2 Position;
+        public Vector2 Position;
 
         /// <summary>
         /// Dimensions of the rectangle.
         /// </summary>
-        public readonly Vector2 Size;
+        public Vector2 Size;
 
         #endregion
 

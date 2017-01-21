@@ -104,6 +104,8 @@
     <Compile Include="Tools\Jitter\JitteryVector2.cs" />
     <Compile Include="Tools\PauseMode.cs" />
     <Compile Include="Engine\TimelineManager.cs" />
+    <Compile Include="Tools\UI\HorizontalAlignment.cs" />
+    <Compile Include="Tools\UI\VerticalAlignment.cs" />
     <Compile Include="Visuals\ObjectGroup.cs" />
     <Compile Include="Visuals\Primitives\DynamicObject.cs" />
     <Compile Include="Visuals\Primitives\InteractiveObject.cs" />

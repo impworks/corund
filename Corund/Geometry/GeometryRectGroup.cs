@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework;
 namespace Corund.Geometry
 {
     /// <summary>
-    /// A set of rectangles around comprising a single shape.
+    /// A set of rectangles comprising a single shape.
     /// </summary>
     public class GeometryRectGroup: IGeometry
     {
@@ -22,7 +22,7 @@ namespace Corund.Geometry
         /// <summary>
         /// List of rectangles in the group.
         /// </summary>
-        public readonly GeometryRect[] Rectangles;
+        public GeometryRect[] Rectangles;
 
         #endregion
 

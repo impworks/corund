@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Corund.Engine;
 using Corund.Geometry;
+using Corund.Tools.UI;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,15 +15,15 @@ namespace Corund.Visuals
     {
         #region Constructor
 
-        public TextString(SpriteFont font, string text, float? maxWidth = null)
+        public TextString(SpriteFont font, string text)
         {
             _font = font;
             _originalText = text;
-            _maxWidth = maxWidth;
+            _preparedText = text.Split('\n');
 
             BlendState = BlendState.AlphaBlend;
 
-            Refresh();
+            RefreshGeometry();
         }
 
         #endregion
@@ -40,11 +41,6 @@ namespace Corund.Visuals
         private string _originalText;
 
         /// <summary>
-        /// Maximum allowed width.
-        /// </summary>
-        private float? _maxWidth;
-
-        /// <summary>
         /// Geometry for current text.
         /// </summary>
         private GeometryRectGroup _geometry;
@@ -52,7 +48,17 @@ namespace Corund.Visuals
         /// <summary>
         /// Text string prepared for rendering.
         /// </summary>
-        private List<string> _preparedText;
+        private string[] _preparedText;
+
+        /// <summary>
+        /// Horizontal alignment of each line.
+        /// </summary>
+        private HorizontalAlignment _horizontalAlignment;
+
+        /// <summary>
+        /// Vertical alignment of the entire block of text.
+        /// </summary>
+        private VerticalAlignment _verticalAlignment;
 
         #endregion
 
@@ -70,7 +76,7 @@ namespace Corund.Visuals
                     return;
 
                 _font = value;
-                Refresh();
+                RefreshGeometry();
             }
         }
 
@@ -86,23 +92,41 @@ namespace Corund.Visuals
                     return;
 
                 _originalText = value;
-                Refresh();
+                _preparedText = value?.Split('\n') ?? new string[0];
+
+                RefreshGeometry();
             }
         }
 
         /// <summary>
-        /// Maximum allowed width before the text wraps.
+        /// Horizontal alignment of each line.
         /// </summary>
-        public float? MaxWidth
+        public HorizontalAlignment HorizontalAlignment
         {
-            get { return _maxWidth; }
+            get { return _horizontalAlignment; }
             set
             {
-                if (_maxWidth == value)
+                if (_horizontalAlignment == value)
                     return;
 
-                _maxWidth = value;
-                Refresh();
+                _horizontalAlignment = value;
+                RefreshGeometry();
+            }
+        }
+
+        /// <summary>
+        /// Vertical alignment of the entire block of text.
+        /// </summary>
+        public VerticalAlignment VerticalAlignment
+        {
+            get { return _verticalAlignment; }
+            set
+            {
+                if (_verticalAlignment == value)
+                    return;
+
+                _verticalAlignment = value;
+                RefreshGeometry();
             }
         }
 
@@ -124,18 +148,18 @@ namespace Corund.Visuals
         {
             base.Draw();
 
-            GameEngine.Render.TryBeginBatch(BlendState);
-
             var transform = GetTransformInfo(true);
-            var offset = new Vector2(0, 0);
 
-            for (var idx = 0; idx < _preparedText.Count; idx++)
+            GameEngine.Render.TryBeginBatch(BlendState);
+            for (var idx = 0; idx < _preparedText.Length; idx++)
             {
                 var line = _preparedText[idx];
+                var position = _geometry.Rectangles[idx].Position;
+
                 GameEngine.Render.SpriteBatch.DrawString(
                     _font,
                     line,
-                    transform.Translate(offset),
+                    transform.Translate(position),
                     Tint,
                     transform.Angle,
                     Vector2.Zero,
@@ -143,18 +167,45 @@ namespace Corund.Visuals
                     SpriteEffects.None,
                     GameEngine.Current.ZOrderFunction(this)
                 );
-
-                var lineSize = _font.MeasureString(line);
-                offset.Y += lineSize.Y;
             }
         }
 
         /// <summary>
         /// Recalculates the text when a property has been changed.
         /// </summary>
-        private void Refresh()
+        private void RefreshGeometry()
         {
-            // todo...
+            if (_preparedText.Length == 0)
+            {
+                _geometry = null;
+                return;
+            }
+
+            var rects = new List<GeometryRect>();
+            var lineHeight = _font.MeasureString(_originalText[0].ToString()).Y;
+            var blockHeight = lineHeight*_preparedText.Length;
+
+            var y = 0f;
+            if (_verticalAlignment == VerticalAlignment.Center)
+                y -= blockHeight/2;
+            else if (_verticalAlignment == VerticalAlignment.Bottom)
+                y -= blockHeight;
+
+            foreach (var line in _preparedText)
+            {
+                var size = _font.MeasureString(line);
+                var x = 0f;
+                if (_horizontalAlignment == HorizontalAlignment.Center)
+                    x -= size.X/2;
+                else if (_horizontalAlignment == HorizontalAlignment.Right)
+                    x -= size.X;
+
+                rects.Add(new GeometryRect(x, y, size.X, size.Y));
+
+                y += lineHeight;
+            }
+
+            _geometry = new GeometryRectGroup(rects.ToArray());
         }
 
         #endregion
