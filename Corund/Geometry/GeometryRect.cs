@@ -93,7 +93,7 @@ namespace Corund.Geometry
             var lu = Position;
             var ru = new Vector2(Position.X + Size.X, Position.Y);
             var rl = Position + Size;
-            var ll = new Vector2(Position.X, Position.X + Size.Y);
+            var ll = new Vector2(Position.X, Position.Y + Size.Y);
 
             if (!transform.HasValue)
                 return new RectPolygon(lu, ru, rl, ll, 0);
