@@ -43,17 +43,17 @@ namespace Corund.Behaviours.Tween
         /// <summary>
         /// Estimated time of the effect.
         /// </summary>
-        private readonly float _duration;
+        protected readonly float _duration;
 
         /// <summary>
         /// Interpolation method to use.
         /// </summary>
-        private readonly InterpolationMethod _interpolation;
+        protected readonly InterpolationMethod _interpolation;
 
         /// <summary>
         /// Property getter.
         /// </summary>
-        private readonly IPropertyDescriptor<TObject, TProperty> _descriptor;
+        protected readonly IPropertyDescriptor<TObject, TProperty> _descriptor;
 
         /// <summary>
         /// Currently elapsed time.
@@ -97,10 +97,16 @@ namespace Corund.Behaviours.Tween
         public override void UpdateObjectState(DynamicObject obj)
         {
             _elapsedTime += GameEngine.Delta;
-            if (_elapsedTime > _duration)
-                _elapsedTime = _duration;
 
-            _descriptor.Setter((TObject) obj, getValue());
+            if (_elapsedTime <= _duration)
+            {
+                _descriptor.Setter((TObject) obj, getValue());
+            }
+            else
+            { 
+                _elapsedTime = _duration;
+                _descriptor.Setter((TObject) obj, _targetValue);
+            }
         }
 
         /// <summary>

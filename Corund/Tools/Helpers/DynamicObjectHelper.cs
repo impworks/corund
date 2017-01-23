@@ -1,4 +1,6 @@
-﻿using Corund.Behaviours.Jitter;
+﻿using System;
+using Corund.Behaviours;
+using Corund.Behaviours.Jitter;
 using Corund.Behaviours.Tween;
 using Corund.Engine;
 using Corund.Tools.Interpolation;
@@ -18,28 +20,67 @@ namespace Corund.Tools.Helpers
         /// <summary>
         /// Tweens a float property.
         /// </summary>
-        public static void Tween<T>(this T obj, IPropertyDescriptor<T, float> descriptor, float target, float duration, InterpolationMethod interpolation = null)
-            where T: DynamicObject
+        public static void Tween<T>(this T obj, IPropertyDescriptor<T, float> descriptor, float target, float duration, InterpolationMethod interpolation = null, bool tweenBack = false, bool loop = false)
+            where T : DynamicObject
         {
-            obj.Behaviours.Add(new FloatTween<T>(descriptor, target, duration, interpolation));
+            if (!tweenBack && !loop)
+            {
+                obj.Behaviours.Add(new FloatTween<T>(descriptor, target, duration, interpolation));
+                return;
+            }
+
+            ApplyComplexTween(
+                obj,
+                descriptor,
+                duration,
+                loop,
+                tweenBack,
+                () => new FloatTween<T>(descriptor, target, duration, interpolation)
+            );
         }
 
         /// <summary>
         /// Tweens a vector property.
         /// </summary>
-        public static void Tween<T>(this T obj, IPropertyDescriptor<T, Vector2> descriptor, Vector2 target, float duration, InterpolationMethod interpolation = null)
+        public static void Tween<T>(this T obj, IPropertyDescriptor<T, Vector2> descriptor, Vector2 target, float duration, InterpolationMethod interpolation = null, bool tweenBack = false, bool loop = false)
             where T : DynamicObject
         {
-            obj.Behaviours.Add(new Vector2Tween<T>(descriptor, target, duration, interpolation));
+            if (!tweenBack && !loop)
+            {
+                obj.Behaviours.Add(new Vector2Tween<T>(descriptor, target, duration, interpolation));
+                return;
+            }
+
+            ApplyComplexTween(
+                obj,
+                descriptor,
+                duration,
+                loop,
+                tweenBack,
+                () => new Vector2Tween<T>(descriptor, target, duration, interpolation)
+            );
         }
 
         /// <summary>
         /// Tweens a color property.
         /// </summary>
-        public static void Tween<T>(this T obj, IPropertyDescriptor<T, Color> descriptor, Color target, float duration, InterpolationMethod interpolation = null)
+        public static void Tween<T>(this T obj, IPropertyDescriptor<T, Color> descriptor, Color target, float duration, InterpolationMethod interpolation = null, bool tweenBack = false, bool loop = false)
             where T : DynamicObject
         {
-            obj.Behaviours.Add(new ColorTween<T>(descriptor, target, duration, interpolation));
+            if (!tweenBack && !loop)
+            {
+                obj.Behaviours.Add(new ColorTween<T>(descriptor, target, duration, interpolation));
+                return;
+            }
+
+            ApplyComplexTween(
+                obj,
+                descriptor,
+                duration,
+                loop,
+                tweenBack,
+                () => new ColorTween<T>(descriptor, target, duration, interpolation)
+            );
         }
 
         /// <summary>
@@ -70,6 +111,59 @@ namespace Corund.Tools.Helpers
                 var tween = behaviour as IPropertyTween;
                 tween?.StopTween(obj, skipToFinalValue);
             }
+        }
+
+        /// <summary>
+        /// Applies a complex tweening effect with optional tween reverse and looping.
+        /// </summary>
+        /// <param name="obj">Object to animate.</param>
+        /// <param name="descriptor">Tween property descriptor.</param>
+        /// <param name="duration">Effect duration.</param>
+        /// <param name="loop">Flag indicating that animation must be repeated until it is cancelled.</param>
+        /// <param name="tweenBack">Flag indicating that after tweening to target value, property must be tweened back (before stopping or looping).</param>
+        /// <param name="tweenFactory">Tween factory.</param>
+        private static void ApplyComplexTween<TObject, TProperty, TTween>(
+            TObject obj,
+            IPropertyDescriptor<TObject, TProperty> descriptor,
+            float duration,
+            bool loop,
+            bool tweenBack,
+            Func<TTween> tweenFactory
+        )
+            where TObject: DynamicObject
+            where TTween: BehaviourBase, IReversible<TTween>
+        {
+            var origValue = descriptor.Getter(obj);
+            Action anim = null;
+
+            anim = () =>
+            {
+                var tween = tweenFactory();
+                obj.Behaviours.Add(tween);
+
+                if (tweenBack)
+                {
+                    GameEngine.Current.Timeline.Add(duration, () =>
+                    {
+                        var reverse = tween.Reverse();
+                        obj.Behaviours.Add(reverse);
+
+                        if(loop)
+                            GameEngine.Current.Timeline.Add(duration, anim);
+                    });
+                }
+                else if (loop)
+                {
+                    GameEngine.Current.Timeline.Add(duration, () =>
+                    {
+                        descriptor.Setter(obj, origValue);
+
+                        anim();
+                    });
+                }
+            };
+
+            anim();
         }
 
         #endregion

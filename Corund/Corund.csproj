@@ -48,6 +48,7 @@
     <Compile Include="Behaviours\Fade\IFadeInEffect.cs" />
     <Compile Include="Behaviours\Fade\IFadeOutEffect.cs" />
     <Compile Include="Behaviours\IEffect.cs" />
+    <Compile Include="Behaviours\IReversible.cs" />
     <Compile Include="Behaviours\Jitter\ColorJitter.cs" />
     <Compile Include="Behaviours\Jitter\FloatJitter.cs" />
     <Compile Include="Behaviours\Jitter\IPropertyJitter.cs" />
