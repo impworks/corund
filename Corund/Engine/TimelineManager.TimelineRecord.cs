@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Corund.Engine
 {
     public partial class TimelineManager
     {
+        [DebuggerDisplay("Record: #{RecordId} ({Time})")]
         private class TimelineRecord
         {
             /// <summary>

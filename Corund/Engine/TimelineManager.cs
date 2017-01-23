@@ -59,7 +59,7 @@ namespace Corund.Engine
             for (var idx = 0; idx < _keyFrames.Count; idx++)
             {
                 var curr = _keyFrames[idx];
-                if (curr.Time > time)
+                if (curr.Time > record.Time)
                 {
                     _keyFrames.Insert(idx, record);
                     return record.RecordId;
@@ -102,7 +102,8 @@ namespace Corund.Engine
                 return;
 
             int idx;
-            for (idx = 0; idx < _keyFrames.Count; idx++)
+            var count = _keyFrames.Count;
+            for (idx = 0; idx < count; idx++)
             {
                 var curr = _keyFrames[idx];
                 if (curr.Time <= CurrentTime)
