@@ -1,4 +1,5 @@
-﻿using Corund.Tools.Helpers;
+﻿using System.Diagnostics;
+using Corund.Tools.Helpers;
 using Microsoft.Xna.Framework;
 
 namespace Corund.Tools
@@ -6,6 +7,7 @@ namespace Corund.Tools
     /// <summary>
     /// Information about an object's position relative to the screen.
     /// </summary>
+    [DebuggerDisplay("Transform (Pos: {Position}, Angle: {Angle}, Scale: {ScaleVector})")]
     public struct TransformInfo
     {
         #region Constructor

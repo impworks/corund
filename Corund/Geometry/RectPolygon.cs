@@ -1,10 +1,12 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Diagnostics;
+using Microsoft.Xna.Framework;
 
 namespace Corund.Geometry
 {
     /// <summary>
     /// A rectangle in polygon representation, can be rotated.
     /// </summary>
+    [DebuggerDisplay("RectPolygon ({Points})")]
     public struct RectPolygon
     {
         #region Constructors

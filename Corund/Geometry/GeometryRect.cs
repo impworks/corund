@@ -1,4 +1,5 @@
-﻿using Corund.Tools;
+﻿using System.Diagnostics;
+using Corund.Tools;
 using Microsoft.Xna.Framework;
 
 namespace Corund.Geometry
@@ -6,6 +7,7 @@ namespace Corund.Geometry
     /// <summary>
     /// A single rectangle that can be tested for collision.
     /// </summary>
+    [DebuggerDisplay("GeometryRect (Position: {Position}, Size: {Size})")]
     public class GeometryRect: IGeometry
     {
         #region Constructor

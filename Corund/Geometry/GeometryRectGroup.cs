@@ -1,4 +1,5 @@
-﻿using Corund.Tools;
+﻿using System.Diagnostics;
+using Corund.Tools;
 using Microsoft.Xna.Framework;
 
 namespace Corund.Geometry
@@ -6,6 +7,7 @@ namespace Corund.Geometry
     /// <summary>
     /// A set of rectangles comprising a single shape.
     /// </summary>
+    [DebuggerDisplay("GeometryRectGroup ({Rectangles.Length} rects)")]
     public class GeometryRectGroup: IGeometry
     {
         #region Constructor

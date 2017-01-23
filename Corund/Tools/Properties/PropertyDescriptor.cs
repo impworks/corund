@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Corund.Tools.Properties
 {
     /// <summary>
     /// A descriptor for property that can get and set values.
     /// </summary>
+    [DebuggerDisplay("Property: {Name}")]
     public class PropertyDescriptor<TObject, TProperty>: IPropertyDescriptor<TObject, TProperty>
     {
         #region Constructor

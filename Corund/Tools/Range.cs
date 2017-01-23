@@ -1,8 +1,11 @@
-﻿namespace Corund.Tools
+﻿using System.Diagnostics;
+
+namespace Corund.Tools
 {
     /// <summary>
     /// A range of float values.
     /// </summary>
+    [DebuggerDisplay("Range ({Min}..{Max})")]
     public struct Range
     {
         public Range(float min, float max)

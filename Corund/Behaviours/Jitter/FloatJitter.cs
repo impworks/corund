@@ -1,4 +1,5 @@
-﻿using Corund.Tools.Helpers;
+﻿using System.Diagnostics;
+using Corund.Tools.Helpers;
 using Corund.Tools.Properties;
 using Corund.Visuals.Primitives;
 
@@ -7,6 +8,7 @@ namespace Corund.Behaviours.Jitter
     /// <summary>
     /// Float jitter effect.
     /// </summary>
+    [DebuggerDisplay("ColorJitter: [{_descriptor.Name}] {_range} (each {_delay} s, relative = {_isRelative})")]
     public class FloatJitter<TObject>: PropertyJitterBase<TObject, float>
         where TObject: DynamicObject
     {

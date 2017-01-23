@@ -1,4 +1,5 @@
-﻿using Corund.Engine;
+﻿using System.Diagnostics;
+using Corund.Engine;
 using Corund.Tools.Helpers;
 using Corund.Tools.Interpolation;
 using Corund.Tools.Properties;
@@ -9,6 +10,7 @@ namespace Corund.Behaviours.Fade
     /// <summary>
     /// Creates a fade in effect when applied to an object.
     /// </summary>
+    [DebuggerDisplay("FadeIn ({_style}, Duration = {Duration})")]
     public class FadeInBehaviour: BehaviourBase, IFadeInEffect
     {
         #region Constructor
