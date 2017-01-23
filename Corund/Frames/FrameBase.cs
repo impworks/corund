@@ -136,7 +136,7 @@ namespace Corund.Frames
         {
             var pm = GameEngine.Current.PauseMode | PauseMode;
 
-            if((pm & PauseMode.Timeline) != 0)
+            if((pm & PauseMode.Timeline) == 0)
                 Timeline.Update();
 
             Touches.Clear();
