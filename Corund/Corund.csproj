@@ -36,7 +36,6 @@
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
     <Folder Include="Behaviours\Interaction\" />
-    <Folder Include="Behaviours\Misc\" />
     <Folder Include="Visuals\Special\" />
   </ItemGroup>
   <ItemGroup>
@@ -54,6 +53,7 @@
     <Compile Include="Behaviours\Jitter\IPropertyJitter.cs" />
     <Compile Include="Behaviours\Jitter\PropertyJitterBase.cs" />
     <Compile Include="Behaviours\Jitter\Vector2Jitter.cs" />
+    <Compile Include="Behaviours\Misc\BlinkBehaviour.cs" />
     <Compile Include="Behaviours\Movement\BezierMovementBehaviour.cs" />
     <Compile Include="Behaviours\Movement\BezierSegment.cs" />
     <Compile Include="Behaviours\Movement\IPathSegment.cs" />
