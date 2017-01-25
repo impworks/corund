@@ -48,6 +48,11 @@ namespace Corund.Frames
         /// </summary>
         private BlendState _blendState;
 
+        /// <summary>
+        /// Flag indicating that initialization has been performed once.
+        /// </summary>
+        private bool _isInitialized;
+
         #endregion
 
         #region Properties
@@ -134,6 +139,12 @@ namespace Corund.Frames
         /// </summary>
         public override void Update()
         {
+            if (!_isInitialized)
+            {
+                Initialize();
+                _isInitialized = true;
+            }
+
             var pm = GameEngine.Current.PauseMode | PauseMode;
 
             if((pm & PauseMode.Timeline) == 0)
@@ -148,6 +159,14 @@ namespace Corund.Frames
             }
 
             base.Update();
+        }
+
+        /// <summary>
+        /// Creates frame objects and settings when the frame is in current context.
+        /// </summary>
+        protected virtual void Initialize()
+        {
+            // do nothing yet.
         }
 
         #endregion
