@@ -1,4 +1,5 @@
-﻿using Corund.Engine;
+﻿using System;
+using Corund.Engine;
 using Corund.Tools.Helpers;
 using Corund.Tools.Properties;
 using Corund.Visuals.Primitives;
@@ -38,9 +39,14 @@ namespace Corund.Behaviours.Misc
         private float _elapsedTime;
 
         /// <summary>
-        /// Timer event keys (for cancellation).
+        /// Timer key for the next event.
         /// </summary>
-        private int[] _timerKeys;
+        private int _timerKey;
+
+        /// <summary>
+        /// Number of times the object has blinked already.
+        /// </summary>
+        private int _elapsedBlinks;
 
         #endregion
 
@@ -67,17 +73,20 @@ namespace Corund.Behaviours.Misc
         {
             base.Bind(obj);
 
-            var span = Duration/_blinkCount;
-
             _originalOpacity = obj.Opacity;
-            _timerKeys = new int[_blinkCount];
-            for (var i = 0; i < _blinkCount; i++)
+            var span = Duration / _blinkCount;
+
+            Action blink = null;
+            blink = () =>
             {
-                _timerKeys[i] = GameEngine.Current.Timeline.Add(
-                    i*span,
-                    () => obj.Tween(Property.Opacity, 0, span/2, null, true)
-                );
-            }
+                obj.Tween(Property.Opacity, 0, span / 2, null, true);
+                _elapsedBlinks++;
+                _timerKey = _elapsedBlinks < _blinkCount
+                    ? GameEngine.Current.Timeline.Add(span, blink)
+                    : -1;
+            };
+
+            blink();
         }
 
         /// <summary>
@@ -93,8 +102,7 @@ namespace Corund.Behaviours.Misc
         /// </summary>
         public override void Unbind(DynamicObject obj)
         {
-            for(var i = 0; i < _blinkCount; i++)
-                GameEngine.Current.Timeline.Remove(_timerKeys[i]);
+            GameEngine.Current.Timeline.Remove(_timerKey);
 
             obj.StopTweening(Property.Opacity);
             obj.Opacity = _originalOpacity;
