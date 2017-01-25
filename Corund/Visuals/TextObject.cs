@@ -11,11 +11,11 @@ namespace Corund.Visuals
     /// <summary>
     /// A simple block of text.
     /// </summary>
-    public class TextString: InteractiveObject
+    public class TextObject: InteractiveObject
     {
         #region Constructor
 
-        public TextString(SpriteFont font, string text)
+        public TextObject(SpriteFont font, string text)
         {
             _font = font;
             _originalText = text;
