@@ -25,7 +25,7 @@ namespace Corund.Tools.Helpers
         {
             if (!tweenBack && !loop)
             {
-                obj.Behaviours.Add(new FloatTween<T>(descriptor, target, duration, interpolation));
+                GameEngine.InvokeDeferred(() => obj.Behaviours.Add(new FloatTween<T>(descriptor, target, duration, interpolation)));
                 return;
             }
 
@@ -47,7 +47,7 @@ namespace Corund.Tools.Helpers
         {
             if (!tweenBack && !loop)
             {
-                obj.Behaviours.Add(new Vector2Tween<T>(descriptor, target, duration, interpolation));
+                GameEngine.InvokeDeferred(() => obj.Behaviours.Add(new Vector2Tween<T>(descriptor, target, duration, interpolation)));
                 return;
             }
 
@@ -69,7 +69,7 @@ namespace Corund.Tools.Helpers
         {
             if (!tweenBack && !loop)
             {
-                obj.Behaviours.Add(new ColorTween<T>(descriptor, target, duration, interpolation));
+                GameEngine.InvokeDeferred(() => obj.Behaviours.Add(new ColorTween<T>(descriptor, target, duration, interpolation)));
                 return;
             }
 
@@ -139,14 +139,14 @@ namespace Corund.Tools.Helpers
             anim = () =>
             {
                 var tween = tweenFactory();
-                obj.Behaviours.Add(tween);
+                GameEngine.InvokeDeferred(() => obj.Behaviours.Add(tween));
 
                 if (tweenBack)
                 {
                     GameEngine.Current.Timeline.Add(duration, () =>
                     {
                         var reverse = tween.Reverse();
-                        obj.Behaviours.Add(reverse);
+                        GameEngine.InvokeDeferred(() => obj.Behaviours.Add(reverse));
 
                         if(loop)
                             GameEngine.Current.Timeline.Add(duration, anim);
@@ -176,7 +176,7 @@ namespace Corund.Tools.Helpers
         public static void Jitter<T>(this T obj, IPropertyDescriptor<T, float> descriptor, float delay, float range, bool isRelative = false)
             where T : DynamicObject
         {
-            obj.Behaviours.Add(new FloatJitter<T>(descriptor, delay, range, isRelative));
+            GameEngine.InvokeDeferred(() => obj.Behaviours.Add(new FloatJitter<T>(descriptor, delay, range, isRelative)));
         }
 
         /// <summary>
@@ -185,7 +185,7 @@ namespace Corund.Tools.Helpers
         public static void Jitter<T>(this T obj, IPropertyDescriptor<T, Vector2> descriptor, float delay, float xRange, float yRange, bool isRelative = false)
             where T : DynamicObject
         {
-            obj.Behaviours.Add(new Vector2Jitter<T>(descriptor, delay, xRange, yRange, isRelative));
+            GameEngine.InvokeDeferred(() => obj.Behaviours.Add(new Vector2Jitter<T>(descriptor, delay, xRange, yRange, isRelative)));
         }
 
         /// <summary>
@@ -194,7 +194,7 @@ namespace Corund.Tools.Helpers
         public static void Jitter<T>(this T obj, IPropertyDescriptor<T, Color> descriptor, float delay, Vector4 range, bool isRelative = false)
             where T : DynamicObject
         {
-            obj.Behaviours.Add(new ColorJitter<T>(descriptor, delay, range, isRelative));
+            GameEngine.InvokeDeferred(() => obj.Behaviours.Add(new ColorJitter<T>(descriptor, delay, range, isRelative)));
         }
 
         /// <summary>
