@@ -1,5 +1,4 @@
-﻿using System;
-using Corund.Engine;
+﻿using Corund.Engine;
 using Corund.Tools.Helpers;
 using Corund.Tools.Jitter;
 using Corund.Visuals.Primitives;
@@ -10,26 +9,21 @@ namespace Corund.Visuals.Particles
     /// <summary>
     /// A group of particle objects.
     /// </summary>
-    public class ParticleGroup: ObjectGroup
+    public abstract class ParticleGroup: ObjectGroup
     {
         #region Constructor
 
-        public ParticleGroup(int rate, Func<DynamicObject> factory)
+        public ParticleGroup(int rate)
         {
+            ParticleBlendState = BlendState.AlphaBlend;
             GenerationRate = rate;
-            _particleFactory = factory;
 
-            BlendState = BlendState.AlphaBlend;
+            IsActive = true;
         }
 
         #endregion
 
         #region Fields
-
-        /// <summary>
-        /// A function that creates particles.
-        /// </summary>
-        private readonly Func<DynamicObject> _particleFactory;
 
         /// <summary>
         /// Time elapsed since last particle has been created.
@@ -63,7 +57,7 @@ namespace Corund.Visuals.Particles
         /// <summary>
         /// Blend state for the particle system.
         /// </summary>
-        public BlendState BlendState;
+        public BlendState ParticleBlendState;
 
         /// <summary>
         /// Jittery location at which particles are created.
@@ -84,6 +78,11 @@ namespace Corund.Visuals.Particles
         /// Jittery lifespan of each particle in seconds.
         /// </summary>
         public JitteryValue ParticleTimeToLive;
+
+        /// <summary>
+        /// Maximum number of particles before system self-destructs.
+        /// </summary>
+        public int? ParticleLimit;
 
         /// <summary>
         /// Number of particles to create per second.
@@ -113,11 +112,17 @@ namespace Corund.Visuals.Particles
                 {
                     _particleElapsedTime -= _particleDelay;
 
-                    var newParticle = _particleFactory();
+                    var newParticle = CreateParticle();
                     ConfigureParticle(newParticle);
                     Add(newParticle);
 
                     TotalParticleCount++;
+
+                    if (TotalParticleCount >= ParticleLimit)
+                    {
+                        OnLimitReached();
+                        break;
+                    }
                 }
             }
         }
@@ -127,7 +132,7 @@ namespace Corund.Visuals.Particles
         /// </summary>
         protected override void DrawInternal()
         {
-            GameEngine.Render.TryBeginBatch(BlendState);
+            GameEngine.Render.TryBeginBatch(ParticleBlendState);
 
             base.DrawInternal();
         }
@@ -137,14 +142,27 @@ namespace Corund.Visuals.Particles
         #region Helpers
 
         /// <summary>
+        /// Creates a new particle.
+        /// </summary>
+        protected abstract DynamicObject CreateParticle();
+
+        /// <summary>
         /// Applies settings to a newly created particle.
         /// </summary>
-        public virtual void ConfigureParticle(DynamicObject obj)
+        protected virtual void ConfigureParticle(DynamicObject obj)
         {
             obj.Position = ParticleOrigin.GetValue();
             obj.Momentum = VectorHelper.FromLength(ParticleSpeed.GetValue(), ParticleAngle.GetValue());
 
             GameEngine.Current.Timeline.Add(ParticleTimeToLive.GetValue(), obj.FadeOut);
+        }
+
+        /// <summary>
+        /// Deactivates the particle system when the limit has been reached.
+        /// </summary>
+        protected virtual void OnLimitReached()
+        {
+            IsActive = false;
         }
 
         #endregion

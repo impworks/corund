@@ -77,7 +77,6 @@ namespace Corund.Visuals
         /// <summary>
         /// Adds many objects to the visual list.
         /// </summary>
-        /// <param name="children">Objects to insert.</param>
         public void AddRange(params ObjectBase[] children)
         {
             AddRange(true, children);
@@ -86,7 +85,6 @@ namespace Corund.Visuals
         /// <summary>
         /// Adds many objects to the visual list.
         /// </summary>
-        /// <param name="children">Objects to insert.</param>
         public void AddRange(IEnumerable<ObjectBase> children)
         {
             AddRange(true, children);

@@ -91,6 +91,7 @@
     <Compile Include="Sprites\TiledSprite.cs" />
     <Compile Include="Tools\Helpers\DynamicObjectHelper.cs" />
     <Compile Include="Tools\Helpers\RandomHelper.cs" />
+    <Compile Include="Tools\Helpers\TextureHelper.cs" />
     <Compile Include="Tools\Properties\IPropertyDescriptor.cs" />
     <Compile Include="Tools\Properties\Property.cs" />
     <Compile Include="Tools\Properties\PropertyDescriptor.cs" />
@@ -107,7 +108,7 @@
     <Compile Include="Tools\UI\HorizontalAlignment.cs" />
     <Compile Include="Tools\UI\VerticalAlignment.cs" />
     <Compile Include="Visuals\ObjectGroup.cs" />
-    <Compile Include="Visuals\Particles\ParticleBase.cs" />
+    <Compile Include="Visuals\Particles\ParticleObject.cs" />
     <Compile Include="Visuals\Particles\ParticleGroup.cs" />
     <Compile Include="Visuals\Primitives\DynamicObject.cs" />
     <Compile Include="Visuals\Primitives\InteractiveObject.cs" />

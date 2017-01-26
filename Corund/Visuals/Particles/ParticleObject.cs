@@ -8,11 +8,11 @@ namespace Corund.Visuals.Particles
     /// <summary>
     /// Base class for "thin" particles.
     /// </summary>
-    public abstract class ParticleBase : DynamicObject
+    public class ParticleObject : DynamicObject
     {
         #region Constructor
 
-        protected ParticleBase(Texture2D texture, Vector2 hotSpot)
+        public ParticleObject(Texture2D texture, Vector2 hotSpot)
         {
             Texture = texture;
             HotSpot = hotSpot;
