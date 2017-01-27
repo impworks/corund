@@ -23,7 +23,7 @@ namespace Corund.Engine
 
         #endregion
 
-        #region Fields and properties
+        #region Fields
 
         /// <summary>
         /// Texture used to draw bounding boxes.
@@ -31,14 +31,23 @@ namespace Corund.Engine
         private readonly Texture2D _boxTexture;
 
         /// <summary>
-        /// Current FPS counter.
-        /// </summary>
-        private int _fps;
-
-        /// <summary>
         /// Time elapsed since last FPS update.
         /// </summary>
         private float _fpsElapsedTime;
+
+        /// <summary>
+        /// Immediate FPS value.
+        /// </summary>
+        private int _fpsCounter;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Current FPS counter.
+        /// </summary>
+        public int FPS { get; private set; }
 
         /// <summary>
         /// Flag indicating that FPS must be calculated and written to the debug console.
@@ -54,18 +63,17 @@ namespace Corund.Engine
         /// </summary>
         public void Update()
         {
-            if (DisplayFPS)
+            _fpsCounter++;
+            _fpsElapsedTime += GameEngine.Delta;
+
+            if (_fpsElapsedTime >= 1)
             {
-                _fps++;
-                _fpsElapsedTime += GameEngine.Delta;
+                FPS = _fpsCounter;
+                _fpsElapsedTime -= 1;
+                _fpsCounter = 0;
 
-                if (_fpsElapsedTime >= 1)
-                {
-                    Debug.WriteLine($"FPS: {_fps}");
-
-                    _fps = 0;
-                    _fpsElapsedTime = 0;
-                }
+                if(DisplayFPS)
+                    Debug.WriteLine($"FPS: {FPS}");
             }
         }
 
