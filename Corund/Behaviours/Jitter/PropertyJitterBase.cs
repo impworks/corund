@@ -7,12 +7,12 @@ namespace Corund.Behaviours.Jitter
     /// <summary>
     /// Base class for property jitter behaviours.
     /// </summary>
-    public abstract class PropertyJitterBase<TObject, TProperty>: BehaviourBase, IPropertyJitter
-        where TObject: DynamicObject
+    public abstract class PropertyJitterBase<TObject, TPropBase, TProperty>: BehaviourBase, IPropertyJitter
+        where TObject: DynamicObject, TPropBase
     {
         #region Constructor
 
-        public PropertyJitterBase(IPropertyDescriptor<TObject, TProperty> descriptor, float delay)
+        public PropertyJitterBase(IPropertyDescriptor<TPropBase, TProperty> descriptor, float delay)
         {
             _descriptor = descriptor;
             _delay = delay;
@@ -25,7 +25,7 @@ namespace Corund.Behaviours.Jitter
         /// <summary>
         /// Property getter/setter.
         /// </summary>
-        private readonly IPropertyDescriptor<TObject, TProperty> _descriptor;
+        private readonly IPropertyDescriptor<TPropBase, TProperty> _descriptor;
 
         /// <summary>
         /// Delay between jitter applications (in seconds).

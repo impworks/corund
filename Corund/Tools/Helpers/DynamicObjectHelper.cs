@@ -20,12 +20,12 @@ namespace Corund.Tools.Helpers
         /// <summary>
         /// Tweens a float property.
         /// </summary>
-        public static void Tween<T>(this T obj, IPropertyDescriptor<T, float> descriptor, float target, float duration, InterpolationMethod interpolation = null, bool tweenBack = false, bool loop = false)
-            where T : DynamicObject
+        public static void Tween<TObject, TPropBase>(this TObject obj, IPropertyDescriptor<TPropBase, float> descriptor, float target, float duration, InterpolationMethod interpolation = null, bool tweenBack = false, bool loop = false)
+            where TObject : DynamicObject, TPropBase
         {
             if (!tweenBack && !loop)
             {
-                GameEngine.InvokeDeferred(() => obj.Behaviours.Add(new FloatTween<T>(descriptor, target, duration, interpolation)));
+                GameEngine.InvokeDeferred(() => obj.Behaviours.Add(new FloatTween<TObject, TPropBase>(descriptor, target, duration, interpolation)));
                 return;
             }
 
@@ -35,19 +35,19 @@ namespace Corund.Tools.Helpers
                 duration,
                 loop,
                 tweenBack,
-                () => new FloatTween<T>(descriptor, target, duration, interpolation)
+                () => new FloatTween<TObject, TPropBase>(descriptor, target, duration, interpolation)
             );
         }
 
         /// <summary>
         /// Tweens a vector property.
         /// </summary>
-        public static void Tween<T>(this T obj, IPropertyDescriptor<T, Vector2> descriptor, Vector2 target, float duration, InterpolationMethod interpolation = null, bool tweenBack = false, bool loop = false)
-            where T : DynamicObject
+        public static void Tween<TObject, TPropBase>(this TObject obj, IPropertyDescriptor<TPropBase, Vector2> descriptor, Vector2 target, float duration, InterpolationMethod interpolation = null, bool tweenBack = false, bool loop = false)
+            where TObject : DynamicObject, TPropBase
         {
             if (!tweenBack && !loop)
             {
-                GameEngine.InvokeDeferred(() => obj.Behaviours.Add(new Vector2Tween<T>(descriptor, target, duration, interpolation)));
+                GameEngine.InvokeDeferred(() => obj.Behaviours.Add(new Vector2Tween<TObject, TPropBase>(descriptor, target, duration, interpolation)));
                 return;
             }
 
@@ -57,19 +57,19 @@ namespace Corund.Tools.Helpers
                 duration,
                 loop,
                 tweenBack,
-                () => new Vector2Tween<T>(descriptor, target, duration, interpolation)
+                () => new Vector2Tween<TObject, TPropBase>(descriptor, target, duration, interpolation)
             );
         }
 
         /// <summary>
         /// Tweens a color property.
         /// </summary>
-        public static void Tween<T>(this T obj, IPropertyDescriptor<T, Color> descriptor, Color target, float duration, InterpolationMethod interpolation = null, bool tweenBack = false, bool loop = false)
-            where T : DynamicObject
+        public static void Tween<TObject, TPropBase>(this TObject obj, IPropertyDescriptor<TPropBase, Color> descriptor, Color target, float duration, InterpolationMethod interpolation = null, bool tweenBack = false, bool loop = false)
+            where TObject : DynamicObject, TPropBase
         {
             if (!tweenBack && !loop)
             {
-                GameEngine.InvokeDeferred(() => obj.Behaviours.Add(new ColorTween<T>(descriptor, target, duration, interpolation)));
+                GameEngine.InvokeDeferred(() => obj.Behaviours.Add(new ColorTween<TObject, TPropBase>(descriptor, target, duration, interpolation)));
                 return;
             }
 
@@ -79,15 +79,15 @@ namespace Corund.Tools.Helpers
                 duration,
                 loop,
                 tweenBack,
-                () => new ColorTween<T>(descriptor, target, duration, interpolation)
+                () => new ColorTween<TObject, TPropBase>(descriptor, target, duration, interpolation)
             );
         }
 
         /// <summary>
         /// Stops tweening a property.
         /// </summary>
-        public static void StopTweening<T, TProperty>(this T obj, IPropertyDescriptor<T, TProperty> descriptor, bool skipToFinalValue = true)
-            where T: DynamicObject
+        public static void StopTweening<TObject, TPropBase, TProperty>(this TObject obj, IPropertyDescriptor<TPropBase, TProperty> descriptor, bool skipToFinalValue = true)
+            where TObject: DynamicObject, TPropBase
         {
             var name = descriptor.Name;
             foreach (var behaviour in obj.Behaviours)
@@ -122,15 +122,15 @@ namespace Corund.Tools.Helpers
         /// <param name="loop">Flag indicating that animation must be repeated until it is cancelled.</param>
         /// <param name="tweenBack">Flag indicating that after tweening to target value, property must be tweened back (before stopping or looping).</param>
         /// <param name="tweenFactory">Tween factory.</param>
-        private static void ApplyComplexTween<TObject, TProperty, TTween>(
+        private static void ApplyComplexTween<TObject, TPropBase, TProperty, TTween>(
             TObject obj,
-            IPropertyDescriptor<TObject, TProperty> descriptor,
+            IPropertyDescriptor<TPropBase, TProperty> descriptor,
             float duration,
             bool loop,
             bool tweenBack,
             Func<TTween> tweenFactory
         )
-            where TObject: DynamicObject
+            where TObject: DynamicObject, TPropBase
             where TTween: BehaviourBase, IReversible<TTween>
         {
             var origValue = descriptor.Getter(obj);
@@ -173,35 +173,35 @@ namespace Corund.Tools.Helpers
         /// <summary>
         /// Add jitter effect to a float property.
         /// </summary>
-        public static void Jitter<T>(this T obj, IPropertyDescriptor<T, float> descriptor, float delay, float range, bool isRelative = false)
-            where T : DynamicObject
+        public static void Jitter<TObject, TPropBase>(this TObject obj, IPropertyDescriptor<TPropBase, float> descriptor, float delay, float range, bool isRelative = false)
+            where TObject : DynamicObject, TPropBase
         {
-            GameEngine.InvokeDeferred(() => obj.Behaviours.Add(new FloatJitter<T>(descriptor, delay, range, isRelative)));
+            GameEngine.InvokeDeferred(() => obj.Behaviours.Add(new FloatJitter<TObject, TPropBase>(descriptor, delay, range, isRelative)));
         }
 
         /// <summary>
         /// Add jitter effect to a vector property.
         /// </summary>
-        public static void Jitter<T>(this T obj, IPropertyDescriptor<T, Vector2> descriptor, float delay, float xRange, float yRange, bool isRelative = false)
-            where T : DynamicObject
+        public static void Jitter<TObject, TPropBase>(this TObject obj, IPropertyDescriptor<TPropBase, Vector2> descriptor, float delay, float xRange, float yRange, bool isRelative = false)
+            where TObject : DynamicObject, TPropBase
         {
-            GameEngine.InvokeDeferred(() => obj.Behaviours.Add(new Vector2Jitter<T>(descriptor, delay, xRange, yRange, isRelative)));
+            GameEngine.InvokeDeferred(() => obj.Behaviours.Add(new Vector2Jitter<TObject, TPropBase>(descriptor, delay, xRange, yRange, isRelative)));
         }
 
         /// <summary>
         /// Add jitter effect to a color property.
         /// </summary>
-        public static void Jitter<T>(this T obj, IPropertyDescriptor<T, Color> descriptor, float delay, Vector4 range, bool isRelative = false)
-            where T : DynamicObject
+        public static void Jitter<TObject, TPropBase>(this TObject obj, IPropertyDescriptor<TPropBase, Color> descriptor, float delay, Vector4 range, bool isRelative = false)
+            where TObject : DynamicObject, TPropBase
         {
-            GameEngine.InvokeDeferred(() => obj.Behaviours.Add(new ColorJitter<T>(descriptor, delay, range, isRelative)));
+            GameEngine.InvokeDeferred(() => obj.Behaviours.Add(new ColorJitter<TObject, TPropBase>(descriptor, delay, range, isRelative)));
         }
 
         /// <summary>
         /// Stops jittering a property.
         /// </summary>
-        public static void StopJittering<T, TProperty>(this T obj, IPropertyDescriptor<T, TProperty> descriptor)
-            where T : DynamicObject
+        public static void StopJittering<TObject, TPropBase, TProperty>(this TObject obj, IPropertyDescriptor<TPropBase, TProperty> descriptor)
+            where TObject : DynamicObject, TPropBase
         {
             var name = descriptor.Name;
             foreach (var behaviour in obj.Behaviours)
@@ -217,8 +217,7 @@ namespace Corund.Tools.Helpers
         /// <summary>
         /// Stops jittering all properties.
         /// </summary>
-        public static void StopJitteringAll<T>(this T obj, bool skipToFinalValue = true)
-             where T : DynamicObject
+        public static void StopJitteringAll(this DynamicObject obj, bool skipToFinalValue = true)
         {
             foreach (var behaviour in obj.Behaviours)
             {

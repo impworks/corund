@@ -10,10 +10,10 @@ namespace Corund.Behaviours.Tween
     /// Animation for color properties.
     /// </summary>
     [DebuggerDisplay("ColorTween: [{_descriptor.Name}] {_initialValue} => {_targetValue} ({_duration} s)")]
-    public class ColorTween<TObject> : PropertyTweenBase<TObject, Color>, IReversible<ColorTween<TObject>>
-        where TObject : DynamicObject
+    public class ColorTween<TObject, TPropBase> : PropertyTweenBase<TObject, TPropBase, Color>, IReversible<ColorTween<TObject, TPropBase>>
+        where TObject : DynamicObject, TPropBase
     {
-        public ColorTween(IPropertyDescriptor<TObject, Color> descriptor, Color targetValue, float duration, InterpolationMethod interpolation = null)
+        public ColorTween(IPropertyDescriptor<TPropBase, Color> descriptor, Color targetValue, float duration, InterpolationMethod interpolation = null)
             : base(descriptor, targetValue, duration, interpolation)
         { }
 
@@ -33,9 +33,9 @@ namespace Corund.Behaviours.Tween
         /// <summary>
         /// Creates an effect that cancels out the current tween.
         /// </summary>
-        public ColorTween<TObject> Reverse(float? duration = null)
+        public ColorTween<TObject, TPropBase> Reverse(float? duration = null)
         {
-            return new ColorTween<TObject>(_descriptor, _initialValue, duration ?? _duration, _interpolation);
+            return new ColorTween<TObject, TPropBase>(_descriptor, _initialValue, duration ?? _duration, _interpolation);
         }
     }
 }

@@ -10,12 +10,12 @@ namespace Corund.Behaviours.Tween
     /// <summary>
     /// Base class for property tween behaviours.
     /// </summary>
-    public abstract class PropertyTweenBase<TObject, TProperty>: BehaviourBase, IPropertyTween
-        where TObject: DynamicObject
+    public abstract class PropertyTweenBase<TObject, TPropBase, TProperty>: BehaviourBase, IPropertyTween
+        where TObject: DynamicObject, TPropBase
     {
         #region Constructor
 
-        protected PropertyTweenBase(IPropertyDescriptor<TObject, TProperty> descriptor, TProperty targetValue, float duration, InterpolationMethod interpolation = null)
+        protected PropertyTweenBase(IPropertyDescriptor<TPropBase, TProperty> descriptor, TProperty targetValue, float duration, InterpolationMethod interpolation = null)
         {
             if(duration.IsAlmostNull())
                 throw new ArgumentException("Effect duration cannot be null.", nameof(duration));
@@ -53,7 +53,7 @@ namespace Corund.Behaviours.Tween
         /// <summary>
         /// Property getter.
         /// </summary>
-        protected readonly IPropertyDescriptor<TObject, TProperty> _descriptor;
+        protected readonly IPropertyDescriptor<TPropBase, TProperty> _descriptor;
 
         /// <summary>
         /// Currently elapsed time.

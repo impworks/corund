@@ -10,8 +10,8 @@ namespace Corund.Behaviours.Jitter
     /// Color jitter effect.
     /// </summary>
     [DebuggerDisplay("ColorJitter: [{_descriptor.Name}] {_range} (each {_delay} s, relative = {_isRelative})")]
-    public class ColorJitter<TObject>: PropertyJitterBase<TObject, Color>
-        where TObject: DynamicObject
+    public class ColorJitter<TObject, TPropBase> : PropertyJitterBase<TObject, TPropBase, Color>
+        where TObject: DynamicObject, TPropBase
     {
         #region Constructor
 
@@ -22,7 +22,7 @@ namespace Corund.Behaviours.Jitter
         /// <param name="delay">Time between value changes in seconds.</param>
         /// <param name="range">Jitter magnitude for color components.</param>
         /// <param name="isRelative">Flag indicating that magnitude is a fraction of the actual value, rather than an absolute.</param>
-        public ColorJitter(IPropertyDescriptor<TObject, Color> descriptor, float delay, Vector4 range, bool isRelative = false)
+        public ColorJitter(IPropertyDescriptor<TPropBase, Color> descriptor, float delay, Vector4 range, bool isRelative = false)
             : base(descriptor, delay)
         {
             _range = range;

@@ -11,61 +11,65 @@ namespace Corund.Tools.Properties
     /// </summary>
     public static class Property
     {
-        #region DynamicObject
+        #region ObjectBase
 
         /// <summary>
-        /// Descriptor for DynamicObject.Position.
+        /// Descriptor for ObjectBase.Position.
         /// </summary>
-        public static IPropertyDescriptor<DynamicObject, Vector2> Position = new PropertyDescriptor<DynamicObject, Vector2>(
+        public static IPropertyDescriptor<ObjectBase, Vector2> Position = new PropertyDescriptor<ObjectBase, Vector2>(
             x => x.Position,
             (x, v) => x.Position = v,
-            nameof(DynamicObject.Position)
+            nameof(ObjectBase.Position)
         );
 
         /// <summary>
-        /// Descriptor for DynamicObject.ScaleVector.
+        /// Descriptor for ObjectBase.ScaleVector.
         /// </summary>
-        public static IPropertyDescriptor<DynamicObject, Vector2> ScaleVector = new PropertyDescriptor<DynamicObject, Vector2>(
+        public static IPropertyDescriptor<ObjectBase, Vector2> ScaleVector = new PropertyDescriptor<ObjectBase, Vector2>(
             x => x.ScaleVector,
             (x, v) => x.ScaleVector = v,
-            nameof(DynamicObject.ScaleVector)
+            nameof(ObjectBase.ScaleVector)
         );
 
         /// <summary>
-        /// Descriptor for DynamicObject.Scale.
+        /// Descriptor for ObjectBase.Scale.
         /// </summary>
-        public static IPropertyDescriptor<DynamicObject, float> Scale = new PropertyDescriptor<DynamicObject, float>(
+        public static IPropertyDescriptor<ObjectBase, float> Scale = new PropertyDescriptor<ObjectBase, float>(
             x => x.Scale,
             (x, v) => x.Scale = v,
-            nameof(DynamicObject.Scale)
+            nameof(ObjectBase.Scale)
         );
 
         /// <summary>
-        /// Descriptor for DynamicObject.Angle.
+        /// Descriptor for ObjectBase.Angle.
         /// </summary>
-        public static IPropertyDescriptor<DynamicObject, float> Angle = new PropertyDescriptor<DynamicObject, float>(
+        public static IPropertyDescriptor<ObjectBase, float> Angle = new PropertyDescriptor<ObjectBase, float>(
             x => x.Angle,
             (x, v) => x.Angle = v,
-            nameof(DynamicObject.Angle)
+            nameof(ObjectBase.Angle)
         );
 
         /// <summary>
-        /// Descriptor for DynamicObject.Opacity.
+        /// Descriptor for ObjectBase.Opacity.
         /// </summary>
-        public static IPropertyDescriptor<DynamicObject, float> Opacity = new PropertyDescriptor<DynamicObject, float>(
+        public static IPropertyDescriptor<ObjectBase, float> Opacity = new PropertyDescriptor<ObjectBase, float>(
             x => x.Opacity,
             (x, v) => x.Opacity = v,
-            nameof(DynamicObject.Opacity)
+            nameof(ObjectBase.Opacity)
         );
 
         /// <summary>
-        /// Descriptor for DynamicObject.Tint.
+        /// Descriptor for ObjectBase.Tint.
         /// </summary>
-        public static IPropertyDescriptor<DynamicObject, Color> Tint = new PropertyDescriptor<DynamicObject, Color>(
+        public static IPropertyDescriptor<ObjectBase, Color> Tint = new PropertyDescriptor<ObjectBase, Color>(
             x => x.Tint,
             (x, v) => x.Tint = v,
-            nameof(DynamicObject.Tint)
+            nameof(ObjectBase.Tint)
         );
+
+        #endregion
+
+        #region DynamicObject
 
         /// <summary>
         /// Descriptor for DynamicObject.Rotation.

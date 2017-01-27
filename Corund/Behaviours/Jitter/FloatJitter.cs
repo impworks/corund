@@ -9,8 +9,8 @@ namespace Corund.Behaviours.Jitter
     /// Float jitter effect.
     /// </summary>
     [DebuggerDisplay("ColorJitter: [{_descriptor.Name}] {_range} (each {_delay} s, relative = {_isRelative})")]
-    public class FloatJitter<TObject>: PropertyJitterBase<TObject, float>
-        where TObject: DynamicObject
+    public class FloatJitter<TObject, TPropBase> : PropertyJitterBase<TObject, TPropBase, float>
+        where TObject: DynamicObject, TPropBase
     {
         #region Constructor
 
@@ -21,7 +21,7 @@ namespace Corund.Behaviours.Jitter
         /// <param name="delay">Time between value changes in seconds.</param>
         /// <param name="range">Jitter magnitude.</param>
         /// <param name="isRelative">Flag indicating that magnitude is a fraction of the actual value, rather than an absolute.</param>
-        public FloatJitter(IPropertyDescriptor<TObject, float> descriptor, float delay, float range, bool isRelative = false)
+        public FloatJitter(IPropertyDescriptor<TPropBase, float> descriptor, float delay, float range, bool isRelative = false)
             : base(descriptor, delay)
         {
             _range = range;

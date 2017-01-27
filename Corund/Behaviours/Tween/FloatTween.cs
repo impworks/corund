@@ -9,10 +9,10 @@ namespace Corund.Behaviours.Tween
     /// Animation for float values.
     /// </summary>
     [DebuggerDisplay("FloatTween: [{_descriptor.Name}] {_initialValue} => {_targetValue} ({_duration} s)")]
-    public class FloatTween<TObject>: PropertyTweenBase<TObject, float>, IReversible<FloatTween<TObject>>
-        where TObject: DynamicObject
+    public class FloatTween<TObject, TPropBase>: PropertyTweenBase<TObject, TPropBase, float>, IReversible<FloatTween<TObject, TPropBase>>
+        where TObject: DynamicObject, TPropBase
     {
-        public FloatTween(IPropertyDescriptor<TObject, float> descriptor, float targetValue, float duration, InterpolationMethod interpolation = null)
+        public FloatTween(IPropertyDescriptor<TPropBase, float> descriptor, float targetValue, float duration, InterpolationMethod interpolation = null)
             : base(descriptor, targetValue, duration, interpolation)
         { }
 
@@ -27,9 +27,9 @@ namespace Corund.Behaviours.Tween
         /// <summary>
         /// Creates an effect that cancels out the current tween.
         /// </summary>
-        public FloatTween<TObject> Reverse(float? duration = null)
+        public FloatTween<TObject, TPropBase> Reverse(float? duration = null)
         {
-            return new FloatTween<TObject>(_descriptor, _initialValue, duration ?? _duration, _interpolation);
+            return new FloatTween<TObject, TPropBase>(_descriptor, _initialValue, duration ?? _duration, _interpolation);
         }
     }
 }

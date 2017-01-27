@@ -10,8 +10,8 @@ namespace Corund.Behaviours.Jitter
     /// Float jitter effect.
     /// </summary>
     [DebuggerDisplay("ColorJitter: [{_descriptor.Name}] {_xRange}, {_yRange} (each {_delay} s, relative = {_isRelative})")]
-    public class Vector2Jitter<TObject> : PropertyJitterBase<TObject, Vector2>
-        where TObject : DynamicObject
+    public class Vector2Jitter<TObject, TPropBase> : PropertyJitterBase<TObject, TPropBase, Vector2>
+        where TObject : DynamicObject, TPropBase
     {
         #region Constructor
 
@@ -23,7 +23,7 @@ namespace Corund.Behaviours.Jitter
         /// <param name="xRange">Jitter magnitude for X coordinate.</param>
         /// <param name="yRange">Jitter magnitude for Y coordinate.</param>
         /// <param name="isRelative">Flag indicating that magnitude is a fraction of the actual value, rather than an absolute.</param>
-        public Vector2Jitter(IPropertyDescriptor<TObject, Vector2> descriptor, float delay, float xRange, float yRange, bool isRelative = false)
+        public Vector2Jitter(IPropertyDescriptor<TPropBase, Vector2> descriptor, float delay, float xRange, float yRange, bool isRelative = false)
             : base(descriptor, delay)
         {
             _xRange = xRange;
