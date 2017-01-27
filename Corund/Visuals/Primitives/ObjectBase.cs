@@ -75,6 +75,11 @@ namespace Corund.Visuals.Primitives
         /// </summary>
         public bool IsVisible;
 
+        /// <summary>
+        /// Pause mode for current object.
+        /// </summary>
+        public PauseMode PauseMode;
+
         #endregion
 
         #region Interface
@@ -85,20 +90,9 @@ namespace Corund.Visuals.Primitives
         public abstract void Update();
 
         /// <summary>
-        /// The update screen method.
-        /// </summary>
-        public virtual void Draw()
-        {
-            if (!IsVisible)
-                return;
-
-            DrawInternal();
-        }
-
-        /// <summary>
         /// Renders the current object to current render target.
         /// </summary>
-        protected abstract void DrawInternal();
+        public abstract void Draw();
 
         #endregion
 
@@ -221,7 +215,7 @@ namespace Corund.Visuals.Primitives
         /// <summary>
         /// Remove the object from visual list.
         /// </summary>
-        public virtual void Remove()
+        public virtual void Remove(bool immediate = false)
         {
             var list = (Parent as ObjectGroup)?.Children;
             if (list == null)

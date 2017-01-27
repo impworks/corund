@@ -112,6 +112,7 @@
     <Compile Include="Visuals\Particles\ParticleGroup.cs" />
     <Compile Include="Visuals\Primitives\DynamicObject.cs" />
     <Compile Include="Visuals\Primitives\InteractiveObject.cs" />
+    <Compile Include="Visuals\Primitives\MovingObject.cs" />
     <Compile Include="Visuals\Primitives\ObjectBase.cs" />
     <Compile Include="Visuals\SpriteObject.cs" />
     <Compile Include="Visuals\TextObject.cs" />

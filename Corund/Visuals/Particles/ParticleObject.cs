@@ -8,51 +8,83 @@ namespace Corund.Visuals.Particles
     /// <summary>
     /// Base class for "thin" particles.
     /// </summary>
-    public class ParticleObject : DynamicObject
+    public class ParticleObject : MovingObject
     {
         #region Constructor
 
         public ParticleObject(Texture2D texture, Vector2 hotSpot)
         {
-            Texture = texture;
-            HotSpot = hotSpot;
+            _texture = texture;
+            _hotSpot = hotSpot;
         }
+
+        #endregion
+
+        #region Fields
+
+        /// <summary>
+        /// Current texture.
+        /// </summary>
+        private readonly Texture2D _texture;
+
+        /// <summary>
+        /// Offset from texture's top left coordinate that is the origin point for drawing.
+        /// </summary>
+        private readonly Vector2 _hotSpot;
 
         #endregion
 
         #region Properties
 
         /// <summary>
-        /// Current texture.
+        /// Particle's lifespan in seconds before it fades out.
         /// </summary>
-        public readonly Texture2D Texture;
+        public float LifeDuration;
 
         /// <summary>
-        /// Offset from texture's top left coordinate that is the origin point for drawing.
+        /// Particle's fade duration, after which it is removed completely.
         /// </summary>
-        public readonly Vector2 HotSpot;
+        public float FadeDuration;
+
+        /// <summary>
+        /// Time elapsed since the particle's creation.
+        /// </summary>
+        public float ElapsedTime;
 
         #endregion
 
         #region Drawing
 
+        public override void Update()
+        {
+            base.Update();
+
+            ElapsedTime += GameEngine.Delta;
+
+            var fadeElapsed = ElapsedTime - LifeDuration;
+            if (fadeElapsed >= 0)
+            {
+                Opacity = FadeDuration == 0
+                    ? 0 
+                    : 1 - (fadeElapsed/FadeDuration);
+            }
+        }
+
         /// <summary>
         /// Draws the particle to the screen.
         /// </summary>
-        protected override void DrawInternal()
+        public override void Draw()
         {
-            base.DrawInternal();
-
             // sic! SpriteBatch.Begin is called once in ParticleGroup.DrawInternal
 
             var transform = GetTransformInfo(true);
             GameEngine.Render.SpriteBatch.Draw(
-                Texture,
+                _texture,
                 transform.Position,
                 null,
                 Tint,
                 transform.Angle,
-                HotSpot,
+                _hotSpot,
                 transform.ScaleVector,
                 SpriteEffects.None,
                 GameEngine.Current.ZOrderFunction(this)

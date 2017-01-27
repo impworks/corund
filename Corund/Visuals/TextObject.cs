@@ -144,10 +144,8 @@ namespace Corund.Visuals
 
         #region Methods
 
-        public override void Draw()
+        protected override void DrawInternal()
         {
-            base.Draw();
-
             var transform = GetTransformInfo(true);
 
             GameEngine.Render.TryBeginBatch(BlendState);

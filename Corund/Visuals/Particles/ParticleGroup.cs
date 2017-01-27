@@ -1,7 +1,6 @@
 ﻿using Corund.Engine;
 using Corund.Tools.Helpers;
 using Corund.Tools.Jitter;
-using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Corund.Visuals.Particles
@@ -77,7 +76,12 @@ namespace Corund.Visuals.Particles
         /// <summary>
         /// Jittery lifespan of each particle in seconds.
         /// </summary>
-        public JitteryValue ParticleTimeToLive;
+        public JitteryValue ParticleLifeDuration;
+
+        /// <summary>
+        /// Jittery duration of a particle's fade out effect.
+        /// </summary>
+        public JitteryValue ParticleFadeDuration;
 
         /// <summary>
         /// Maximum number of particles before system self-destructs.
@@ -125,6 +129,12 @@ namespace Corund.Visuals.Particles
                     }
                 }
             }
+
+            Children.RemoveAll(obj =>
+            {
+                var pt = obj as ParticleObject;
+                return pt.ElapsedTime > pt.LifeDuration + pt.FadeDuration;
+            });
         }
 
         /// <summary>
@@ -144,17 +154,17 @@ namespace Corund.Visuals.Particles
         /// <summary>
         /// Creates a new particle.
         /// </summary>
-        protected abstract DynamicObject CreateParticle();
+        protected abstract ParticleObject CreateParticle();
 
         /// <summary>
         /// Applies settings to a newly created particle.
         /// </summary>
-        protected virtual void ConfigureParticle(DynamicObject obj)
+        protected virtual void ConfigureParticle(ParticleObject obj)
         {
             obj.Position = ParticleOrigin.GetValue();
             obj.Momentum = VectorHelper.FromLength(ParticleSpeed.GetValue(), ParticleAngle.GetValue());
-
-            GameEngine.Current.Timeline.Add(ParticleTimeToLive.GetValue(), obj.FadeOut);
+            obj.LifeDuration = ParticleLifeDuration.GetValue();
+            obj.FadeDuration = ParticleFadeDuration.GetValue();
         }
 
         /// <summary>

@@ -101,7 +101,7 @@ namespace Corund.Frames
         /// <summary>
         /// Current z-order function.
         /// </summary>
-        public readonly Func<DynamicObject, float> ZOrderFunction;
+        public readonly Func<ObjectBase, float> ZOrderFunction;
 
         /// <summary>
         /// Touch locations translated to current frame.

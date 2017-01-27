@@ -37,7 +37,7 @@ namespace Corund.Engine
             /// <summary>
             /// Z-coordinate sort function.
             /// </summary>
-            public static Func<DynamicObject, float> ZOrderFunction;
+            public static Func<ObjectBase, float> ZOrderFunction;
         }
     }
 }

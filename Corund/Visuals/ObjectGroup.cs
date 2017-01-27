@@ -59,10 +59,11 @@ namespace Corund.Visuals
         /// </summary>
         /// <param name="child">Object to insert.</param>
         /// <param name="toTop">Whether to put object on top or on bottom.</param>
-        public virtual void Add(ObjectBase child, bool toTop = true)
+        public virtual T Add<T>(T child, bool toTop = true)
+            where T: ObjectBase
         {
             if (child == null || Children.Contains(child))
-                return;
+                return child;
 
             (child.Parent as ObjectGroup)?.Children.Remove(child);
 
@@ -72,6 +73,7 @@ namespace Corund.Visuals
                 Children.Add(child);
 
             child.Parent = this;
+            return child;
         }
 
         /// <summary>

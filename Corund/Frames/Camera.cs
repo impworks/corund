@@ -16,5 +16,14 @@ namespace Corund.Frames
         public virtual Vector2 Offset => Position;
 
         #endregion
+
+        #region Methods
+
+        protected override void DrawInternal()
+        {
+            // does nothing
+        }
+
+        #endregion
     }
 }
