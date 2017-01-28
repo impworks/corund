@@ -98,8 +98,8 @@ namespace Corund.Engine
         {
             Delta = (float)time.ElapsedGameTime.TotalSeconds;
 
-            Frames.Update();
             Touch.Update();
+            Frames.Update();
             Debug.Update();
 
             ExecuteDeferredActions();
