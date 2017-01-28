@@ -108,8 +108,11 @@ namespace Corund.Visuals.Primitives
             var angle = Angle;
 
             var curr = Parent;
-            while (!(curr is FrameBase))
+            while (curr != null)
             {
+                if (curr is FrameBase)
+                    break;
+
                 angle += curr.Angle;
                 scale *= curr.ScaleVector;
                 position = position.Rotate(curr.Angle)*curr.ScaleVector + curr.Position;
@@ -213,9 +216,9 @@ namespace Corund.Visuals.Primitives
         }
 
         /// <summary>
-        /// Remove the object from visual list.
+        /// RemoveSelf the object from visual list.
         /// </summary>
-        public virtual void Remove(bool immediate = false)
+        public virtual void RemoveSelf(bool immediate = false)
         {
             var list = (Parent as ObjectGroup)?.Children;
             if (list == null)

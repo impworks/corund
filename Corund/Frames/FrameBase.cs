@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Corund.Engine;
+using Corund.Geometry;
 using Corund.Tools;
 using Corund.Visuals;
 using Corund.Visuals.Primitives;
@@ -186,6 +187,38 @@ namespace Corund.Frames
                 throw new ArgumentException($"View height must be within the range of 1..{screen.Y}.");
 
             return new Vector2(viewWidth ?? screen.X, viewHeight ?? screen.Y);
+        }
+
+        /// <summary>
+        /// Removes the frame from the list.
+        /// </summary>
+        public override void RemoveSelf(bool immediate = false)
+        {
+            if(immediate)
+                GameEngine.InvokeDeferred(() => GameEngine.Frames.Remove(this));
+            else
+                FadeOut();
+        }
+
+        /// <summary>
+        /// Returns the current view bounds in screen coordinates.
+        /// </summary>
+        protected RectPolygon GetViewRectPolygon()
+        {
+            var info = new TransformInfo(Position, Angle, ScaleVector);
+
+            var lu = Vector2.Zero - HotSpot;
+            var ru = new Vector2(Size.X, 0) - HotSpot;
+            var rl = Size - HotSpot;
+            var ll = new Vector2(0, Size.Y) - HotSpot;
+
+            return new RectPolygon(
+                info.Translate(lu),
+                info.Translate(ru),
+                info.Translate(rl),
+                info.Translate(ll),
+                Angle
+            );
         }
 
         #endregion

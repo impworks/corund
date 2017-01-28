@@ -69,12 +69,10 @@ namespace Corund.Visuals.Primitives
 
         #region Methods
 
-
-
         /// <summary>
-        /// Remove the object by applying fadeout effects.
+        /// RemoveSelf the object by applying fadeout effects.
         /// </summary>
-        public void FadeOut()
+        protected void FadeOut()
         {
             if (IsFadingOut)
                 return;
@@ -96,9 +94,20 @@ namespace Corund.Visuals.Primitives
             }
 
             if (timeout.IsAlmostNull())
-                Remove();
+                RemoveSelf(true);
             else
-                GameEngine.Current.Timeline.Add(timeout, () => Remove());
+                GameEngine.Current.Timeline.Add(timeout, () => RemoveSelf(true));
+        }
+
+        /// <summary>
+        /// Fires fade out effects and removes the object afterwards.
+        /// </summary>
+        public override void RemoveSelf(bool immediate = false)
+        {
+            if(immediate)
+                base.RemoveSelf(immediate);
+            else
+                FadeOut();
         }
 
         #endregion

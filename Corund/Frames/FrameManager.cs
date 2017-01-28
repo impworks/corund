@@ -70,7 +70,7 @@ namespace Corund.Frames
             GameEngine.InvokeDeferred(() => Add(frame));
 
             foreach (var oldFrame in _frames)
-                oldFrame.Timeline.Add(fadeInTimeout, oldFrame.FadeOut);
+                oldFrame.Timeline.Add(fadeInTimeout, () => oldFrame.RemoveSelf());
         }
 
         #endregion

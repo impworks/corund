@@ -1,4 +1,5 @@
 ﻿using Corund.Engine;
+using Corund.Geometry;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -42,6 +43,11 @@ namespace Corund.Frames
         protected bool AllowBackgroundTouches;
 
         /// <summary>
+        /// Checks whether window should be closed when the user taps in the background.
+        /// </summary>
+        protected bool CloseOnBackgroundTouch;
+
+        /// <summary>
         /// Color to draw over underlying frames.
         /// </summary>
         public Color ShadowColor
@@ -62,9 +68,25 @@ namespace Corund.Frames
         {
             base.Update();
 
+            var touches = GameEngine.Touch.Touches;
+            if (CloseOnBackgroundTouch && !IsFadingOut)
+            {
+                var frameRect = GetViewRectPolygon();
+                foreach (var touch in touches)
+                {
+                    if (!GameEngine.Touch.CanHandleTouch(touch, this))
+                        continue;
+
+                    if (!GeometryHelper.IsPointInsideRect(frameRect, touch.Position))
+                        continue;
+
+                    GameEngine.Touch.HandleTouch(touch, this);
+                    RemoveSelf();
+                }
+            }
+
             if (!AllowBackgroundTouches)
             {
-                var touches = GameEngine.Touch.Touches;
                 foreach(var touch in touches)
                     GameEngine.Touch.HandleTouch(touch, this);
             }
