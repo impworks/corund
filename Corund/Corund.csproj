@@ -35,7 +35,6 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
-    <Folder Include="Behaviours\Interaction\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviours\BehaviourManager.cs" />
@@ -46,6 +45,8 @@
     <Compile Include="Behaviours\Fade\IFadeInEffect.cs" />
     <Compile Include="Behaviours\Fade\IFadeOutEffect.cs" />
     <Compile Include="Behaviours\IEffect.cs" />
+    <Compile Include="Behaviours\Interaction\SwipeBehaviour.cs" />
+    <Compile Include="Behaviours\Interaction\SwipeInfo.cs" />
     <Compile Include="Behaviours\IReversible.cs" />
     <Compile Include="Behaviours\Jitter\ColorJitter.cs" />
     <Compile Include="Behaviours\Jitter\FloatJitter.cs" />
@@ -89,6 +90,7 @@
     <Compile Include="Sprites\Sprite.cs" />
     <Compile Include="Sprites\SpriteBase.cs" />
     <Compile Include="Sprites\TiledSprite.cs" />
+    <Compile Include="Tools\Direction.cs" />
     <Compile Include="Tools\Helpers\DynamicObjectHelper.cs" />
     <Compile Include="Tools\Helpers\RandomHelper.cs" />
     <Compile Include="Tools\Helpers\TextureHelper.cs" />

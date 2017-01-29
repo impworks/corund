@@ -8,6 +8,28 @@ namespace Corund.Tools.Helpers
     /// </summary>
     public static class VectorHelper
     {
+        #region Constants
+
+        /// <summary>
+        /// Known directions, ordered from 0 to 2PI (counter-clockwise) and looped.
+        /// </summary>
+        private static Direction[] OrderedDirections =
+        {
+            Direction.Right,
+            Direction.RightUp,
+            Direction.Up,
+            Direction.LeftUp,
+            Direction.Left,
+            Direction.LeftDown,
+            Direction.Down,
+            Direction.RightDown,
+            Direction.Right
+        };
+
+        #endregion
+
+        #region Methods
+
         /// <summary>
         /// Rotates the vector around its origin point by given amount of degrees.
         /// </summary>
@@ -43,5 +65,31 @@ namespace Corund.Tools.Helpers
             var vec = p2 - p1;
             return (float) Math.Atan2(vec.Y, vec.X);
         }
+
+        /// <summary>
+        /// Finds a known direction (using specified precision).
+        /// </summary>
+        public static Direction? GetDirection(this Vector2 vec, float precision = 0.5f)
+        {
+            const float fraction = 45f;
+
+            var angle = Math.Atan2(vec.Y, vec.X) * 180 / MathHelper.Pi;
+            var threshold = fraction*(1-precision);
+
+            for (var idx = 0; idx < OrderedDirections.Length; idx++)
+            {
+                var exact = idx*fraction;
+
+                if (angle <= exact + threshold && angle >= exact - threshold)
+                    return OrderedDirections[idx];
+
+                if (angle < exact - threshold)
+                    return null;
+            }
+
+            return null;
+        }
+
+        #endregion
     }
 }
