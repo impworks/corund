@@ -26,6 +26,11 @@ namespace Corund.Behaviours.Interaction
         /// </summary>
         private const float MAX_DURATION = 0.3f;
 
+        /// <summary>
+        /// Minimum distance between swipe start and end.
+        /// </summary>
+        private const float MIN_DISTANCE = 200;
+
         #endregion
 
         #region Constructor
@@ -100,15 +105,18 @@ namespace Corund.Behaviours.Interaction
                 if (touch.State == TouchLocationState.Released)
                 {
                     var dist = touch.Position - _start.Value.Position;
-                    var dir = dist.GetDirection(STRICTNESS);
-                    if (dir != null && _direction.HasFlag(dir.Value))
+                    if (dist.Length() > MIN_DISTANCE)
                     {
-                        _callback(new SwipeInfo(
-                            _start.Value.Position,
-                            touch.Position,
-                            _duration,
-                            dir.Value
-                        ));
+                        var dir = dist.GetDirection(STRICTNESS);
+                        if (dir != null && _direction.HasFlag(dir.Value))
+                        {
+                            _callback(new SwipeInfo(
+                                _start.Value.Position,
+                                touch.Position,
+                                _duration,
+                                dir.Value
+                            ));
+                        }
                     }
                 }
 
