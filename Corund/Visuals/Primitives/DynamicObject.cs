@@ -1,6 +1,7 @@
 ﻿using Corund.Behaviours;
 using Corund.Behaviours.Fade;
 using Corund.Engine;
+using Corund.Shaders;
 using Corund.Tools;
 using Corund.Tools.Helpers;
 
@@ -32,6 +33,11 @@ namespace Corund.Visuals.Primitives
         /// </summary>
         public bool IsFadingOut { get; protected set; }
 
+        /// <summary>
+        /// Current shader effect applied to the object.
+        /// </summary>
+        public ShaderBase Shader;
+
         #endregion
 
         #region ObjectBase overrides
@@ -47,6 +53,8 @@ namespace Corund.Visuals.Primitives
 
             if ((pm & PauseMode.Behaviours) == 0)
                 Behaviours.Update();
+
+            Shader?.Update();
         }
 
         /// <summary>
@@ -57,7 +65,10 @@ namespace Corund.Visuals.Primitives
             if (!IsVisible)
                 return;
 
-            DrawInternal();
+            if(Shader == null)
+                DrawInternal();
+            else
+                Shader.DrawWrapper(DrawInternal);
         }
 
         /// <summary>

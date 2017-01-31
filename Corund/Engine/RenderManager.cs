@@ -43,7 +43,7 @@ namespace Corund.Engine
         /// <summary>
         /// The game's spritebatch.
         /// </summary>
-        public readonly SpriteBatch SpriteBatch;
+        public SpriteBatch SpriteBatch;
 
         /// <summary>
         /// Stack of current render targets.
@@ -65,6 +65,8 @@ namespace Corund.Engine
         /// </summary>
         private bool _isStarted;
 
+        public bool IsLocked;
+
         #endregion
 
         #region Methods
@@ -74,6 +76,9 @@ namespace Corund.Engine
         /// </summary>
         public void TryBeginBatch(BlendState blendState, bool tileMode = false)
         {
+            if (IsLocked)
+                return;
+
             var isModified = _blendState != blendState || _tileMode != tileMode;
             if(_isStarted && !isModified)
                 return;

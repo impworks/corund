@@ -27,9 +27,14 @@ namespace Corund.Tools
         /// <summary>
         /// Animation of sprites.
         /// </summary>
-        SpriteAnimation = 0x10,
+        SpriteAnimation = 0x08,
+
+        /// <summary>
+        /// Shader effects.
+        /// </summary>
+        Shaders = 0x10,
 
         None = 0,
-        All = Momentum | Behaviours | SpriteAnimation
+        All = Momentum | Behaviours | SpriteAnimation | Shaders
     }
 }

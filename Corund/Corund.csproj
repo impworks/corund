@@ -83,6 +83,8 @@
     <Compile Include="Geometry\IGeometry.cs" />
     <Compile Include="Geometry\RectPolygon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shaders\ColorOverlayShader.cs" />
+    <Compile Include="Shaders\ShaderBase.cs" />
     <Compile Include="Sound\SoundEffectInfo.cs" />
     <Compile Include="Sound\SoundManager.cs" />
     <Compile Include="Sprites\AnimatedSprite.cs" />
