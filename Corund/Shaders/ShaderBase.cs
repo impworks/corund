@@ -1,5 +1,6 @@
 ﻿using System;
 using Corund.Engine;
+using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Corund.Shaders
@@ -40,7 +41,7 @@ namespace Corund.Shaders
         /// <summary>
         /// Sets up context for drawing onto the intermediate texture.
         /// </summary>
-        public abstract void DrawWrapper(Action innerDraw);
+        public abstract void DrawWrapper(DynamicObject obj, Action innerDraw);
 
         /// <summary>
         /// Creates the render target for this shader.

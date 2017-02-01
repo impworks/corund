@@ -63,9 +63,19 @@ namespace Corund.Shaders
         private static DepthStencilState _stencilAfter;
 
         /// <summary>
-        /// Overlay color.
+        /// Original color specified by user.
         /// </summary>
         private Color _color;
+
+        /// <summary>
+        /// Opaque overlay color.
+        /// </summary>
+        private Color _overlayColor;
+
+        /// <summary>
+        /// Opacity container color.
+        /// </summary>
+        private Color _opacityColor;
 
         /// <summary>
         /// Overlay texture.
@@ -76,9 +86,6 @@ namespace Corund.Shaders
         /// Alpha effect.
         /// </summary>
         private readonly AlphaTestEffect _alphaEffect;
-
-        private Func<ObjectBase, float> _funcBackup;
-        private SpriteBatch _batchBackup;
 
         #endregion
 
@@ -96,15 +103,27 @@ namespace Corund.Shaders
                     return;
 
                 _color = value;
-                _texture.SetData(new[] {value});
+                _overlayColor = new Color(value, 1f);
+                _texture.SetData(new[] { _overlayColor });
+
+                Opacity = value.A/255f;
             }
+        }
+
+        /// <summary>
+        /// Overlay opacity.
+        /// </summary>
+        public float Opacity
+        {
+            get { return _opacityColor.A/255f; }
+            set { _opacityColor = new Color(value, value, value, value); }
         }
 
         #endregion
 
         #region Methods
 
-        public override void DrawWrapper(Action innerDraw)
+        public override void DrawWrapper(DynamicObject obj, Action innerDraw)
         {
             var render = GameEngine.Render;
 
@@ -112,14 +131,10 @@ namespace Corund.Shaders
             GameEngine.Current.ZOrderFunction = x => 0f;
 
             // using temporary target
-            render.PushContext(_renderTarget);
+            render.PushContext(_renderTarget, Color.Transparent);
             {
-                render.Device.Clear(Color.Transparent);
-
                 // PASS 1: render object to stencil buffer
                 {
-                    render.Device.Clear(ClearOptions.Stencil, Color.Black, 0f, 0);
-
                     render.SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, _stencilBefore, null, _alphaEffect);
                     render.IsSpriteBatchLocked = true;
 
@@ -144,7 +159,7 @@ namespace Corund.Shaders
             // PASS 3: render result to outer context
             {
                 render.TryBeginBatch(BlendState.AlphaBlend);
-                render.SpriteBatch.Draw(_renderTarget, Vector2.Zero, Color.White);
+                render.SpriteBatch.Draw(_renderTarget, Vector2.Zero, _opacityColor);
             }
         }
 
@@ -155,9 +170,11 @@ namespace Corund.Shaders
                 GameEngine.Render.Device,
                 pp.BackBufferWidth,
                 pp.BackBufferHeight,
-                false,
+                true,
                 SurfaceFormat.Color,
-                (DepthFormat)3      // Actual DepthFormat.Depth24Stencil8
+                (DepthFormat)3,      // Actual DepthFormat.Depth24Stencil8,
+                1,
+                RenderTargetUsage.PreserveContents
             );
         }
 

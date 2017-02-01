@@ -68,7 +68,7 @@ namespace Corund.Visuals.Primitives
             if(Shader == null)
                 DrawInternal();
             else
-                Shader.DrawWrapper(DrawInternal);
+                Shader.DrawWrapper(this, DrawInternal);
         }
 
         /// <summary>

@@ -95,6 +95,9 @@ namespace Corund.Engine
         /// </summary>
         public void TryBeginBatch(BlendState blendState, bool tileMode = false)
         {
+            if (IsSpriteBatchLocked)
+                return;
+
             var effect = _effectStack.Count > 0 ? _effectStack.Peek() : null;
 
             var isModified = _blendState != blendState

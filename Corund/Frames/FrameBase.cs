@@ -24,7 +24,16 @@ namespace Corund.Frames
             Bounds = new Rectangle(0, 0, (int)width, (int)height);
             ViewSize = GetViewSize(viewWidth, viewHeight);
             
-            RenderTarget = new RenderTarget2D(GameEngine.Render.Device, (int)ViewSize.X, (int)ViewSize.Y);
+            RenderTarget = new RenderTarget2D(
+                GameEngine.Render.Device,
+                (int)ViewSize.X,
+                (int)ViewSize.Y,
+                false,
+                SurfaceFormat.Color,
+                (DepthFormat) 2,
+                1,
+                RenderTargetUsage.PreserveContents
+            );
             HotSpot = ViewSize/2;
             Position = GameEngine.Screen.Size/2;
 
