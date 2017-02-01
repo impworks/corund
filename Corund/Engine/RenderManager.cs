@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Corund.Engine.Config;
+using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -16,6 +18,7 @@ namespace Corund.Engine
         {
             DeviceManager = opts.GraphicsDeviceManager;
             Device = DeviceManager.GraphicsDevice;
+
             SpriteBatch = new SpriteBatch(Device);
 
             DeviceManager.SupportedOrientations = opts.Orientation;
@@ -24,6 +27,7 @@ namespace Corund.Engine
             DeviceManager.ApplyChanges();
 
             _renderStack = new Stack<RenderTarget2D>(4);
+            _effectStack = new Stack<Effect>(3);
         }
 
         #endregion
@@ -43,12 +47,24 @@ namespace Corund.Engine
         /// <summary>
         /// The game's spritebatch.
         /// </summary>
-        public SpriteBatch SpriteBatch;
+        public readonly SpriteBatch SpriteBatch;
+
+        /// <summary>
+        /// Flag indicating that the SpriteBatch is locked in current mode.
+        /// All rendering will use current mode.
+        /// This is required for some effects.
+        /// </summary>
+        public bool IsSpriteBatchLocked;
 
         /// <summary>
         /// Stack of current render targets.
         /// </summary>
         private readonly Stack<RenderTarget2D> _renderStack;
+
+        /// <summary>
+        /// Stack of current effects.
+        /// </summary>
+        private readonly Stack<Effect> _effectStack;
 
         /// <summary>
         /// Currently set blending state.
@@ -65,7 +81,10 @@ namespace Corund.Engine
         /// </summary>
         private bool _isStarted;
 
-        public bool IsLocked;
+        /// <summary>
+        /// Effect to use for current batch.
+        /// </summary>
+        private Effect _activeEffect;
 
         #endregion
 
@@ -76,10 +95,12 @@ namespace Corund.Engine
         /// </summary>
         public void TryBeginBatch(BlendState blendState, bool tileMode = false)
         {
-            if (IsLocked)
-                return;
+            var effect = _effectStack.Count > 0 ? _effectStack.Peek() : null;
 
-            var isModified = _blendState != blendState || _tileMode != tileMode;
+            var isModified = _blendState != blendState
+                             || _tileMode != tileMode
+                             || _activeEffect != effect;
+
             if(_isStarted && !isModified)
                 return;
 
@@ -90,12 +111,14 @@ namespace Corund.Engine
             SpriteBatch.Begin(
                 SpriteSortMode.BackToFront,
                 blendState,
-                samplerState 
+                samplerState,
+                effect: effect
             );
 
             _blendState = blendState;
             _tileMode = tileMode;
             _isStarted = true;
+            _activeEffect = effect;
         }
 
         /// <summary>
@@ -137,6 +160,22 @@ namespace Corund.Engine
                 Device.SetRenderTarget(_renderStack.Peek());
 
             return target;
+        }
+
+        /// <summary>
+        /// Sets a new effect context.
+        /// </summary>
+        public void PushEffect(Effect effect)
+        {
+            _effectStack.Push(effect);
+        }
+
+        /// <summary>
+        /// Pops current effect.
+        /// </summary>
+        public void PopEffect()
+        {
+            _effectStack.Pop();
         }
 
         #endregion

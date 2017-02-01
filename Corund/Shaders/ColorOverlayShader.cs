@@ -106,37 +106,46 @@ namespace Corund.Shaders
 
         public override void DrawWrapper(Action innerDraw)
         {
-            GameEngine.Render.PushContext(_renderTarget);
+            var render = GameEngine.Render;
 
             var funcBackup = GameEngine.Current.ZOrderFunction;
             GameEngine.Current.ZOrderFunction = x => 0f;
 
-            var batchBackup = GameEngine.Render.SpriteBatch;
-            GameEngine.Render.SpriteBatch = new SpriteBatch(GameEngine.Render.Device);
+            // using temporary target
+            render.PushContext(_renderTarget);
+            {
+                render.Device.Clear(Color.Transparent);
 
-            GameEngine.Render.Device.Clear(ClearOptions.Stencil, Color.Black, 0f, 0);
-            GameEngine.Render.IsLocked = true;
-            GameEngine.Render.SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, _stencilBefore, null, _alphaEffect);
+                // PASS 1: render object to stencil buffer
+                {
+                    render.Device.Clear(ClearOptions.Stencil, Color.Black, 0f, 0);
 
-            innerDraw();
+                    render.SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, _stencilBefore, null, _alphaEffect);
+                    render.IsSpriteBatchLocked = true;
 
-            GameEngine.Render.SpriteBatch.End();
+                    innerDraw();
 
-            GameEngine.Render.IsLocked = false;
+                    render.IsSpriteBatchLocked = false;
+                    render.SpriteBatch.End();
+                }
 
-            GameEngine.Render.Device.Clear(ClearOptions.Target, Color.Red, 0f, 0);
+                // PASS 2: render overlay to RT using stencil
+                {
+                    render.SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, _stencilAfter, null);
+                    render.SpriteBatch.Draw(_texture, GameEngine.Render.Device.Viewport.Bounds, Color.White);
+                    render.SpriteBatch.End();
+                }
 
-            GameEngine.Render.SpriteBatch.Begin(SpriteSortMode.Deferred, null, null, _stencilAfter, null);
-            GameEngine.Render.SpriteBatch.Draw(_texture, GameEngine.Render.Device.Viewport.Bounds, Color.White);
-            GameEngine.Render.SpriteBatch.End();
+                render.PopContext();
+            }
 
             GameEngine.Current.ZOrderFunction = funcBackup;
-            GameEngine.Render.SpriteBatch = batchBackup;
 
-            GameEngine.Render.PopContext();
-
-            GameEngine.Render.TryBeginBatch(BlendState.AlphaBlend);
-            GameEngine.Render.SpriteBatch.Draw(_renderTarget, Vector2.Zero, Color.White);
+            // PASS 3: render result to outer context
+            {
+                render.TryBeginBatch(BlendState.AlphaBlend);
+                render.SpriteBatch.Draw(_renderTarget, Vector2.Zero, Color.White);
+            }
         }
 
         protected override RenderTarget2D CreateRenderTarget()
