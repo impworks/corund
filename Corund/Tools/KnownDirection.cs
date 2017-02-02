@@ -6,7 +6,7 @@ namespace Corund.Tools
     /// Known directions.
     /// </summary>
     [Flags]
-    public enum Direction
+    public enum KnownDirection
     {
         Left        = 0x001,
         Right       = 0x002,

@@ -92,7 +92,8 @@
     <Compile Include="Sprites\Sprite.cs" />
     <Compile Include="Sprites\SpriteBase.cs" />
     <Compile Include="Sprites\TiledSprite.cs" />
-    <Compile Include="Tools\Direction.cs" />
+    <Compile Include="Tools\Helpers\KnownDirectionHelper.cs" />
+    <Compile Include="Tools\KnownDirection.cs" />
     <Compile Include="Tools\Helpers\DynamicObjectHelper.cs" />
     <Compile Include="Tools\Helpers\RandomHelper.cs" />
     <Compile Include="Tools\Helpers\TextureHelper.cs" />

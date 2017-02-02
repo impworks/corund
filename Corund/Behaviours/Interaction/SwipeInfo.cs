@@ -1,5 +1,4 @@
-﻿using Corund.Tools;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 
 namespace Corund.Behaviours.Interaction
 {
@@ -8,32 +7,26 @@ namespace Corund.Behaviours.Interaction
     /// </summary>
     public struct SwipeInfo
     {
-        public SwipeInfo(Vector2 start, Vector2 end, float duration, Direction dir)
+        public SwipeInfo(Vector2 origin, Vector2 vector, float duration)
         {
-            StartPosition = start;
-            EndPosition = end;
+            Origin = origin;
+            Vector = vector;
             Duration = duration;
-            Direction = dir;
         }
 
         /// <summary>
         /// The point where the swipe has originated (in frame coordinates).
         /// </summary>
-        public readonly Vector2 StartPosition;
+        public readonly Vector2 Origin;
 
         /// <summary>
         /// The point where the swipe has finished (in frame coordinates).
         /// </summary>
-        public readonly Vector2 EndPosition;
+        public readonly Vector2 Vector;
 
         /// <summary>
         /// The duration of the swipe (in seconds).
         /// </summary>
         public readonly float Duration;
-
-        /// <summary>
-        /// The detected duration of the swipe.
-        /// </summary>
-        public readonly Direction Direction;
     }
 }

@@ -29,13 +29,13 @@ namespace Corund.Behaviours.Interaction
         /// <summary>
         /// Minimum distance between swipe start and end.
         /// </summary>
-        private const float MIN_DISTANCE = 200;
+        private const float MIN_DISTANCE = 30;
 
         #endregion
 
         #region Constructor
 
-        public SwipeBehaviour(Direction direction, Action<SwipeInfo> callback)
+        public SwipeBehaviour(KnownDirection direction, Action<SwipeInfo> callback)
         {
             _callback = callback;
             _direction = direction;
@@ -53,7 +53,7 @@ namespace Corund.Behaviours.Interaction
         /// <summary>
         /// Allowed direction(s) to detect.
         /// </summary>
-        private readonly Direction _direction;
+        private readonly KnownDirection _direction;
 
         /// <summary>
         /// Origin of the swipe gesture.
@@ -104,17 +104,17 @@ namespace Corund.Behaviours.Interaction
 
                 if (touch.State == TouchLocationState.Released)
                 {
-                    var dist = touch.Position - _start.Value.Position;
-                    if (dist.Length() > MIN_DISTANCE)
+                    var vec = touch.Position - _start.Value.Position;
+                    var dist = vec.Length() / _duration;
+                    if (dist > MIN_DISTANCE)
                     {
-                        var dir = dist.GetDirection(STRICTNESS);
+                        var dir = vec.GetDirection(STRICTNESS);
                         if (dir != null && _direction.HasFlag(dir.Value))
                         {
                             _callback(new SwipeInfo(
                                 _start.Value.Position,
-                                touch.Position,
-                                _duration,
-                                dir.Value
+                                touch.Position - _start.Value.Position,
+                                _duration
                             ));
                         }
                     }
