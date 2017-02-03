@@ -59,6 +59,7 @@
     <Compile Include="Behaviours\Movement\IPathSegment.cs" />
     <Compile Include="Behaviours\Movement\LineMovementBehaviour.cs" />
     <Compile Include="Behaviours\Movement\LineSegment.cs" />
+    <Compile Include="Behaviours\Movement\ParallaxBehaviour.cs" />
     <Compile Include="Behaviours\Movement\PathBehaviourBase.cs" />
     <Compile Include="Behaviours\Tween\ColorTween.cs" />
     <Compile Include="Behaviours\Tween\FloatTween.cs" />
