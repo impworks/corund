@@ -20,11 +20,12 @@ namespace Corund.Engine
             DeviceManager.SupportedOrientations = opts.Orientation;
             DeviceManager.IsFullScreen = true;
             DeviceManager.SynchronizeWithVerticalRetrace = true;
-
-            if (opts.Orientation == DisplayOrientation.Portrait)
+            
+            var width = DeviceManager.PreferredBackBufferWidth;
+            var height = DeviceManager.PreferredBackBufferHeight;
+            if (opts.Orientation == DisplayOrientation.Portrait && width > height)
             {
-                var width = DeviceManager.PreferredBackBufferWidth;
-                DeviceManager.PreferredBackBufferWidth = DeviceManager.PreferredBackBufferHeight;
+                DeviceManager.PreferredBackBufferWidth = height;
                 DeviceManager.PreferredBackBufferHeight = width;
             }
 

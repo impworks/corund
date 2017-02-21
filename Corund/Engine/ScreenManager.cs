@@ -19,6 +19,9 @@ namespace Corund.Engine
                 ? new Vector2(viewport.Width, viewport.Height)
                 : options.DesiredScreenSize;
 
+            if (options.Orientation == DisplayOrientation.Portrait && Size.X > Size.Y)
+                Size = new Vector2(Size.Y, Size.X);
+
             Rect = new Rectangle(0, 0, (int)Size.X, (int)Size.Y);
         }
 
