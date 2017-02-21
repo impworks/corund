@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Corund.Engine.Config;
-using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -19,15 +17,24 @@ namespace Corund.Engine
             DeviceManager = opts.GraphicsDeviceManager;
             Device = DeviceManager.GraphicsDevice;
 
-            SpriteBatch = new SpriteBatch(Device);
-
             DeviceManager.SupportedOrientations = opts.Orientation;
             DeviceManager.IsFullScreen = true;
             DeviceManager.SynchronizeWithVerticalRetrace = true;
+
+            if (opts.Orientation == DisplayOrientation.Portrait)
+            {
+                var width = DeviceManager.PreferredBackBufferWidth;
+                DeviceManager.PreferredBackBufferWidth = DeviceManager.PreferredBackBufferHeight;
+                DeviceManager.PreferredBackBufferHeight = width;
+            }
+
             DeviceManager.ApplyChanges();
 
             _renderStack = new Stack<RenderTarget2D>(4);
             _effectStack = new Stack<Effect>(3);
+
+            SpriteBatch = new SpriteBatch(Device);
+            WorldViewProjection = GetWorldViewProjectionMatrix(Device.Viewport);
         }
 
         #endregion
@@ -55,6 +62,12 @@ namespace Corund.Engine
         /// This is required for some effects.
         /// </summary>
         public bool IsSpriteBatchLocked;
+
+        /// <summary>
+        /// Default WorldViewProjection matrix that matches the behaviour of SpriteBatch.
+        /// To be used by shaders.
+        /// </summary>
+        public readonly Matrix WorldViewProjection;
 
         /// <summary>
         /// Stack of current render targets.
@@ -146,7 +159,7 @@ namespace Corund.Engine
             _renderStack.Push(target);
             Device.SetRenderTarget(target);
 
-            if(clearColor != null)
+            if (clearColor != null)
                 Device.Clear(clearColor.Value);
         }
 
@@ -159,7 +172,7 @@ namespace Corund.Engine
 
             var target = _renderStack.Pop();
 
-            if(_renderStack.Count > 0)
+            if (_renderStack.Count > 0)
                 Device.SetRenderTarget(_renderStack.Peek());
 
             return target;
@@ -188,7 +201,7 @@ namespace Corund.Engine
         /// <summary>
         /// Gets the appropriate sampler state depending on sprite mode and engine settings.
         /// </summary>
-        public static SamplerState GetSamplerState(bool tileMode)
+        private static SamplerState GetSamplerState(bool tileMode)
         {
             var useSmoothing = GameEngine.Options.EnableAntiAliasing;
             if (useSmoothing)
@@ -199,6 +212,16 @@ namespace Corund.Engine
             return tileMode
                 ? SamplerState.PointWrap
                 : SamplerState.PointClamp;
+        }
+
+        /// <summary>
+        /// Creates the default WorldViewProjection matrix.
+        /// </summary>
+        private static Matrix GetWorldViewProjectionMatrix(Viewport viewport)
+        {
+            var halfPixel = Matrix.CreateTranslation(-0.5f, -0.5f, 0);
+            var offCenter = Matrix.CreateOrthographicOffCenter(0, viewport.Width, viewport.Height, 0, 0, 1);
+            return halfPixel*offCenter;
         }
 
         #endregion

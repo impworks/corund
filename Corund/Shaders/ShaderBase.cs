@@ -52,7 +52,12 @@ namespace Corund.Shaders
             return new RenderTarget2D(
                 GameEngine.Render.Device,
                 pp.BackBufferWidth,
-                pp.BackBufferHeight
+                pp.BackBufferHeight,
+                false,
+                SurfaceFormat.Color,
+                (DepthFormat) 2,
+                1,
+                RenderTargetUsage.PreserveContents
             );
         }
 
