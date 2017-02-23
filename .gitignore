@@ -250,3 +250,8 @@ paket-files/
 # JetBrains Rider
 .idea/
 *.sln.iml
+
+Corund.Effects.Android/**/*.xnb
+Corund.Effects.Android/**/*.mgcontent
+Corund.Effects.WP8/**/*.xnb
+Corund.Effects.WP8/**/*.mgcontent
