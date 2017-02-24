@@ -10,10 +10,11 @@ namespace Corund.Engine.Config
     {
         #region Constructor
 
-        public GameEngineOptions(GraphicsDeviceManager gm, ContentManager content)
+        public GameEngineOptions(Game game, GraphicsDeviceManager manager)
         {
-            GraphicsDeviceManager = gm;
-            Content = content;
+            Game = game;
+            GraphicsDeviceManager = manager;
+            Content = game.Content;
 
             Orientation = DisplayOrientation.Portrait;
             ResolutionAdaptationMode = ResolutionAdaptationMode.Adjust;
@@ -25,12 +26,17 @@ namespace Corund.Engine.Config
         #region Properties
 
         /// <summary>
-        /// Reference to graphic device manager (from XNA).
+        /// Reference to the Game instance.
+        /// </summary>
+        public Game Game;
+
+        /// <summary>
+        /// Reference to graphic device manager.
         /// </summary>
         public GraphicsDeviceManager GraphicsDeviceManager;
 
         /// <summary>
-        /// Reference to content manager (from XNA).
+        /// Reference to content manager.
         /// </summary>
         public ContentManager Content;
 
@@ -54,6 +60,11 @@ namespace Corund.Engine.Config
         /// Use anti-aliased rendering or not?
         /// </summary>
         public bool EnableAntiAliasing;
+
+        /// <summary>
+        /// Platform-specific content provider.
+        /// </summary>
+        public IContentProvider ContentProvider;
 
         #endregion
     }

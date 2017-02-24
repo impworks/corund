@@ -30,6 +30,11 @@ namespace Corund.Engine
             Touch = new TouchManager();
             Debug = new DebugManager(Render.Device);
 
+            if (opts.ContentProvider != null)
+            {
+                EmbeddedContent = new EmbeddedContentManager(opts.Game.Services, opts.ContentProvider);
+            }
+
             _deferredActions = new List<Action>();
         }
 
@@ -38,9 +43,14 @@ namespace Corund.Engine
         #region Fields
 
         /// <summary>
-        /// Gets the content manager.
+        /// Gets the game's own content manager.
         /// </summary>
         public static ContentManager Content { get; private set; }
+
+        /// <summary>
+        /// Gets the Corund's embedded content manager.
+        /// </summary>
+        public static EmbeddedContentManager EmbeddedContent { get; private set; }
 
         /// <summary>
         /// Gets the current timer delta value.

@@ -67,7 +67,9 @@
     <Compile Include="Behaviours\Tween\PropertyTweenBase.cs" />
     <Compile Include="Behaviours\Tween\Vector2Tween.cs" />
     <Compile Include="Engine\Config\GameEngineOptions.cs" />
+    <Compile Include="Engine\Config\IContentProvider.cs" />
     <Compile Include="Engine\Config\ResolutionAdaptationMode.cs" />
+    <Compile Include="Engine\EmbeddedContentManager.cs" />
     <Compile Include="Engine\GameEngine.cs" />
     <Compile Include="Engine\TouchManager.cs" />
     <Compile Include="Frames\Camera.cs" />

@@ -15,7 +15,10 @@ namespace Corund.Shaders
 
         public BlurShader(float blurAmount = 2.0f)
         {
-            _effect = GameEngine.Content.Load<Effect>("blur");
+            if (GameEngine.EmbeddedContent == null)
+                throw new ArgumentException("ContentProvider is not specified in GameEngine configuration!");
+
+            _effect = GameEngine.EmbeddedContent.Load<Effect>("blur");
             _renderTarget2 = CreateRenderTarget();
 
             Amount = blurAmount;
