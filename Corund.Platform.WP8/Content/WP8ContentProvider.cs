@@ -3,7 +3,7 @@ using System.IO;
 using System.Reflection;
 using Corund.Engine.Config;
 
-namespace Corund.Effects.WP8.Content
+namespace Corund.Platform.WP8.Content
 {
     /// <summary>
     /// IContentProvider implementation for WP8.
@@ -15,7 +15,7 @@ namespace Corund.Effects.WP8.Content
         /// <summary>
         /// Assembly-specific prefix for all resource names.
         /// </summary>
-        private const string RESOURCE_PREFIX = "Corund.Effects.WP8.Content.Corund.Effects";
+        private const string RESOURCE_PREFIX = "Corund.Platform.WP8.Content.Corund.Effects";
 
         #endregion
 

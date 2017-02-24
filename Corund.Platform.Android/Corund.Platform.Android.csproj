@@ -5,11 +5,11 @@
     <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{95460B27-D54E-42DD-889D-366AF8DCACD2}</ProjectGuid>
+    <ProjectGuid>{7A2AF8AC-AB47-4CB7-AAA4-5553124737BD}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Corund.Effects.WP8</RootNamespace>
-    <AssemblyName>Corund.Effects.WP8</AssemblyName>
+    <RootNamespace>Corund.Platform.Android</RootNamespace>
+    <AssemblyName>Corund.Platform.Android</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -39,7 +39,7 @@
     <MonoGameContentReference Include="Content\Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Content\WP8ContentProvider.cs" />
+    <Compile Include="Content\AndroidContentProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

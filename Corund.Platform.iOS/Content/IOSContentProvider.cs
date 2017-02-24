@@ -3,27 +3,27 @@ using System.IO;
 using System.Reflection;
 using Corund.Engine.Config;
 
-namespace Corund.Effects.Android.Content
+namespace Corund.Platform.IOS.Content
 {
     /// <summary>
     /// IContentProvider implementation for WP8.
     /// </summary>
-    public class AndroidContentProvider: IContentProvider
+    public class IOSContentProvider : IContentProvider
     {
         #region Constants
 
         /// <summary>
         /// Assembly-specific prefix for all resource names.
         /// </summary>
-        private const string RESOURCE_PREFIX = "Corund.Effects.Android.Content.Corund.Effects";
+        private const string RESOURCE_PREFIX = "Corund.Platform.IOS.Content.Corund.Effects";
 
         #endregion
 
         #region Constructor
 
-        public AndroidContentProvider()
+        public IOSContentProvider()
         {
-            _assembly = typeof(AndroidContentProvider).GetTypeInfo().Assembly;
+            _assembly = typeof(IOSContentProvider).GetTypeInfo().Assembly;
         }
 
         #endregion
