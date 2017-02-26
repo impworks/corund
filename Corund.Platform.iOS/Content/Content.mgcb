@@ -13,9 +13,9 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin ../../Corund.Effects/blur.fx
+#begin ../../Corund.Effects/gauss-blur.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:../../Corund.Effects/blur.fx
+/build:../../Corund.Effects/gauss-blur.fx
 

@@ -251,7 +251,9 @@ paket-files/
 .idea/
 *.sln.iml
 
-Corund.Effects.Android/**/*.xnb
-Corund.Effects.Android/**/*.mgcontent
-Corund.Effects.WP8/**/*.xnb
-Corund.Effects.WP8/**/*.mgcontent
+Corund.Platform.Android/**/*.xnb
+Corund.Platform.Android/**/*.mgcontent
+Corund.Platform.WP8/**/*.xnb
+Corund.Platform.WP8/**/*.mgcontent
+Corund.Platform.IOS/**/*.xnb
+Corund.Platform.IOS/**/*.mgcontent

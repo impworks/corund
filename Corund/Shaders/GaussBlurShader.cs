@@ -9,16 +9,22 @@ namespace Corund.Shaders
     /// <summary>
     /// Applies a blur effect to an object.
     /// </summary>
-    public class BlurShader : ShaderBase
+    public class GaussBlurShader : ShaderBase
     {
         #region Constructor
 
-        public BlurShader(float blurAmount = 2.0f)
+        public GaussBlurShader()
+            : this(new Vector2(2))
+        {
+            
+        }
+
+        public GaussBlurShader(Vector2 blurAmount)
         {
             if (GameEngine.EmbeddedContent == null)
                 throw new ArgumentException("ContentProvider is not specified in GameEngine configuration!");
 
-            _effect = GameEngine.EmbeddedContent.Load<Effect>("blur");
+            _effect = GameEngine.EmbeddedContent.Load<Effect>("gauss-blur");
             _renderTarget2 = CreateRenderTarget();
 
             Amount = blurAmount;
@@ -36,7 +42,7 @@ namespace Corund.Shaders
         /// <summary>
         ///  Amount of blur to be applied.
         /// </summary>
-        private float _amount;
+        private Vector2 _amount;
 
         /// <summary>
         /// Secondary render target.
@@ -72,7 +78,7 @@ namespace Corund.Shaders
         /// <summary>
         /// Amount of blur to apply.
         /// </summary>
-        public float Amount
+        public Vector2 Amount
         {
             get { return _amount; }
             set
@@ -139,7 +145,7 @@ namespace Corund.Shaders
             var sampleOffsets = new Vector2[sampleCount];
 
             // The first sample always has a zero offset.
-            sampleWeights[0] = ComputeWeight(0);
+            sampleWeights[0] = ComputeWeight(0, dx, dy);
             sampleOffsets[0] = new Vector2(0);
 
             // Maintain a sum of all the weighting values.
@@ -150,7 +156,7 @@ namespace Corund.Shaders
             for (var i = 0; i < sampleCount / 2; i++)
             {
                 // Store weights for the positive and negative taps.
-                var weight = ComputeWeight(i + 1);
+                var weight = ComputeWeight(i + 1, dx, dy);
 
                 sampleWeights[i * 2 + 1] = weight;
                 sampleWeights[i * 2 + 2] = weight;
@@ -184,9 +190,9 @@ namespace Corund.Shaders
         /// <summary>
         /// Calculates the blur weight coefficient for a particular point.
         /// </summary>
-        private float ComputeWeight(float n)
+        private float ComputeWeight(float n, float dx, float dy)
         {
-            var theta = _amount;
+            var theta = _amount.X * dx + _amount.Y * dy;
 
             return (float)(1.0 / Math.Sqrt(2 * Math.PI * theta) * Math.Exp(-(n * n) / (2 * theta * theta)));
         }
