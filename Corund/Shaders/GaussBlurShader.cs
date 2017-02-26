@@ -35,11 +35,6 @@ namespace Corund.Shaders
         #region Fields
 
         /// <summary>
-        /// Shader effect instance.
-        /// </summary>
-        private readonly Effect _effect;
-
-        /// <summary>
         ///  Amount of blur to be applied.
         /// </summary>
         private Vector2 _amount;
@@ -62,18 +57,6 @@ namespace Corund.Shaders
         #endregion
 
         #region Properties
-
-        /// <summary>
-        /// Shorthand render target rectangle getter.
-        /// </summary>
-        protected Rectangle RenderTargetRect
-        {
-            get
-            {
-                var pp = GameEngine.Render.Device.PresentationParameters;
-                return new Rectangle(0, 0, pp.BackBufferWidth, pp.BackBufferHeight);
-            }
-        }
 
         /// <summary>
         /// Amount of blur to apply.

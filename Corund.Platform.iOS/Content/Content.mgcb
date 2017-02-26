@@ -19,3 +19,9 @@
 /processorParam:DebugMode=Auto
 /build:../../Corund.Effects/gauss-blur.fx
 
+#begin ../../Corund.Effects/radial-blur.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:../../Corund.Effects/radial-blur.fx
+

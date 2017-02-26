@@ -1,6 +1,7 @@
 ﻿using System;
 using Corund.Engine;
 using Corund.Visuals.Primitives;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Corund.Shaders
@@ -22,9 +23,30 @@ namespace Corund.Shaders
         #region Fields
 
         /// <summary>
+        /// Reference to compiled effect.
+        /// </summary>
+        protected Effect _effect;
+
+        /// <summary>
         /// Intermediate render target to draw on.
         /// </summary>
         protected RenderTarget2D _renderTarget;
+
+        #endregion
+
+        #region Properties
+
+        /// <summary>
+        /// Shorthand render target rectangle getter.
+        /// </summary>
+        protected Rectangle RenderTargetRect
+        {
+            get
+            {
+                var pp = GameEngine.Render.Device.PresentationParameters;
+                return new Rectangle(0, 0, pp.BackBufferWidth, pp.BackBufferHeight);
+            }
+        }
 
         #endregion
 

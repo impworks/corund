@@ -44,6 +44,11 @@ namespace Corund.Engine
         /// </summary>
         public readonly Rectangle Rect;
 
+        /// <summary>
+        /// Center point of the screen.
+        /// </summary>
+        public Vector2 Center => Size/2;
+
         #endregion
     }
 }
