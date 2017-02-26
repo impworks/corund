@@ -11,6 +11,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Corund.Platform.Android", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Corund.Effects", "Corund.Effects", "{CD6098D5-0F6C-4DDD-A9A6-EDF3B6F065E8}"
 	ProjectSection(SolutionItems) = preProject
+		Corund.Effects\color-overlay.fx = Corund.Effects\color-overlay.fx
 		Corund.Effects\gauss-blur.fx = Corund.Effects\gauss-blur.fx
 		Corund.Effects\radial-blur.fx = Corund.Effects\radial-blur.fx
 	EndProjectSection
