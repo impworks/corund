@@ -95,7 +95,7 @@ namespace Corund.Shaders
                 _effect.Parameters["SampleWeights"].SetValue(_horizontalParameters.Weights);
                 _effect.Parameters["SampleOffsets"].SetValue(_horizontalParameters.Offsets);
 
-                GameEngine.Render.SpriteBatch.Begin(0, BlendState.AlphaBlend, null, null, null, _effect);
+                GameEngine.Render.SpriteBatch.Begin(0, BlendState.AlphaBlend, GameEngine.Render.GetSamplerState(false), null, null, _effect);
                 GameEngine.Render.SpriteBatch.Draw(_renderTarget, RenderTargetRect, Color.White);
                 GameEngine.Render.SpriteBatch.End();
 
@@ -107,7 +107,7 @@ namespace Corund.Shaders
                 _effect.Parameters["SampleWeights"].SetValue(_verticalParameters.Weights);
                 _effect.Parameters["SampleOffsets"].SetValue(_verticalParameters.Offsets);
 
-                GameEngine.Render.SpriteBatch.Begin(0, BlendState.AlphaBlend, null, null, null, _effect);
+                GameEngine.Render.SpriteBatch.Begin(0, BlendState.AlphaBlend, GameEngine.Render.GetSamplerState(false), null, null, _effect);
                 GameEngine.Render.SpriteBatch.Draw(_renderTarget2, RenderTargetRect, Color.White);
                 GameEngine.Render.SpriteBatch.End();
             }

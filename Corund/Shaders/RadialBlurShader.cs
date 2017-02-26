@@ -83,7 +83,7 @@ namespace Corund.Shaders
                 _effect.Parameters["Center"].SetValue(Center / GameEngine.Screen.Size);
                 _effect.Parameters["Amount"].SetValue(Amount / 10);
             
-                GameEngine.Render.SpriteBatch.Begin(0, BlendState.AlphaBlend, null, null, null, _effect);
+                GameEngine.Render.SpriteBatch.Begin(0, BlendState.AlphaBlend, GameEngine.Render.GetSamplerState(false), null, null, _effect);
                 GameEngine.Render.SpriteBatch.Draw(_renderTarget, RenderTargetRect, Color.White);
                 GameEngine.Render.SpriteBatch.End();
             }

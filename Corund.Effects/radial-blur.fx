@@ -59,7 +59,7 @@ float4 MainPS(VertexShaderOutput input) : COLOR0
 }
 
 
-technique GaussianBlur
+technique RadialBlur
 {
     pass
     {

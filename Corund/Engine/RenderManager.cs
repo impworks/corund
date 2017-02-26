@@ -32,7 +32,6 @@ namespace Corund.Engine
             DeviceManager.ApplyChanges();
 
             _renderStack = new Stack<RenderTarget2D>(4);
-            _effectStack = new Stack<Effect>(3);
 
             SpriteBatch = new SpriteBatch(Device);
             WorldViewProjection = GetWorldViewProjectionMatrix(Device.Viewport);
@@ -76,11 +75,6 @@ namespace Corund.Engine
         private readonly Stack<RenderTarget2D> _renderStack;
 
         /// <summary>
-        /// Stack of current effects.
-        /// </summary>
-        private readonly Stack<Effect> _effectStack;
-
-        /// <summary>
         /// Currently set blending state.
         /// </summary>
         private BlendState _blendState;
@@ -112,11 +106,8 @@ namespace Corund.Engine
             if (IsSpriteBatchLocked)
                 return;
 
-            var effect = _effectStack.Count > 0 ? _effectStack.Peek() : null;
-
             var isModified = _blendState != blendState
-                             || _tileMode != tileMode
-                             || _activeEffect != effect;
+                             || _tileMode != tileMode;
 
             if(_isStarted && !isModified)
                 return;
@@ -128,14 +119,12 @@ namespace Corund.Engine
             SpriteBatch.Begin(
                 SpriteSortMode.BackToFront,
                 blendState,
-                samplerState,
-                effect: effect
+                samplerState
             );
 
             _blendState = blendState;
             _tileMode = tileMode;
             _isStarted = true;
-            _activeEffect = effect;
         }
 
         /// <summary>
@@ -179,22 +168,6 @@ namespace Corund.Engine
             return target;
         }
 
-        /// <summary>
-        /// Sets a new effect context.
-        /// </summary>
-        public void PushEffect(Effect effect)
-        {
-            _effectStack.Push(effect);
-        }
-
-        /// <summary>
-        /// Pops current effect.
-        /// </summary>
-        public void PopEffect()
-        {
-            _effectStack.Pop();
-        }
-
         #endregion
 
         #region Private methods
@@ -202,7 +175,7 @@ namespace Corund.Engine
         /// <summary>
         /// Gets the appropriate sampler state depending on sprite mode and engine settings.
         /// </summary>
-        private static SamplerState GetSamplerState(bool tileMode)
+        public SamplerState GetSamplerState(bool tileMode)
         {
             var useSmoothing = GameEngine.Options.EnableAntiAliasing;
             if (useSmoothing)
