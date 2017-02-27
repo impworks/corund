@@ -14,13 +14,13 @@
 void Main()
 {
 	// Configurable options
-	var effectName = "";
+	var effectName = "test";
 
 	// Environment constants
 	var platforms = new[] { "Android", "IOS", "WP8" };
 
 	// Logic
-	Validate(effectName);
+	CreateFileTemplate(effectName);
 	AddToSolution(effectName);
 	foreach (var platform in platforms)
 	{
@@ -34,12 +34,12 @@ void Main()
 
 #region Logic
 
-private void Validate(string effectName)
+private void CreateFileTemplate(string effectName)
 {
-	var fullPath = GetPath("Corund.Effects", effectName + ".fx");
+	var srcPath = GetPath("Utilities", "EffectTemplate.fx");
+	var destPath = GetPath("Corund.Effects", effectName + ".fx");
 
-	if(!File.Exists(fullPath))
-		throw new ArgumentException($"Path does not exist:\n'{fullPath}'");
+	File.Copy(srcPath, destPath);
 }
 
 private void AddToSolution(string effectName)
@@ -50,7 +50,7 @@ private void AddToSolution(string effectName)
                       .ToList();
 
 	var folderStart = content.First(x => x.Line.Contains("CD6098D5-0F6C-4DDD-A9A6-EDF3B6F065E8")).Index;
-	var folderEnd = content.First(x => x.Line.Contains("EndProject") && x.Index > folderStart).Index;
+	var folderEnd = content.First(x => x.Line == "EndProject" && x.Index > folderStart).Index;
 
 	var line = string.Format(
 		"{0}{1} = {1}",
@@ -58,19 +58,51 @@ private void AddToSolution(string effectName)
 		$@"Corund.Effects\{effectName}.fx"
 	);
 
-	content.Insert(folderEnd - 2, new { Line = line, Index = 0 });
+	content.Insert(folderEnd - 1, new { Line = line, Index = 0 });
 
 	File.WriteAllLines(solutionPath, content.Select(x => x.Line));
 }
 
 private void AddToContentProject(string effectName, string platform)
 {
+	var projectPath = GetPath("Corund.Platform." + platform, "Content", "Content.mgcb");
+	var content = File.ReadAllLines(projectPath);
 
+	var newContent = new[]
+	{
+		$"#begin ../../Corund.Effects/{effectName}.fx",
+		$"/importer:EffectImporter",
+		$"/processor:EffectProcessor",
+		$"/processorParam:DebugMode=Auto",
+		$"/build:../../Corund.Effects/{effectName}.fx",
+		$""
+	};
+	
+	File.WriteAllLines(projectPath, content.Concat(newContent));
 }
 
 private void AddToPlatformProject(string effectName, string platform)
 {
-
+	var ns = XNamespace.Get("http://schemas.microsoft.com/developer/msbuild/2003");
+	var projectPath = GetPath($"Corund.Platform.{platform}", $"Corund.Platform.{platform}.csproj");
+	
+	var xml = XElement.Load(projectPath);
+	var lastItemGroup = xml.Elements(ns + "ItemGroup").Last();
+		
+	lastItemGroup.AddAfterSelf(
+		new XElement(
+			ns + "ItemGroup",
+			new XElement(
+				ns + "EmbeddedResource",
+				new XAttribute(
+					"Include",
+					$@"Content\Corund.Effects\{effectName}.xnb"
+				)
+			)
+		)
+	);
+	
+	xml.Save(projectPath);
 }
 
 #endregion
@@ -81,7 +113,7 @@ private string GetPath(params string[] parts)
 {
 	var basePath = Path.GetDirectoryName(Util.CurrentQueryPath);
 	var allParts = new[] { basePath, ".." }.Concat(parts);
-	return Path.Combine(allParts.ToArray());
+	return Path.GetFullPath(Path.Combine(allParts.ToArray()));
 }
 
 #endregion
