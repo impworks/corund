@@ -37,3 +37,9 @@
 /processorParam:DebugMode=Auto
 /build:../../Corund.Effects/texture-overlay.fx
 
+#begin ../../Corund.Effects/desaturate.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:../../Corund.Effects/desaturate.fx
+

@@ -7,20 +7,10 @@
     #define PS_SHADERMODEL ps_4_0_level_9_1
 #endif
 
-texture OverlayTexture;
-float2 OverlayOrigin;
-float2 OverlayScale;
-float OverlayOpacity;
+float Coefficient;
 
 matrix WorldViewProjection;
-
-sampler2D s0;
-sampler2D TextureSampler = sampler_state
-{
-    Texture = <OverlayTexture>;
-    AddressU = Wrap;
-    AddressV = Wrap;
-};
+sampler s0;
 
 struct VertexShaderInput
 {
@@ -49,19 +39,13 @@ VertexShaderOutput MainVS(in VertexShaderInput input)
 
 float4 MainPS(VertexShaderOutput input) : COLOR0
 {
-    float2 overlayUV = (input.TexCoords - OverlayOrigin) * OverlayScale;
-
     float4 original = tex2D(s0, input.TexCoords);
-    float4 overlay = tex2D(TextureSampler, overlayUV);
-
-    float4 result = 0;
-    result.rgb = lerp(original.rgb, overlay.rgb, OverlayOpacity) * original.a;
-    result.a = original.a;
-
-    return result;
+    float desat = dot(original.rgb, float3(0.30, 0.59, 0.11));
+    float3 result = lerp(original.rgb, desat, Coefficient);
+    return float4(result * original.a, original.a);
 }
 
-technique TextureOverlay
+technique Desaturate
 {
     pass
     {

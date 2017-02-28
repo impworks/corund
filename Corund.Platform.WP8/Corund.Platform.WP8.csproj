@@ -60,6 +60,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Content\Corund.Effects\texture-overlay.xnb" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Content\Corund.Effects\desaturate.xnb" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
