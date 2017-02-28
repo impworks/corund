@@ -53,8 +53,7 @@ private void AddToSolution(string effectName)
 	var folderEnd = content.First(x => x.Line == "EndProject" && x.Index > folderStart).Index;
 
 	var line = string.Format(
-		"{0}{1} = {1}",
-		new string(' ', 8), // indent,
+		"\t\t{0} = {0}",
 		$@"Corund.Effects\{effectName}.fx"
 	);
 
