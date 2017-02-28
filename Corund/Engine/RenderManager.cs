@@ -89,11 +89,6 @@ namespace Corund.Engine
         /// </summary>
         private bool _isStarted;
 
-        /// <summary>
-        /// Effect to use for current batch.
-        /// </summary>
-        private Effect _activeEffect;
-
         #endregion
 
         #region Methods
