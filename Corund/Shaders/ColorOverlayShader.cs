@@ -1,5 +1,4 @@
-﻿using System;
-using Corund.Engine;
+﻿using Corund.Engine;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,7 +8,7 @@ namespace Corund.Shaders
     /// <summary>
     /// A shader that draws an object filled with specified color.
     /// </summary>
-    public class ColorOverlayShader: ShaderBase
+    public class ColorOverlayShader: SinglePassShaderBase
     {
         #region Constructor
 
@@ -39,28 +38,13 @@ namespace Corund.Shaders
 
         #region Methods
 
-        public override void DrawWrapper(DynamicObject obj, Action innerDraw)
-        {            
-            // PASS 1: inner -> RT
-            {
-                GameEngine.Render.PushContext(_renderTarget, Color.Transparent);
-
-                innerDraw();
-
-                GameEngine.Render.PopContext();
-            }
-
-            // PASS 2: RT -> base, overlay
-            {
-                _effect.Parameters["WorldViewProjection"].SetValue(GameEngine.Render.WorldViewProjection);
-
-                _effect.Parameters["OverlayColor"].SetValue(Color.ToVector3());
-                _effect.Parameters["OverlayOpacity"].SetValue(Opacity);
-
-                GameEngine.Render.SpriteBatch.Begin(0, BlendState.AlphaBlend, GameEngine.Render.GetSamplerState(false), null, null, _effect);
-                GameEngine.Render.SpriteBatch.Draw(_renderTarget, RenderTargetRect, Color.White);
-                GameEngine.Render.SpriteBatch.End();
-            }
+        /// <summary>
+        /// Sets shader configuration for rendering.
+        /// </summary>
+        protected override void ConfigureShader(DynamicObject obj)
+        {
+            _effect.Parameters["OverlayColor"].SetValue(Color.ToVector3());
+            _effect.Parameters["OverlayOpacity"].SetValue(Opacity);
         }
 
         #endregion

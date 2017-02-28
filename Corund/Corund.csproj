@@ -90,6 +90,8 @@
     <Compile Include="Shaders\ColorOverlayShader.cs" />
     <Compile Include="Shaders\RadialBlurShader.cs" />
     <Compile Include="Shaders\ShaderBase.cs" />
+    <Compile Include="Shaders\SinglePassShaderBase.cs" />
+    <Compile Include="Shaders\TextureOverlayShader.cs" />
     <Compile Include="Sound\SoundEffectInfo.cs" />
     <Compile Include="Sound\SoundManager.cs" />
     <Compile Include="Sprites\AnimatedSprite.cs" />

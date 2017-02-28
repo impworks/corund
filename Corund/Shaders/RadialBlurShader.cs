@@ -1,5 +1,4 @@
-﻿using System;
-using Corund.Engine;
+﻿using Corund.Engine;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,7 +8,7 @@ namespace Corund.Shaders
     /// <summary>
     /// A radial blur with specified blur point.
     /// </summary>
-    public class RadialBlurShader: ShaderBase
+    public class RadialBlurShader: SinglePassShaderBase
     {
         #region Constructor
 
@@ -63,30 +62,12 @@ namespace Corund.Shaders
         #region Methods
 
         /// <summary>
-        /// Draws the actual shader to the screen.
+        /// Sets shader configuration for rendering.
         /// </summary>
-        public override void DrawWrapper(DynamicObject obj, Action innerDraw)
+        protected override void ConfigureShader(DynamicObject obj)
         {
-            // PASS 1: inner -> RT
-            {
-                GameEngine.Render.PushContext(_renderTarget, Color.Transparent);
-
-                innerDraw();
-
-                GameEngine.Render.PopContext();
-            }
-
-            // PASS 2: RT -> base, blur
-            {
-                _effect.Parameters["WorldViewProjection"].SetValue(GameEngine.Render.WorldViewProjection);
-
-                _effect.Parameters["Center"].SetValue(Center / GameEngine.Screen.Size);
-                _effect.Parameters["Amount"].SetValue(Amount / 10);
-            
-                GameEngine.Render.SpriteBatch.Begin(0, BlendState.AlphaBlend, GameEngine.Render.GetSamplerState(false), null, null, _effect);
-                GameEngine.Render.SpriteBatch.Draw(_renderTarget, RenderTargetRect, Color.White);
-                GameEngine.Render.SpriteBatch.End();
-            }
+            _effect.Parameters["Center"].SetValue(Center / GameEngine.Screen.Size);
+            _effect.Parameters["Amount"].SetValue(Amount / 10);
         }
 
         #endregion
