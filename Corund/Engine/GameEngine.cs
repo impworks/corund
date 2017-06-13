@@ -29,11 +29,10 @@ namespace Corund.Engine
             Sound = new SoundManager();
             Touch = new TouchManager();
             Debug = new DebugManager(Render.Device);
+            Accelerometer = opts.AccelerometerManager;
 
             if (opts.ContentProvider != null)
-            {
                 EmbeddedContent = new EmbeddedContentManager(opts.Game.Services, opts.ContentProvider);
-            }
 
             _deferredActions = new List<Action>();
         }
@@ -91,6 +90,11 @@ namespace Corund.Engine
         /// The touch manager.
         /// </summary>
         public static TouchManager Touch { get; private set; }
+
+        /// <summary>
+        /// The touch manager (optional).
+        /// </summary>
+        public static IAccelerometerManager Accelerometer { get; private set; }
 
         /// <summary>
         /// List of actions to execute after all update loops have completed.
