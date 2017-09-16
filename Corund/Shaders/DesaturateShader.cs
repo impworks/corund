@@ -5,6 +5,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Corund.Shaders
 {
+    /// <summary>
+    /// Applies a desaturation effect to the object.
+    /// </summary>
     public class DesaturateShader: SinglePassShaderBase
     {
         #region Constructor
@@ -18,9 +21,16 @@ namespace Corund.Shaders
 
         #endregion
 
+        #region Fields
+
+        /// <summary>
+        /// Backing field for desaturation coefficient.
+        /// </summary>
         private float _coefficient;
 
-        #region Fields
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Desaturation coefficient.

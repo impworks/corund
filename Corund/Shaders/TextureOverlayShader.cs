@@ -5,6 +5,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Corund.Shaders
 {
+    /// <summary>
+    /// Overlays the object with a texture.
+    /// </summary>
     public class TextureOverlayShader: SinglePassShaderBase
     {
         #region Constructor
