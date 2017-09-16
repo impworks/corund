@@ -93,6 +93,7 @@
     <Compile Include="Shaders\RadialBlurShader.cs" />
     <Compile Include="Shaders\ShaderBase.cs" />
     <Compile Include="Shaders\SinglePassShaderBase.cs" />
+    <Compile Include="Shaders\SwirlShader.cs" />
     <Compile Include="Shaders\TextureOverlayShader.cs" />
     <Compile Include="Sound\SoundEffectInfo.cs" />
     <Compile Include="Sound\SoundManager.cs" />
@@ -135,6 +136,9 @@
     <Reference Include="MonoGame.Framework, Version=3.1.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\MonoGame.Framework.Portable.3.2.99.1-Beta\lib\portable-net40+sl50+win+wpa81+wp80+MonoAndroid10+MonoTouch10\MonoGame.Framework.dll</HintPath>
       <Private>True</Private>
+    </Reference>
+    <Reference Include="System.ServiceModel.Primitives">
+      <HintPath>..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.5\System.ServiceModel.Primitives.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

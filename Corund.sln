@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Corund.Effects", "Corund.Ef
 		Corund.Effects\radial-blur.fx = Corund.Effects\radial-blur.fx
 		Corund.Effects\texture-overlay.fx = Corund.Effects\texture-overlay.fx
 		Corund.Effects\desaturate.fx = Corund.Effects\desaturate.fx
+		Corund.Effects\swirl.fx = Corund.Effects\swirl.fx
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Corund.Platform.IOS", "Corund.Platform.iOS\Corund.Platform.IOS.csproj", "{CF4FE1FB-18FF-458F-BE7B-46E965EB8183}"

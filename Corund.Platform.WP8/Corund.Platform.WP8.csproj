@@ -65,6 +65,9 @@
     <EmbeddedResource Include="Content\Corund.Effects\desaturate.xnb" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Content\Corund.Effects\swirl.xnb" />
+  </ItemGroup>
+  <ItemGroup>
     <Reference Include="Windows">
       <HintPath>..\..\..\..\Program Files (x86)\Windows Phone Kits\8.1\References\CommonConfiguration\Neutral\Windows.winmd</HintPath>
     </Reference>
