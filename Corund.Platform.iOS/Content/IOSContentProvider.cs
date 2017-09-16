@@ -6,7 +6,7 @@ using Corund.Engine.Config;
 namespace Corund.Platform.IOS.Content
 {
     /// <summary>
-    /// IContentProvider implementation for WP8.
+    /// IContentProvider implementation for iOS.
     /// </summary>
     public class IOSContentProvider : IContentProvider
     {

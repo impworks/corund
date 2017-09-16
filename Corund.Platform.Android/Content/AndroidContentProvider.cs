@@ -6,7 +6,7 @@ using Corund.Engine.Config;
 namespace Corund.Platform.Android.Content
 {
     /// <summary>
-    /// IContentProvider implementation for WP8.
+    /// IContentProvider implementation for Android.
     /// </summary>
     public class AndroidContentProvider: IContentProvider
     {
