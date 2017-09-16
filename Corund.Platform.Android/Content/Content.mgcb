@@ -3,7 +3,7 @@
 
 /outputDir:bin/$(Platform)
 /intermediateDir:obj/$(Platform)
-/platform:WindowsPhone8
+/platform:Android
 /config:
 /profile:Reach
 /compress:False

@@ -3,12 +3,12 @@ using System.IO;
 using System.Reflection;
 using Corund.Engine.Config;
 
-namespace Corund.Platform.WP8.Content
+namespace Corund.Platform.UWP.Content
 {
     /// <summary>
     /// IContentProvider implementation for WP8.
     /// </summary>
-    public class WP8ContentProvider: IContentProvider
+    public class UWPContentProvider: IContentProvider
     {
         #region Constants
 
@@ -21,9 +21,9 @@ namespace Corund.Platform.WP8.Content
 
         #region Constructor
 
-        public WP8ContentProvider()
+        public UWPContentProvider()
         {
-            _assembly = typeof(WP8ContentProvider).GetTypeInfo().Assembly;
+            _assembly = typeof(UWPContentProvider).GetTypeInfo().Assembly;
         }
 
         #endregion

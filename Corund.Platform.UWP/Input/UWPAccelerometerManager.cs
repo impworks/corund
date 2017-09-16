@@ -1,16 +1,16 @@
-﻿using Corund.Engine.Config;
-using Windows.Devices.Sensors;
+﻿using Windows.Devices.Sensors;
+using Corund.Engine.Config;
 
-namespace Corund.Platform.WP8.Input
+namespace Corund.Platform.UWP.Input
 {
     /// <summary>
     /// Windows Phone 8-specific implementation of AccelerometerManager.
     /// </summary>
-    public class WP8AccelerometerManager : IAccelerometerManager
+    public class UWPAccelerometerManager : IAccelerometerManager
     {
         #region Constructor
 
-        public WP8AccelerometerManager()
+        public UWPAccelerometerManager()
         {
             _accelerometer = Accelerometer.GetDefault();
         }

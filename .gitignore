@@ -253,7 +253,7 @@ paket-files/
 
 Corund.Platform.Android/**/*.xnb
 Corund.Platform.Android/**/*.mgcontent
-Corund.Platform.WP8/**/*.xnb
-Corund.Platform.WP8/**/*.mgcontent
+Corund.Platform.UWP/**/*.xnb
+Corund.Platform.UWP/**/*.mgcontent
 Corund.Platform.IOS/**/*.xnb
 Corund.Platform.IOS/**/*.mgcontent
