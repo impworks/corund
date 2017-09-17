@@ -9,12 +9,13 @@
     <licenseUrl>https://github.com/impworks/corund/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/impworks/corund</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>Simple 2D game engine for MonoGame.</description>
+    <description>UWP-specific components for Corund game engine.</description>
     <releaseNotes>Pre-release version.</releaseNotes>
     <copyright>Copyright 2017</copyright>
-    <tags>GameEngine 2D Scene Render Geometry</tags>
+    <tags>GameEngine 2D Shader</tags>
     <dependencies>
-        <dependency id="MonoGame.Framework.Portable" version="3.6.0.1625" />
+        <dependency id="MonoGame.Framework.WindowsUniversal" version="3.6.0.1625" />
+        <dependency id="Corund" version="0.1.49" />
     </dependencies>
   </metadata>
 </package>
