@@ -115,18 +115,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\Content.mgcb" />
-    <None Include="Content\Corund.Effects\color-overlay.mgcontent" />
+    <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="Content\Corund.Effects\color-overlay.xnb" />
-    <None Include="Content\Corund.Effects\desaturate.mgcontent" />
     <None Include="Content\Corund.Effects\desaturate.xnb" />
-    <None Include="Content\Corund.Effects\gauss-blur.mgcontent" />
     <None Include="Content\Corund.Effects\gauss-blur.xnb" />
-    <None Include="Content\Corund.Effects\radial-blur.mgcontent" />
     <None Include="Content\Corund.Effects\radial-blur.xnb" />
-    <None Include="Content\Corund.Effects\swirl.mgcontent" />
     <None Include="Content\Corund.Effects\swirl.xnb" />
-    <None Include="Content\Corund.Effects\texture-overlay.mgcontent" />
     <None Include="Content\Corund.Effects\texture-overlay.xnb" />
     <None Include="packages.config" />
   </ItemGroup>
