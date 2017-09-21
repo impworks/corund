@@ -18,6 +18,11 @@
         bool Stop();
 
         /// <summary>
+        /// Flag indicating that the accelerometer is currently active.
+        /// </summary>
+        bool IsActive { get; }
+
+        /// <summary>
         /// Current X coordinate.
         /// </summary>
         double X { get; }
