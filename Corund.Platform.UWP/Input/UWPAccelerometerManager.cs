@@ -24,14 +24,11 @@ namespace Corund.Platform.UWP.Input
         /// </summary>
         private readonly Accelerometer _accelerometer;
 
-        /// <summary>
-        /// Started flag (faux).
-        /// </summary>
-        private bool _isStarted;
-
         #endregion
 
         #region IAccelerometerManager implementation
+
+        public bool IsActive { get; private set; }
 
         public double X { get; private set; }
         public double Y { get; private set; }
@@ -39,10 +36,10 @@ namespace Corund.Platform.UWP.Input
 
         public bool Start()
         {
-            if (_isStarted)
+            if (IsActive)
                 return false;
 
-            _isStarted = true;
+            IsActive = true;
             _accelerometer.ReadingChanged += OnReadingChanged;
 
             return true;
@@ -50,10 +47,10 @@ namespace Corund.Platform.UWP.Input
 
         public bool Stop()
         {
-            if (!_isStarted)
+            if (!IsActive)
                 return false;
 
-            _isStarted = false;
+            IsActive = false;
             _accelerometer.ReadingChanged -= OnReadingChanged;
 
             X = Y = Z = 0;
