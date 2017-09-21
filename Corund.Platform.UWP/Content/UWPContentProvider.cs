@@ -15,7 +15,7 @@ namespace Corund.Platform.UWP.Content
         /// <summary>
         /// Assembly-specific prefix for all resource names.
         /// </summary>
-        private const string RESOURCE_PREFIX = "Corund.Platform.WP8.Content.Corund.Effects";
+        private const string RESOURCE_PREFIX = "Corund.Platform.UWP.Content.Corund.Effects";
 
         #endregion
 
