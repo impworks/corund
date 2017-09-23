@@ -14,9 +14,10 @@ namespace Corund.Engine
         {
             Orientation = options.Orientation;
 
-            var viewport = options.GraphicsDeviceManager.GraphicsDevice.Viewport;
+            var vp = options.GraphicsDeviceManager.GraphicsDevice.Viewport;
+            Viewport = new Vector2(vp.Width, vp.Height);
             Size = options.ResolutionAdaptationMode == ResolutionAdaptationMode.Adjust
-                ? new Vector2(viewport.Width, viewport.Height)
+                ? Viewport
                 : options.DesiredScreenSize;
 
             if (options.Orientation == DisplayOrientation.Portrait && Size.X > Size.Y)
@@ -35,7 +36,7 @@ namespace Corund.Engine
         public readonly DisplayOrientation Orientation;
 
         /// <summary>
-        /// Gets the screen size in pixels.
+        /// Gets the pixel size of the screen window available to the game.
         /// </summary>
         public readonly Vector2 Size;
 
@@ -48,6 +49,11 @@ namespace Corund.Engine
         /// Center point of the screen.
         /// </summary>
         public Vector2 Center => Size/2;
+
+        /// <summary>
+        /// Gets the pixel size of the device's screen.
+        /// </summary>
+        public readonly Vector2 Viewport;
 
         #endregion
     }

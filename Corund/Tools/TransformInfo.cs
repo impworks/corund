@@ -21,6 +21,15 @@ namespace Corund.Tools
 
         #endregion
 
+        #region Constants
+
+        /// <summary>
+        /// Empty transform.
+        /// </summary>
+        public static TransformInfo None = new TransformInfo(Vector2.Zero, 0, Vector2.One);
+
+        #endregion
+
         #region Fields
 
         /// <summary>
@@ -48,6 +57,14 @@ namespace Corund.Tools
         public Vector2 Translate(Vector2 point)
         {
             return point.Rotate(Angle)*ScaleVector + Position;
+        }
+
+        /// <summary>
+        /// Cancels a point transformation.
+        /// </summary>
+        public Vector2 TranslateBack(Vector2 point)
+        {
+            return ((point - Position) / ScaleVector).Rotate(-Angle);
         }
 
         #endregion

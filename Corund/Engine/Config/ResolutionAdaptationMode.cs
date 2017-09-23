@@ -11,6 +11,12 @@
         Center,
 
         /// <summary>
+        /// The game works at desired screen size. Then it is resized to fit the screen in post-processing state.
+        /// If the screen's ratio does not match scene ratio, black padding is added.
+        /// </summary>
+        CenterAndResize,
+
+        /// <summary>
         /// The game works at actual screen size.
         /// </summary>
         Adjust

@@ -91,8 +91,12 @@ namespace Corund.Engine
         /// </summary>
         public TouchLocation? TranslateToFrame(TouchLocation touch, FrameBase frame)
         {
+            // account for resolution adaptation
+            var tx = frame.ResolutionAdaptationTransform;
+            var pos = tx.TranslateBack(touch.Position);
+
             // align point to frame rendertarget
-            var normalisedPt = touch.Position - frame.Position;
+            var normalisedPt = pos - frame.Position;
             var viewPt = normalisedPt.Rotate(-frame.Angle)/frame.ScaleVector + frame.HotSpot;
 
             // point does not fit the viewport

@@ -31,15 +31,16 @@ namespace Corund.Frames
         /// </summary>
         public override void FinalizeDraw(float zOrder)
         {
+            var tx = ResolutionAdaptationTransform;
             GameEngine.Render.TryBeginBatch(BlendState.AlphaBlend);
             GameEngine.Render.SpriteBatch.Draw(
                 RenderTarget,
-                Position,
+                tx.Position + Position * tx.ScaleVector,
                 null,
                 Tint,
                 Angle,
                 HotSpot,
-                ScaleVector,
+                ScaleVector * tx.ScaleVector,
                 SpriteEffects.None,
                 zOrder
             );

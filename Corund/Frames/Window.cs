@@ -101,6 +101,7 @@ namespace Corund.Frames
         /// </summary>
         public override void FinalizeDraw(float zOrder)
         {
+            var tx = ResolutionAdaptationTransform;
             var batch = GameEngine.Render.SpriteBatch;
             batch.Draw(
                 _shadowTexture,
@@ -110,12 +111,12 @@ namespace Corund.Frames
 
             batch.Draw(
                 RenderTarget,
-                Position,
+                tx.Position + Position * tx.ScaleVector,
                 null,
                 Tint,
                 Angle,
                 HotSpot,
-                ScaleVector,
+                ScaleVector * tx.ScaleVector,
                 SpriteEffects.None,
                 zOrder
             );
