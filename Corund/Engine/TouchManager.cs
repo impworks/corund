@@ -2,6 +2,8 @@
 using Corund.Frames;
 using Corund.Tools.Helpers;
 using Corund.Visuals.Primitives;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
 
 namespace Corund.Engine
@@ -17,6 +19,7 @@ namespace Corund.Engine
         {
             Touches = new List<TouchLocation>(4);
             _handledTouches = new Dictionary<int, ObjectBase>(4);
+            _mouseButtonState = ButtonState.Released;
         }
 
         #endregion
@@ -27,6 +30,11 @@ namespace Corund.Engine
         /// List of touches that have been handled by an object.
         /// </summary>
         private Dictionary<int, ObjectBase> _handledTouches;
+
+        /// <summary>
+        /// Mouse button's last state for touch emulation.
+        /// </summary>
+        private ButtonState _mouseButtonState;
 
         #endregion
 
@@ -51,6 +59,13 @@ namespace Corund.Engine
 
             foreach(var location in TouchPanel.GetState())
                 Touches.Add(location);
+
+            if (Touches.Count == 0)
+            {
+                var loc = ConvertMouseToTouch();
+                if(loc != null)
+                    Touches.Add(loc.Value);
+            }
         }
 
         /// <summary>
@@ -90,6 +105,43 @@ namespace Corund.Engine
             var framePt = viewPt.Rotate(-cam.Angle)/cam.ScaleVector + cam.Offset;
 
             return new TouchLocation(touch.Id, touch.State, framePt);
+        }
+
+        #endregion
+
+        #region Private methods
+
+        /// <summary>
+        /// Returns a virtual touch location at the mouse cursor.
+        /// </summary>
+        private TouchLocation? ConvertMouseToTouch()
+        {
+            var mouse = Mouse.GetState();
+            var state = GetEmulatedTouchState(mouse.LeftButton, _mouseButtonState);
+            _mouseButtonState = mouse.LeftButton;
+
+            if (state == null)
+                return null;
+
+            return new TouchLocation(1, state.Value, new Vector2(mouse.X, mouse.Y));
+        }
+
+        /// <summary>
+        /// Returns the virtual touch state represented by the mouse state.
+        /// </summary>
+        /// <returns></returns>
+        private TouchLocationState? GetEmulatedTouchState(ButtonState current, ButtonState previous)
+        {
+            if (current == ButtonState.Released)
+            {
+                return previous == ButtonState.Released
+                    ? (TouchLocationState?) null
+                    : TouchLocationState.Released;
+            }
+
+            return previous == ButtonState.Released
+                ? TouchLocationState.Pressed
+                : TouchLocationState.Moved;
         }
 
         #endregion
