@@ -99,12 +99,12 @@ namespace Corund.Behaviours.Interaction
                 }
 
                 var touch = FindTouchById(_start.Value.Id);
-                if (touch.State == TouchLocationState.Moved)
+                if (touch == null || touch.Value.State == TouchLocationState.Moved)
                     return;
 
-                if (touch.State == TouchLocationState.Released)
+                if (touch.Value.State == TouchLocationState.Released)
                 {
-                    var vec = touch.Position - _start.Value.Position;
+                    var vec = touch.Value.Position - _start.Value.Position;
                     var dist = vec.Length() / _duration;
                     if (dist > MIN_DISTANCE)
                     {
@@ -113,7 +113,7 @@ namespace Corund.Behaviours.Interaction
                         {
                             _callback(new SwipeInfo(
                                 _start.Value.Position,
-                                touch.Position - _start.Value.Position,
+                                touch.Value.Position - _start.Value.Position,
                                 _duration
                             ));
                         }
@@ -128,15 +128,13 @@ namespace Corund.Behaviours.Interaction
         /// Gets a touch from current scene by its ID.
         /// Throws an exception otherwise.
         /// </summary>
-        private TouchLocation FindTouchById(int id)
+        private TouchLocation? FindTouchById(int id)
         {
             foreach (var touch in GameEngine.Current.Touches)
-            {
                 if (touch.Id == id)
                     return touch;
-            }
 
-            throw new ArgumentException($"Touch #{id} was not found.");
+            return null;
         }
 
         #endregion
