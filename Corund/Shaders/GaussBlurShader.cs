@@ -63,7 +63,7 @@ namespace Corund.Shaders
         /// </summary>
         public Vector2 Amount
         {
-            get { return _amount; }
+            get => _amount;
             set
             {
                 _amount = value;

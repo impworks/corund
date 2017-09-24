@@ -69,7 +69,7 @@ namespace Corund.Visuals
         /// </summary>
         public SpriteFont Font
         {
-            get { return _font; }
+            get => _font;
             set
             {
                 if (_font == value)
@@ -85,7 +85,7 @@ namespace Corund.Visuals
         /// </summary>
         public string Text
         {
-            get { return _originalText; }
+            get => _originalText;
             set
             {
                 if (_originalText == value)
@@ -103,7 +103,7 @@ namespace Corund.Visuals
         /// </summary>
         public HorizontalAlignment HorizontalAlignment
         {
-            get { return _horizontalAlignment; }
+            get => _horizontalAlignment;
             set
             {
                 if (_horizontalAlignment == value)
@@ -119,7 +119,7 @@ namespace Corund.Visuals
         /// </summary>
         public VerticalAlignment VerticalAlignment
         {
-            get { return _verticalAlignment; }
+            get => _verticalAlignment;
             set
             {
                 if (_verticalAlignment == value)

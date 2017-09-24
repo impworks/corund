@@ -48,7 +48,7 @@ namespace Corund.Sound
         /// </summary>
         public bool SoundEnabled
         {
-            get { return _soundEnabled; }
+            get => _soundEnabled;
             set
             {
                 _soundEnabled = value;
@@ -62,7 +62,7 @@ namespace Corund.Sound
         /// </summary>
         public bool MusicEnabled
         {
-            get { return _musicEnabled; }
+            get => _musicEnabled;
             set
             {
                 _musicEnabled = value;

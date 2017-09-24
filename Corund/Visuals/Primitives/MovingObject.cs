@@ -30,7 +30,7 @@ namespace Corund.Visuals.Primitives
         /// </summary>
         public float Speed
         {
-            get { return Momentum.Length(); }
+            get => Momentum.Length();
             set
             {
                 if (Momentum.X.IsAlmostNull() && Momentum.Y.IsAlmostNull())
@@ -55,8 +55,8 @@ namespace Corund.Visuals.Primitives
         /// </summary>
         public float Direction
         {
-            get { return (float)Math.Atan2(Momentum.Y, Momentum.X); }
-            set { Momentum = VectorHelper.FromLength(Momentum.Length(), value); }
+            get => (float)Math.Atan2(Momentum.Y, Momentum.X);
+            set => Momentum = VectorHelper.FromLength(Momentum.Length(), value);
         }
 
         #endregion

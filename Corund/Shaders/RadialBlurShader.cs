@@ -53,8 +53,8 @@ namespace Corund.Shaders
         /// </summary>
         public float Amount
         {
-            get { return _amount; }
-            set { _amount = MathHelper.Clamp(value, 0, 10); }
+            get => _amount;
+            set => _amount = MathHelper.Clamp(value, 0, 10);
         }
 
         #endregion

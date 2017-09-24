@@ -35,8 +35,8 @@ namespace Corund.Visuals.Primitives
         /// </summary>
         public float Scale
         {
-            get { return ScaleVector.X; }
-            set { ScaleVector = new Vector2(value); }
+            get => ScaleVector.X;
+            set => ScaleVector = new Vector2(value);
         }
 
         /// <summary>
@@ -61,8 +61,8 @@ namespace Corund.Visuals.Primitives
         /// </summary>
         public float Opacity
         {
-            get { return Tint.A/255f; }
-            set { Tint.A = Tint.R = Tint.G = Tint.B = (byte) MathHelper.Clamp(value*255, 0, 255); }
+            get => Tint.A/255f;
+            set => Tint.A = Tint.R = Tint.G = Tint.B = (byte) MathHelper.Clamp(value*255, 0, 255);
         }
 
         /// <summary>

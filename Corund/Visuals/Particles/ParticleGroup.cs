@@ -93,7 +93,7 @@ namespace Corund.Visuals.Particles
         /// </summary>
         public int GenerationRate
         {
-            get { return _generationRate; }
+            get => _generationRate;
             set
             {
                 _generationRate = value;

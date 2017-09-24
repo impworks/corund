@@ -35,7 +35,7 @@ namespace Corund.Sprites
         /// </summary>
         public Vector2 EffectiveSize
         {
-            get { return _effectiveSize; }
+            get => _effectiveSize;
             set
             {
                 if (_effectiveSize != value)
@@ -51,7 +51,7 @@ namespace Corund.Sprites
         /// </summary>
         public Vector2 TextureOffset
         {
-            get { return _textureOffset; }
+            get => _textureOffset;
             set
             {
                 if (_textureOffset != value)

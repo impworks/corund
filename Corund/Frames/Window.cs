@@ -52,7 +52,7 @@ namespace Corund.Frames
         /// </summary>
         public Color ShadowColor
         {
-            get { return _shadowColor; }
+            get => _shadowColor;
             set
             {
                 _shadowColor = value;

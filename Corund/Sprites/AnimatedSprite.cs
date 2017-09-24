@@ -74,7 +74,7 @@ namespace Corund.Sprites
         /// </summary>
         public int CurrentFrame
         {
-            get { return _currentFrame; }
+            get => _currentFrame;
             set
             {
                 var frameSize = (int)Size.X;

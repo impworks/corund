@@ -39,8 +39,8 @@ namespace Corund.Shaders
         /// </summary>
         public float Coefficient
         {
-            get { return _coefficient;}
-            set { _coefficient = MathHelper.Clamp(value, 0, 1); }
+            get => _coefficient;
+            set => _coefficient = MathHelper.Clamp(value, 0, 1);
         }
 
         #endregion
