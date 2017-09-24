@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="Behaviours\BehaviourManager.cs" />
     <Compile Include="Behaviours\BehaviourBase.cs" />
+    <Compile Include="Behaviours\Fade\ExplosionBehaviour.cs" />
     <Compile Include="Behaviours\Fade\FadeInBehaviour.cs" />
     <Compile Include="Behaviours\Fade\FadeOutBehaviour.cs" />
     <Compile Include="Behaviours\Fade\FadeStyle.cs" />

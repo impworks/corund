@@ -107,6 +107,7 @@ namespace Corund.Visuals.Primitives
             var scale = ScaleVector;
             var angle = Angle;
 
+            // traverse all visual tree parents to the frame
             var curr = Parent;
             while (curr != null)
             {
@@ -120,6 +121,7 @@ namespace Corund.Visuals.Primitives
                 curr = curr.Parent;
             }
 
+            // apply frame's camera transformation
             if (toScreen)
             {
                 var camera = (curr as FrameBase).Camera;
@@ -128,6 +130,7 @@ namespace Corund.Visuals.Primitives
                 position = position.Rotate(camera.Angle)*camera.ScaleVector - camera.Offset;
             }
 
+            // this does not include ResolutionAdaptationMode transforms
             return new TransformInfo(position, angle, scale);
         }
 
