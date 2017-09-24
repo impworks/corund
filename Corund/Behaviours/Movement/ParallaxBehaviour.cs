@@ -23,12 +23,17 @@ namespace Corund.Behaviours.Movement
         /// 1 = object moves as usual.
         /// 2 = object moves twice as fast.
         /// </param>
-        public ParallaxBehaviour(float coefficient = 1)
+        /// <param name="affectX">Flag indicating that horizontal movement is parallaxed.</param>
+        /// <param name="affectY">Flag indicating that vertical movement is parallaxed.</param>
+        public ParallaxBehaviour(float coefficient, bool affectX, bool affectY)
         {
             if(coefficient < 0)
                 throw new ArgumentException("Parallax coefficient cannot be less than zero.", nameof(coefficient));
 
-            _coefficient = coefficient;
+            _parallax = new Vector2(
+                affectX ? coefficient : 1,
+                affectY ? coefficient : 1
+            );
         }
 
         #endregion
@@ -38,16 +43,16 @@ namespace Corund.Behaviours.Movement
         /// <summary>
         /// Parallax coefficient.
         /// </summary>
-        private readonly float _coefficient;
+        private readonly Vector2 _parallax;
 
         /// <summary>
         /// Object position at the moment of behaviour binding.
         /// </summary>
-        private Vector2 _originalPosition;
+        private Vector2? _originalPosition;
 
         #endregion
 
-        #region Methods
+        #region Behaviour methods
 
         /// <summary>
         /// Checks that object is the direct child of the frame.
@@ -58,7 +63,15 @@ namespace Corund.Behaviours.Movement
             if (!isDirectChild)
                 throw new ArgumentException("Parallax behaviour can only be applied to a direct child of the frame!");
 
-            _originalPosition = obj.Position;
+            ApplyParallax(obj);
+        }
+
+        /// <summary>
+        /// Cancels out the parallax effect.
+        /// </summary>
+        public override void Unbind(DynamicObject obj)
+        {
+            CancelParallax(obj);
         }
 
         /// <summary>
@@ -66,8 +79,30 @@ namespace Corund.Behaviours.Movement
         /// </summary>
         public override void UpdateObjectState(DynamicObject obj)
         {
-            var cam = GameEngine.Current.Frame.Camera;
-            obj.Position = _originalPosition + (1 - _coefficient)*cam.Position;
+            // to allow object's movement in parallaxed state, we reapply the effect each time
+
+            CancelParallax(obj);
+            ApplyParallax(obj);
+        }
+
+        #endregion
+
+        #region Private helpers
+
+        /// <summary>
+        /// Adjusts the object's position using parallax.
+        /// </summary>
+        private void ApplyParallax(DynamicObject obj)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Resets the object's original position.
+        /// </summary>
+        private void CancelParallax(DynamicObject obj)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
