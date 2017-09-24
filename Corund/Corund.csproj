@@ -53,6 +53,7 @@
     <Compile Include="Behaviours\Misc\BlinkBehaviour.cs" />
     <Compile Include="Behaviours\Movement\BezierMovementBehaviour.cs" />
     <Compile Include="Behaviours\Movement\BezierSegment.cs" />
+    <Compile Include="Behaviours\Movement\FrictionBehaviour.cs" />
     <Compile Include="Behaviours\Movement\IPathSegment.cs" />
     <Compile Include="Behaviours\Movement\LineMovementBehaviour.cs" />
     <Compile Include="Behaviours\Movement\LineSegment.cs" />
