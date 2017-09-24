@@ -24,59 +24,56 @@ You can create smooth transitions for any property to make the animation look mo
 
 ## Expected set of features (in v1.0):
 
-* Scene manager
-  * Resolution adaptation strategies (center, adjust, etc.)
-  * Scene transitions
-* Object types
-  * Sprite
-  * Object group (layer)
-  * Particle system
-  * Text
-  * Polygon
-* Sprites
-  * Tiled sprite
-  * Animated sprite
-* Collision detection
-  * Multiple boxes per object
-  * Rotation and scale support
-* Touch events
-  * Multi touch
-  * Swipe event
-* Sound manager
-* Rendering effects
-  * Blending modes
-  * Alpha blending
-* Behaviours
-  * Fade in / out
-  * Custom property animation
-  * Movement
-    * Path movement
-    * Spline movement
-    * Gravity
-    * Friction
-    * Jitter
-  * Misc
-    * Blinking
-    * Timebomb
-    * Explosion
-* Debug capabilities
-  * Collision box visualization
-  * FPS counter
-  * SpriteBatch counter
+- [x] Scene manager
+  - [x] Resolution adaptation strategies (center, adjust, etc.)
+  - [x] Scene transitions
+- [ ] Object types
+  - [x] Sprite
+  - [x] Object group (layer)
+  - [x] Particle system
+  - [x] Text
+  - [ ] Polygon
+- [x] Sprites
+  - [x] Tiled sprite
+  - [x] Animated sprite
+- [x] Collision detection
+  - [x] Multiple boxes per object
+  - [x] Rotation and scale support
+- [x] Touch events
+  - [x] Multi touch
+  - [x] Swipe event
+- [x] Sound manager
+- [x] Rendering effects
+  - [x] Blending modes
+  - [x] Built-in shader effects
+- [ ] Behaviours
+  - [x] Fade in / out
+  - [x] Custom property animation
+  - [ ] Movement
+    - [x] Path movement
+    - [x] Spline movement
+    - [ ] Friction
+    - [x] Jitter
+  - [ ] Misc
+    - [x] Blinking
+    - [ ] Explosion
+- [ ] UI elements:
+  - [ ] Grid
+  - [ ] Button
+  - [ ] Scrollable list
+  - [ ] Fancy text
+- [ ] Debug capabilities
+  - [x] Collision box visualization
+  - [x] FPS counter
+  - [ ] SpriteBatch counter
   
 ## Later features
 
 * Circle shape for collision detection
-* UI elements:
-  * Grid
-  * Button
-  * Scrollable list
-* Shader effects
-  * Blur
+* More shaders
   * Glow
-  * Color overlay
   * Shockwave
-  * Warp
+  * Distortion
 * Visual editor
   * Particle system configuration
   * Bounding box
