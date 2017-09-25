@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using Corund.Tools;
 using Microsoft.Xna.Framework;
 
@@ -7,10 +8,15 @@ namespace Corund.Geometry
     /// <summary>
     /// A set of rectangles comprising a single shape.
     /// </summary>
-    [DebuggerDisplay("GeometryRectGroup ({Rectangles.Length} rects)")]
+    [DebuggerDisplay("GeometryRectGroup ({Rectangles.Count} rects)")]
     public class GeometryRectGroup: IGeometry
     {
         #region Constructor
+
+        public GeometryRectGroup(IReadOnlyList<GeometryRect> rects)
+        {
+            Rectangles = rects;
+        }
 
         public GeometryRectGroup(params GeometryRect[] rects)
         {
@@ -24,7 +30,7 @@ namespace Corund.Geometry
         /// <summary>
         /// List of rectangles in the group.
         /// </summary>
-        public GeometryRect[] Rectangles;
+        public IReadOnlyList<GeometryRect> Rectangles;
 
         #endregion
 
@@ -35,7 +41,7 @@ namespace Corund.Geometry
         /// </summary>
         public bool ContainsPoint(Vector2 point, TransformInfo? selfTransform)
         {
-            for(var idx = 0; idx < Rectangles.Length; idx++)
+            for(var idx = 0; idx < Rectangles.Count; idx++)
             {
                 if (Rectangles[idx].ContainsPoint(point, selfTransform))
                     return true;
@@ -67,7 +73,7 @@ namespace Corund.Geometry
         {
             var otherPoly = other.CreateRectPolygon(otherTransform);
 
-            for (var idx = 0; idx < Rectangles.Length; idx++)
+            for (var idx = 0; idx < Rectangles.Count; idx++)
             {
                 var poly = Rectangles[idx].CreateRectPolygon(selfTransform);
                 if (GeometryHelper.AreRectsOverlapping(poly, otherPoly))
@@ -83,13 +89,13 @@ namespace Corund.Geometry
         public bool Overlaps(GeometryRectGroup other, TransformInfo? selfTransform, TransformInfo? otherTransform)
         {
             // pre-transform all rects
-            var polys = new RectPolygon[Rectangles.Length];
+            var polys = new RectPolygon[Rectangles.Count];
 
-            for (var idx = 0; idx < Rectangles.Length; idx++)
+            for (var idx = 0; idx < Rectangles.Count; idx++)
                 polys[idx] = Rectangles[idx].CreateRectPolygon(selfTransform);
 
             // check any-x-any overlap
-            for (var idx = 0; idx < other.Rectangles.Length; idx++)
+            for (var idx = 0; idx < other.Rectangles.Count; idx++)
             {
                 var otherPoly = other.Rectangles[idx].CreateRectPolygon(otherTransform);
                 for (var idx2 = 0; idx2 < polys.Length; idx2++)
@@ -107,7 +113,7 @@ namespace Corund.Geometry
         /// </summary>
         public bool IsInsideBounds(Rectangle bounds, TransformInfo? selfTransform)
         {
-            for (var idx = 0; idx < Rectangles.Length; idx++)
+            for (var idx = 0; idx < Rectangles.Count; idx++)
             {
                 var poly = Rectangles[idx].CreateRectPolygon(selfTransform);
                 if (!GeometryHelper.IsRectInsideBounds(poly, bounds))
@@ -122,7 +128,7 @@ namespace Corund.Geometry
         /// </summary>
         public bool IsOutsideBounds(Rectangle bounds, TransformInfo? selfTransform)
         {
-            for (var idx = 0; idx < Rectangles.Length; idx++)
+            for (var idx = 0; idx < Rectangles.Count; idx++)
             {
                 var poly = Rectangles[idx].CreateRectPolygon(selfTransform);
                 if (!GeometryHelper.IsRectOutsideBounds(poly, bounds))

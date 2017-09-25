@@ -1,4 +1,5 @@
-﻿using Corund.Tools.Helpers;
+﻿using System.Diagnostics;
+using Corund.Tools.Helpers;
 using Microsoft.Xna.Framework;
 
 namespace Corund.Tools.Jitter
@@ -6,6 +7,7 @@ namespace Corund.Tools.Jitter
     /// <summary>
     /// A structure that represents a value and jitter around it.
     /// </summary>
+    [DebuggerDisplay("JitteryVector({Median}, {Jitter})")]
     public struct JitteryVector2
     {
         #region Constructor

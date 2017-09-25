@@ -46,6 +46,7 @@ namespace Corund.Tools.Helpers
                 {
                     var xRel = x + rect.Left - xCenter;
                     var yRel = y + rect.Top - yCenter;
+
                     if (xRel*xRel + yRel*yRel <= radius)
                         pixels[y*rect.Width + x] = color;
                 }

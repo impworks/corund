@@ -1,10 +1,12 @@
-﻿using Corund.Tools.Helpers;
+﻿using System.Diagnostics;
+using Corund.Tools.Helpers;
 
 namespace Corund.Tools.Jitter
 {
     /// <summary>
     /// A structure that represents a value and jitter around it.
     /// </summary>
+    [DebuggerDisplay("Jitter({Median}, {Jitter})")]
     public struct JitteryValue
     {
         #region Constructor

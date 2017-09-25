@@ -15,7 +15,7 @@ namespace Corund.Tools.Helpers
         /// </summary>
         public static Vector2 Rotate(this Vector2 vector, float angle)
         {
-            if (angle == 0)
+            if (angle.IsAlmostNull())
                 return vector;
 
             var x = vector.X;

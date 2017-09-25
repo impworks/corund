@@ -41,7 +41,7 @@ namespace Corund.Geometry
             if (AreRectsTooFar(rect1, rect2))
                 return false;
 
-            if(rect1.Angle == 0 && rect2.Angle == 0)
+            if(rect1.Angle.IsAlmostNull() && rect2.Angle.IsAlmostNull())
                 return TestAlignedCollision(rect1, rect2);
 
             return TestOrientedCollision(rect1, rect2);
@@ -117,7 +117,7 @@ namespace Corund.Geometry
                 throw new ArgumentException($"Unknown item type: '{item.GetType()}'");
             }
 
-            return new GeometryRectGroup(result.ToArray());
+            return new GeometryRectGroup(result);
         }
 
         #endregion
