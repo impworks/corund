@@ -43,6 +43,7 @@
     <Compile Include="Behaviours\Fade\IFadeInEffect.cs" />
     <Compile Include="Behaviours\Fade\IFadeOutEffect.cs" />
     <Compile Include="Behaviours\IEffect.cs" />
+    <Compile Include="Behaviours\Interaction\DoubleTapBehaviour.cs" />
     <Compile Include="Behaviours\Interaction\SwipeBehaviour.cs" />
     <Compile Include="Behaviours\Interaction\SwipeInfo.cs" />
     <Compile Include="Behaviours\IReversible.cs" />
