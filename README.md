@@ -46,17 +46,18 @@ You can create smooth transitions for any property to make the animation look mo
 - [x] Rendering effects
   - [x] Blending modes
   - [x] Built-in shader effects
-- [ ] Behaviours
+- [x] Behaviours
   - [x] Fade in / out
   - [x] Custom property animation
-  - [ ] Movement
+  - [x] Movement
     - [x] Path movement
     - [x] Spline movement
-    - [ ] Friction
+    - [x] Friction
     - [x] Jitter
-  - [ ] Misc
+    - [x] Parallax
+  - [x] Misc
     - [x] Blinking
-    - [ ] Explosion
+    - [x] Explosion
 - [ ] UI elements:
   - [ ] Grid
   - [ ] Button
