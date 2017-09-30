@@ -13,7 +13,13 @@ namespace Corund.Frames
         #region Constructor
 
         public Window(int width, int height)
-            : base(width, height, width, height)
+            : this(new Vector2(width, height))
+        {
+            
+        }
+
+        public Window(Vector2 size)
+            : base(size, size)
         {
             _shadowTexture = new Texture2D(GameEngine.Render.Device, 1, 1);
             ShadowColor = new Color(Color.Black, 0.4f);

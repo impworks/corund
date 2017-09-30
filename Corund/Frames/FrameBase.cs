@@ -4,6 +4,7 @@ using Corund.Engine;
 using Corund.Engine.Config;
 using Corund.Geometry;
 using Corund.Tools;
+using Corund.Tools.Helpers;
 using Corund.Visuals;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
@@ -19,12 +20,19 @@ namespace Corund.Frames
     {
         #region Constructors
 
-        public FrameBase(float width, float height, int? viewWidth = null, int? viewHeight = null)
+        public FrameBase(Vector2 size, Vector2? viewSize = null)
         {
-            Size = new Vector2(width, height);
-            Bounds = new Rectangle(0, 0, (int)width, (int)height);
-            ViewSize = GetViewSize(viewWidth, viewHeight);
-            
+            if(size.X < 1 || size.Y < 1)
+                throw new ArgumentException("Frame size must not be less than 1.");
+
+            Size = size;
+            Bounds = new Rectangle(0, 0, (int)size.X, (int)size.Y);
+
+            var screen = GameEngine.Screen.Size;
+            ViewSize = viewSize ?? screen;
+            if(ViewSize.X < 1 || ViewSize.X > screen.X || ViewSize.Y < 1 || ViewSize.Y > screen.Y)
+                throw new ArgumentException("View size must be at least 1x1 pixels in size and not exceed the screen size!");
+
             RenderTarget = new RenderTarget2D(
                 GameEngine.Render.Device,
                 (int)ViewSize.X,
@@ -175,6 +183,8 @@ namespace Corund.Frames
                     Touches.Add(localTouch.Value);
             }
 
+            Camera.Update();
+
             base.Update();
         }
 
@@ -189,21 +199,6 @@ namespace Corund.Frames
         #endregion
 
         #region Helper methods
-
-        /// <summary>
-        /// Calculates proper view size from optional sizes.
-        /// </summary>
-        private Vector2 GetViewSize(int? viewWidth, int? viewHeight)
-        {
-            var screen = GameEngine.Screen.Size;
-            if(viewWidth < 1 || viewWidth > screen.X)
-                throw new ArgumentException($"View width must be within the range of 1..{screen.X}.");
-
-            if (viewHeight < 1 || viewHeight > screen.Y)
-                throw new ArgumentException($"View height must be within the range of 1..{screen.Y}.");
-
-            return new Vector2(viewWidth ?? screen.X, viewHeight ?? screen.Y);
-        }
 
         /// <summary>
         /// Removes the frame from the list.

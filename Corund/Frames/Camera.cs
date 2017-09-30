@@ -58,16 +58,16 @@ namespace Corund.Frames
             {
                 if (Position.X + winSize.X > frameSize.X)
                     Position.X = frameSize.X - winSize.X;
-
+            
                 if (Position.X < 0)
                     Position.X = 0;
             }
-
+            
             if (LockY)
             {
                 if (Position.Y + winSize.Y > frameSize.Y)
                     Position.Y = frameSize.Y - winSize.Y;
-
+            
                 if (Position.Y < 0)
                     Position.Y = 0;
             }

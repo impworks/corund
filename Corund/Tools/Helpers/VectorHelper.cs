@@ -46,6 +46,17 @@ namespace Corund.Tools.Helpers
             return (float) Math.Atan2(vec.Y, vec.X);
         }
 
+        /// <summary>
+        /// Limits the vector size within two vectors.
+        /// </summary>
+        public static Vector2 Clamp(this Vector2 value, Vector2 min, Vector2 max)
+        {
+            return new Vector2(
+                MathHelper.Clamp(value.X, min.X, max.X),
+                MathHelper.Clamp(value.Y, min.Y, max.Y)
+            );
+        }
+
         #endregion
     }
 }

@@ -25,7 +25,7 @@ namespace Corund.Behaviours.Movement
         /// </param>
         /// <param name="affectX">Flag indicating that horizontal movement is parallaxed.</param>
         /// <param name="affectY">Flag indicating that vertical movement is parallaxed.</param>
-        public ParallaxBehaviour(float coefficient, bool affectX, bool affectY)
+        public ParallaxBehaviour(float coefficient, bool affectX = true, bool affectY = true)
         {
             if(coefficient < 0)
                 throw new ArgumentException("Parallax coefficient cannot be less than zero.", nameof(coefficient));
@@ -34,6 +34,8 @@ namespace Corund.Behaviours.Movement
                 affectX ? coefficient : 1,
                 affectY ? coefficient : 1
             );
+
+            _lastOffset = Vector2.Zero;
         }
 
         #endregion
@@ -46,9 +48,9 @@ namespace Corund.Behaviours.Movement
         private readonly Vector2 _parallax;
 
         /// <summary>
-        /// Object position at the moment of behaviour binding.
+        /// The previously applied offset.
         /// </summary>
-        private Vector2? _originalPosition;
+        private Vector2 _lastOffset;
 
         #endregion
 
@@ -59,7 +61,7 @@ namespace Corund.Behaviours.Movement
         /// </summary>
         public override void Bind(DynamicObject obj)
         {
-            var isDirectChild = obj.Parent is FrameBase;
+            var isDirectChild = obj.Parent == null;
             if (!isDirectChild)
                 throw new ArgumentException("Parallax behaviour can only be applied to a direct child of the frame!");
 
@@ -94,7 +96,10 @@ namespace Corund.Behaviours.Movement
         /// </summary>
         private void ApplyParallax(DynamicObject obj)
         {
-            throw new NotImplementedException();
+            var cam = GameEngine.Current.Frame.Camera;
+            var offset = (Vector2.One - _parallax) * cam.Position;
+            obj.Position += offset;
+            _lastOffset = offset;
         }
 
         /// <summary>
@@ -102,7 +107,7 @@ namespace Corund.Behaviours.Movement
         /// </summary>
         private void CancelParallax(DynamicObject obj)
         {
-            throw new NotImplementedException();
+            obj.Position -= _lastOffset;
         }
 
         #endregion
