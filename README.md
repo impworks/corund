@@ -1,5 +1,7 @@
 # Corund
 
+[![BCH compliance](https://bettercodehub.com/edge/badge/impworks/corund?branch=master)](https://bettercodehub.com/)
+
 Corund is a 2D game engine for mobile games, based on Monogame (open implementation of XNA). Inherit from a variety of existing objects and behaviours to easily compose a game or a prototype.
 
 ## Core concepts
