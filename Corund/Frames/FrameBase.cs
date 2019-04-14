@@ -38,9 +38,9 @@ namespace Corund.Frames
                 (int)ViewSize.X,
                 (int)ViewSize.Y,
                 false,
-                SurfaceFormat.Color,
-                (DepthFormat) 2,
-                1,
+                GameEngine.Render.Device.PresentationParameters.BackBufferFormat,
+                DepthFormat.Depth24,
+                0,
                 RenderTargetUsage.PreserveContents
             );
             HotSpot = ViewSize/2;
