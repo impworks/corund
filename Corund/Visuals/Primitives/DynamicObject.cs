@@ -93,8 +93,7 @@ namespace Corund.Visuals.Primitives
             var timeout = 0f;
             foreach (var curr in Behaviours)
             {
-                var fadeOut = curr as IFadeOutEffect;
-                if (fadeOut != null)
+                if (curr is IFadeOutEffect fadeOut)
                 {
                     // no break intended: activate ALL the effects! \o/
                     fadeOut.ActivateFadeOut(this);

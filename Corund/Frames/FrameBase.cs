@@ -206,7 +206,7 @@ namespace Corund.Frames
         public override void RemoveSelf(bool immediate = false)
         {
             if(immediate)
-                GameEngine.InvokeDeferred(() => GameEngine.Frames.Remove(this));
+                GameEngine.Defer(() => GameEngine.Frames.Remove(this));
             else
                 FadeOut();
         }

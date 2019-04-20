@@ -76,9 +76,9 @@ namespace Corund.Shaders
                 pp.BackBufferWidth,
                 pp.BackBufferHeight,
                 false,
-                SurfaceFormat.Color,
-                (DepthFormat) 2,
-                1,
+                pp.BackBufferFormat,
+                DepthFormat.Depth24,
+                0,
                 RenderTargetUsage.PreserveContents
             );
         }

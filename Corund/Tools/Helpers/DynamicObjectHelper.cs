@@ -23,13 +23,7 @@ namespace Corund.Tools.Helpers
         public static void Tween<TObject, TPropBase>(this TObject obj, IPropertyDescriptor<TPropBase, float> descriptor, float target, float duration, InterpolationMethod interpolation = null, bool tweenBack = false, bool loop = false)
             where TObject : DynamicObject, TPropBase
         {
-            if (!tweenBack && !loop)
-            {
-                GameEngine.InvokeDeferred(() => obj.Behaviours.Add(new FloatTween<TObject, TPropBase>(descriptor, target, duration, interpolation)));
-                return;
-            }
-
-            ApplyComplexTween(
+            ApplyTween(
                 obj,
                 descriptor,
                 duration,
@@ -45,13 +39,7 @@ namespace Corund.Tools.Helpers
         public static void Tween<TObject, TPropBase>(this TObject obj, IPropertyDescriptor<TPropBase, Vector2> descriptor, Vector2 target, float duration, InterpolationMethod interpolation = null, bool tweenBack = false, bool loop = false)
             where TObject : DynamicObject, TPropBase
         {
-            if (!tweenBack && !loop)
-            {
-                GameEngine.InvokeDeferred(() => obj.Behaviours.Add(new Vector2Tween<TObject, TPropBase>(descriptor, target, duration, interpolation)));
-                return;
-            }
-
-            ApplyComplexTween(
+            ApplyTween(
                 obj,
                 descriptor,
                 duration,
@@ -67,13 +55,7 @@ namespace Corund.Tools.Helpers
         public static void Tween<TObject, TPropBase>(this TObject obj, IPropertyDescriptor<TPropBase, Color> descriptor, Color target, float duration, InterpolationMethod interpolation = null, bool tweenBack = false, bool loop = false)
             where TObject : DynamicObject, TPropBase
         {
-            if (!tweenBack && !loop)
-            {
-                GameEngine.InvokeDeferred(() => obj.Behaviours.Add(new ColorTween<TObject, TPropBase>(descriptor, target, duration, interpolation)));
-                return;
-            }
-
-            ApplyComplexTween(
+            ApplyTween(
                 obj,
                 descriptor,
                 duration,
@@ -92,8 +74,7 @@ namespace Corund.Tools.Helpers
             var name = descriptor.Name;
             foreach (var behaviour in obj.Behaviours)
             {
-                var tween = behaviour as IPropertyTween;
-                if (tween == null || tween.PropertyName != name)
+                if (!(behaviour is IPropertyTween tween) || tween.PropertyName != name)
                     continue;
 
                 tween.StopTween(obj, skipToFinalValue);
@@ -122,7 +103,7 @@ namespace Corund.Tools.Helpers
         /// <param name="loop">Flag indicating that animation must be repeated until it is cancelled.</param>
         /// <param name="tweenBack">Flag indicating that after tweening to target value, property must be tweened back (before stopping or looping).</param>
         /// <param name="tweenFactory">Tween factory.</param>
-        private static void ApplyComplexTween<TObject, TPropBase, TProperty, TTween>(
+        private static void ApplyTween<TObject, TPropBase, TProperty, TTween>(
             TObject obj,
             IPropertyDescriptor<TPropBase, TProperty> descriptor,
             float duration,
@@ -133,20 +114,25 @@ namespace Corund.Tools.Helpers
             where TObject: DynamicObject, TPropBase
             where TTween: BehaviourBase, IReversible<TTween>
         {
+            if (!tweenBack && !loop)
+            {
+                AddBehaviour(obj, tweenFactory());
+                return;
+            }
+
             var origValue = descriptor.Getter(obj);
             Action anim = null;
 
             anim = () =>
             {
                 var tween = tweenFactory();
-                GameEngine.InvokeDeferred(() => obj.Behaviours.Add(tween));
+                AddBehaviour(obj, tween);
 
                 if (tweenBack)
                 {
                     GameEngine.Current.Timeline.Add(duration, () =>
                     {
-                        var reverse = tween.Reverse();
-                        GameEngine.InvokeDeferred(() => obj.Behaviours.Add(reverse));
+                        AddBehaviour(obj, tween.Reverse());
 
                         if(loop)
                             GameEngine.Current.Timeline.Add(duration, anim);
@@ -176,7 +162,7 @@ namespace Corund.Tools.Helpers
         public static void Jitter<TObject, TPropBase>(this TObject obj, IPropertyDescriptor<TPropBase, float> descriptor, float delay, float range, bool isRelative = false)
             where TObject : DynamicObject, TPropBase
         {
-            GameEngine.InvokeDeferred(() => obj.Behaviours.Add(new FloatJitter<TObject, TPropBase>(descriptor, delay, range, isRelative)));
+            AddBehaviour(obj, new FloatJitter<TObject, TPropBase>(descriptor, delay, range, isRelative));
         }
 
         /// <summary>
@@ -185,7 +171,7 @@ namespace Corund.Tools.Helpers
         public static void Jitter<TObject, TPropBase>(this TObject obj, IPropertyDescriptor<TPropBase, Vector2> descriptor, float delay, float xRange, float yRange, bool isRelative = false)
             where TObject : DynamicObject, TPropBase
         {
-            GameEngine.InvokeDeferred(() => obj.Behaviours.Add(new Vector2Jitter<TObject, TPropBase>(descriptor, delay, xRange, yRange, isRelative)));
+            AddBehaviour(obj, new Vector2Jitter<TObject, TPropBase>(descriptor, delay, xRange, yRange, isRelative));
         }
 
         /// <summary>
@@ -194,7 +180,7 @@ namespace Corund.Tools.Helpers
         public static void Jitter<TObject, TPropBase>(this TObject obj, IPropertyDescriptor<TPropBase, Color> descriptor, float delay, Vector4 range, bool isRelative = false)
             where TObject : DynamicObject, TPropBase
         {
-            GameEngine.InvokeDeferred(() => obj.Behaviours.Add(new ColorJitter<TObject, TPropBase>(descriptor, delay, range, isRelative)));
+            AddBehaviour(obj, new ColorJitter<TObject, TPropBase>(descriptor, delay, range, isRelative));
         }
 
         /// <summary>
@@ -204,27 +190,20 @@ namespace Corund.Tools.Helpers
             where TObject : DynamicObject, TPropBase
         {
             var name = descriptor.Name;
-            foreach (var behaviour in obj.Behaviours)
-            {
-                var jitter = behaviour as IPropertyJitter;
-                if (jitter == null || jitter.PropertyName != name)
-                    continue;
 
-                GameEngine.InvokeDeferred(() => obj.Behaviours.Remove(behaviour));
-            }
+            foreach (var behaviour in obj.Behaviours)
+                if (behaviour is IPropertyJitter jitter && jitter.PropertyName == name)
+                    RemoveBehaviour(obj, behaviour);
         }
 
         /// <summary>
         /// Stops jittering all properties.
         /// </summary>
-        public static void StopJitteringAll(this DynamicObject obj, bool skipToFinalValue = true)
+        public static void StopJitteringAll(this DynamicObject obj)
         {
             foreach (var behaviour in obj.Behaviours)
-            {
-                var jitter = behaviour as IPropertyJitter;
-                if(jitter != null)
-                    GameEngine.InvokeDeferred(() => obj.Behaviours.Remove(behaviour));
-            }
+                if(behaviour is IPropertyJitter)
+                    RemoveBehaviour(obj, behaviour);
         }
 
         #endregion
@@ -260,6 +239,26 @@ namespace Corund.Tools.Helpers
         {
             obj.Direction = obj.Position.AngleTo(point);
             obj.Tween(Property.Position, point, time, interpolation);
+        }
+
+        #endregion
+
+        #region Helpers
+
+        /// <summary>
+        /// Adds a behaviour in a deferred manner.
+        /// </summary>
+        private static void AddBehaviour(DynamicObject obj, BehaviourBase behaviour)
+        {
+            GameEngine.Defer(() => obj.Behaviours.Add(behaviour));
+        }
+
+        /// <summary>
+        /// Adds a behaviour in a deferred manner.
+        /// </summary>
+        private static void RemoveBehaviour(DynamicObject obj, BehaviourBase behaviour)
+        {
+            GameEngine.Defer(() => obj.Behaviours.Remove(behaviour));
         }
 
         #endregion

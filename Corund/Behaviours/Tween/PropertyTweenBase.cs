@@ -100,7 +100,7 @@ namespace Corund.Behaviours.Tween
 
             if (_elapsedTime <= _duration)
             {
-                _descriptor.Setter((TObject) obj, getValue());
+                _descriptor.Setter((TObject) obj, GetValue());
             }
             else
             { 
@@ -123,7 +123,7 @@ namespace Corund.Behaviours.Tween
         /// <summary>
         /// Interpolates a float part of the actual value.
         /// </summary>
-        protected float getFloat(float initial, float target)
+        protected float GetFloat(float initial, float target)
         {
             return _interpolation(initial, target, _elapsedTime/_duration);
         }
@@ -131,7 +131,7 @@ namespace Corund.Behaviours.Tween
         /// <summary>
         /// Gets the intermediate value between initial and target.
         /// </summary>
-        protected abstract TProperty getValue();
+        protected abstract TProperty GetValue();
 
         #endregion
     }

@@ -100,15 +100,13 @@ namespace Corund.Geometry
 
             foreach (var item in items)
             {
-                var rect = item as GeometryRect;
-                if (rect != null)
+                if (item is GeometryRect rect)
                 {
                     result.Add(rect);
                     continue;
                 }
 
-                var group = item as GeometryRectGroup;
-                if (group != null)
+                if (item is GeometryRectGroup group)
                 {
                     result.AddRange(group.Rectangles);
                     continue;

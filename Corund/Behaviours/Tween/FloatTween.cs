@@ -19,9 +19,9 @@ namespace Corund.Behaviours.Tween
         /// <summary>
         /// Creates interpolated value.
         /// </summary>
-        protected override float getValue()
+        protected override float GetValue()
         {
-            return getFloat(_initialValue, _targetValue);
+            return GetFloat(_initialValue, _targetValue);
         }
 
         /// <summary>

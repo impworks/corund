@@ -183,7 +183,6 @@ namespace Corund.Shaders
         /// <summary>
         /// Creates the render target.
         /// </summary>
-        /// <returns></returns>
         protected override RenderTarget2D CreateRenderTarget()
         {
             var size = RenderTargetRect;
@@ -192,9 +191,9 @@ namespace Corund.Shaders
                 size.Width,
                 size.Height,
                 false,
-                SurfaceFormat.Color,
-                (DepthFormat)2,
-                1,
+                GameEngine.Render.Device.PresentationParameters.BackBufferFormat,
+                DepthFormat.Depth24,
+                0,
                 RenderTargetUsage.PreserveContents
             );
         }

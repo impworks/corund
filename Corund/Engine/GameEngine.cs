@@ -47,7 +47,7 @@ namespace Corund.Engine
         public static ContentManager Content { get; private set; }
 
         /// <summary>
-        /// Gets the Corund's embedded content manager.
+        /// Gets the embedded content manager.
         /// </summary>
         public static EmbeddedContentManager EmbeddedContent { get; private set; }
 
@@ -137,7 +137,7 @@ namespace Corund.Engine
         /// Register a callback that is invoked after all objects are updated.
         /// It's used to manipulate object's position in the list to avoid modifying the collection being traversed.
         /// </summary>
-        public static void InvokeDeferred(Action action)
+        public static void Defer(Action action)
         {
             _deferredActions.Add(action);
         }

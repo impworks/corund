@@ -1,4 +1,5 @@
 ﻿using Corund.Engine;
+using Corund.Tools.Helpers;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -64,7 +65,7 @@ namespace Corund.Visuals.Particles
             var fadeElapsed = ElapsedTime - LifeDuration;
             if (fadeElapsed >= 0)
             {
-                Opacity = FadeDuration == 0
+                Opacity = FadeDuration.IsAlmost(0)
                     ? 0 
                     : 1 - (fadeElapsed/FadeDuration);
             }

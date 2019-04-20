@@ -150,7 +150,7 @@ namespace Corund.Visuals.Primitives
                 return;
 
             var position = index.Value;
-            GameEngine.InvokeDeferred(() =>
+            GameEngine.Defer(() =>
                 {
                     var tmp = list[position];
                     list[position] = list[position + 1];
@@ -170,7 +170,7 @@ namespace Corund.Visuals.Primitives
             if (index == null || index == list.Count - 1)
                 return;
 
-            GameEngine.InvokeDeferred(() =>
+            GameEngine.Defer(() =>
                 {
                     list.Remove(this);
                     list.Add(this);
@@ -190,7 +190,7 @@ namespace Corund.Visuals.Primitives
                 return;
 
             var position = index.Value;
-            GameEngine.InvokeDeferred(() =>
+            GameEngine.Defer(() =>
                 {
                     var tmp = list[position];
                     list[position] = list[position - 1];
@@ -210,7 +210,7 @@ namespace Corund.Visuals.Primitives
             if (index == null || index == 0)
                 return;
 
-            GameEngine.InvokeDeferred(() =>
+            GameEngine.Defer(() =>
                 {
                     list.Remove(this);
                     list.Insert(0, this);
@@ -227,7 +227,7 @@ namespace Corund.Visuals.Primitives
             if (list == null)
                 return;
 
-            GameEngine.InvokeDeferred(() => list.Remove(this));
+            GameEngine.Defer(() => list.Remove(this));
         }
 
         #endregion

@@ -134,8 +134,7 @@ namespace Corund.Visuals
         /// </summary>
         public void SetSprite(string name, bool reset = true)
         {
-            SpriteBase sprite;
-            if(!_sprites.TryGetValue(name, out sprite))
+            if(!_sprites.TryGetValue(name, out var sprite))
                 throw new ArgumentException($"Sprite '{name}' is not defined.", nameof(name));
 
             CurrentSprite = sprite;

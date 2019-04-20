@@ -76,17 +76,16 @@ namespace Corund.Behaviours.Misc
             _originalOpacity = obj.Opacity;
             var span = Duration / _blinkCount;
 
-            Action blink = null;
-            blink = () =>
+            void Blink()
             {
                 obj.Tween(Property.Opacity, 0, span / 2, null, true);
                 _elapsedBlinks++;
                 _timerKey = _elapsedBlinks < _blinkCount
-                    ? GameEngine.Current.Timeline.Add(span, blink)
+                    ? GameEngine.Current.Timeline.Add(span, Blink)
                     : -1;
-            };
+            }
 
-            blink();
+            Blink();
         }
 
         /// <summary>

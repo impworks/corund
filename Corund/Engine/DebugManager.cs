@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
 using Corund.Geometry;
-using Corund.Tools;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -92,16 +91,14 @@ namespace Corund.Engine
 
             var transform = obj.GetTransformInfo(true);
 
-            var rect = geometry as GeometryRect;
-            if (rect != null)
+            if (geometry is GeometryRect rect)
             {
                 var poly = rect.CreateRectPolygon(transform);
                 DrawRectPolygon(poly);
                 return;
             }
 
-            var group = geometry as GeometryRectGroup;
-            if (group != null)
+            if (geometry is GeometryRectGroup @group)
             {
                 foreach (var groupRect in group.Rectangles)
                 {

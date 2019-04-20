@@ -55,12 +55,10 @@ namespace Corund.Geometry
         /// </summary>
         public bool Overlaps(IGeometry other, TransformInfo? selfTransform, TransformInfo? otherTransform)
         {
-            var otherRect = other as GeometryRect;
-            if (otherRect != null)
+            if (other is GeometryRect otherRect)
                 return Overlaps(otherRect, selfTransform, otherTransform);
 
-            var otherGroup = other as GeometryRectGroup;
-            if (otherGroup != null)
+            if (other is GeometryRectGroup otherGroup)
                 return Overlaps(otherGroup, selfTransform, otherTransform);
 
             return other.Overlaps(this, otherTransform, selfTransform);

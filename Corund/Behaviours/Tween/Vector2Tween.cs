@@ -20,11 +20,11 @@ namespace Corund.Behaviours.Tween
         /// <summary>
         /// Creates interpolated value.
         /// </summary>
-        protected override Vector2 getValue()
+        protected override Vector2 GetValue()
         {
             return new Vector2(
-                getFloat(_initialValue.X, _targetValue.X),
-                getFloat(_initialValue.Y, _targetValue.Y)
+                GetFloat(_initialValue.X, _targetValue.X),
+                GetFloat(_initialValue.Y, _targetValue.Y)
             );  
         }
 

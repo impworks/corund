@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using Corund.Engine;
+using Corund.Tools.Helpers;
 using Corund.Visuals.Primitives;
 
 namespace Corund.Behaviours
@@ -38,8 +39,8 @@ namespace Corund.Behaviours
 
                 // effect has completed
                 var effect = behaviour as IEffect;
-                if(effect?.Progress == 1)
-                    GameEngine.InvokeDeferred(() => Remove(behaviour));
+                if(effect?.Progress is float progress && progress.IsAlmost(1))
+                    GameEngine.Defer(() => Remove(behaviour));
             }
         }
 

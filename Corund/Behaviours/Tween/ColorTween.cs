@@ -20,13 +20,13 @@ namespace Corund.Behaviours.Tween
         /// <summary>
         /// Creates interpolated value.
         /// </summary>
-        protected override Color getValue()
+        protected override Color GetValue()
         {
             return new Color(
-                getFloat(_initialValue.R, _targetValue.R),
-                getFloat(_initialValue.G, _targetValue.G),
-                getFloat(_initialValue.B, _targetValue.B),
-                getFloat(_initialValue.A, _targetValue.A)
+                GetFloat(_initialValue.R, _targetValue.R),
+                GetFloat(_initialValue.G, _targetValue.G),
+                GetFloat(_initialValue.B, _targetValue.B),
+                GetFloat(_initialValue.A, _targetValue.A)
             );
         }
 

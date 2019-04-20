@@ -31,7 +31,7 @@ namespace Corund.Sprites
         #region Properties
 
         /// <summary>
-        /// Gets or sets the atual size of the rectangle to cover with tiled texture.
+        /// Gets or sets the actual size of the rectangle to cover with tiled texture.
         /// </summary>
         public Vector2 EffectiveSize
         {

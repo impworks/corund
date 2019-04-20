@@ -87,6 +87,8 @@ namespace Corund.Visuals.Primitives
         /// <param name="tapThrough">Flag indicating that touch should be available for underlying objects as well.</param>
         public TouchLocation? TryGetTouch(bool tapThrough = false)
         {
+            // todo: tapthrough?
+
             if (Geometry == null)
                 return null;
 
@@ -109,6 +111,8 @@ namespace Corund.Visuals.Primitives
         /// <param name="tapThrough">Flag indicating that touch should be available for underlying objects as well.</param>
         public IList<TouchLocation> TryGetTouches(bool tapThrough = false)
         {
+            // todo: tapthrough?
+
             var result = new List<TouchLocation>();
 
             if (Geometry == null)
