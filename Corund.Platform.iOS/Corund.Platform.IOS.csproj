@@ -6,7 +6,7 @@
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
     <ProjectTypeGuids>{FEACFBD2-3405-455C-9665-78FE426C6842};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <ProjectGuid>{DC368AA8-8096-4B36-B660-DE426F382683}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <RootNamespace>Corund.Platform.IOS</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>Corund.Platform.IOS</AssemblyName>
@@ -58,6 +58,7 @@
     <MtouchProfiling>true</MtouchProfiling>
     <CodesignEntitlements>Entitlements.plist</CodesignEntitlements>
     <CodesignKey>iPhone Developer</CodesignKey>
+    <MtouchFastDev>true</MtouchFastDev>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
@@ -101,6 +102,12 @@
     <CodesignProvision>Automatic:AppStore</CodesignProvision>
     <CodesignKey>iPhone Distribution</CodesignKey>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'Default' ">
+    <AppExtensionDebugBundleId />
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework, Version=3.6.0.1625, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MonoGame.Framework.iOS.3.6.0.1625\lib\XamariniOS\MonoGame.Framework.dll</HintPath>
@@ -117,12 +124,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Content\Content.mgcb" />
-    <None Include="Content\Corund.Effects\color-overlay.xnb" />
-    <None Include="Content\Corund.Effects\desaturate.xnb" />
-    <None Include="Content\Corund.Effects\gauss-blur.xnb" />
-    <None Include="Content\Corund.Effects\radial-blur.xnb" />
-    <None Include="Content\Corund.Effects\swirl.xnb" />
-    <None Include="Content\Corund.Effects\texture-overlay.xnb" />
+    <EmbeddedResource Include="Content\Corund.Effects\color-overlay.xnb" />
+    <EmbeddedResource Include="Content\Corund.Effects\desaturate.xnb" />
+    <EmbeddedResource Include="Content\Corund.Effects\gauss-blur.xnb" />
+    <EmbeddedResource Include="Content\Corund.Effects\radial-blur.xnb" />
+    <EmbeddedResource Include="Content\Corund.Effects\swirl.xnb" />
+    <EmbeddedResource Include="Content\Corund.Effects\texture-overlay.xnb" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

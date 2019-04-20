@@ -5,6 +5,8 @@ using Corund.Geometry;
 using Corund.Sprites;
 using Corund.Tools;
 using Corund.Visuals.Primitives;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Corund.Visuals
 {
@@ -27,6 +29,27 @@ namespace Corund.Visuals
         public SpriteObject()
         {
             _sprites = new Dictionary<string, SpriteBase>();
+        }
+
+        public SpriteObject(Sprite sprite)
+            : this()
+        {
+            DefineSprite(sprite);
+        }
+
+        public SpriteObject(string asset, Vector2? hotSpot = null)
+            : this()
+        {
+            var tex = GameEngine.Content.Load<Texture2D>(asset);
+            var hs = hotSpot ?? new Vector2(tex.Width / 2, tex.Height / 2);
+
+            var sprite = new Sprite(tex)
+            {
+                HotSpot = hs,
+                Geometry = new GeometryRect(-hs.X, -hs.Y, tex.Width, tex.Height)
+            };
+
+            DefineSprite(sprite);
         }
 
         #endregion
