@@ -17,7 +17,7 @@ namespace Corund.Shaders
             Color = color;
             Opacity = opacity;
 
-            _effect = GameEngine.EmbeddedContent.Load<Effect>("color-overlay");
+            _effect = GameEngine.EmbeddedContent.Load<Effect>("Effects/color-overlay");
         }
 
         #endregion

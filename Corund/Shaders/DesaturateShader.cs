@@ -16,7 +16,7 @@ namespace Corund.Shaders
         {
             Coefficient = coefficient;
 
-            _effect = GameEngine.EmbeddedContent.Load<Effect>("desaturate");
+            _effect = GameEngine.EmbeddedContent.Load<Effect>("Effects/desaturate");
         }
 
         #endregion

@@ -17,9 +17,10 @@
     <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
     <AndroidSupportedAbis>armeabi-v7a%3bx86</AndroidSupportedAbis>
     <AndroidStoreUncompressedFileExtensions>.m4a</AndroidStoreUncompressedFileExtensions>
-    <TargetFrameworkVersion>v6.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v8.1</TargetFrameworkVersion>
     <MonoGamePlatform>Android</MonoGamePlatform>
-    <AndroidUseLatestPlatformSdk>True</AndroidUseLatestPlatformSdk>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -44,9 +45,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
-    <Reference Include="MonoGame.Framework, Version=3.6.0.1625, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MonoGame.Framework.Android.3.6.0.1625\lib\MonoAndroid\MonoGame.Framework.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MonoGame.Framework, Version=3.7.1.189, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Framework.Android.3.7.1.189\lib\MonoAndroid\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="mscorlib" />
     <Reference Include="System" />
@@ -55,18 +55,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AndroidPlatformAdapter.cs" />
     <Compile Include="Content\AndroidContentProvider.cs" />
     <Compile Include="Input\AndroidAccelerometerManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Content\Content.mgcb" />
-    <EmbeddedResource Include="Content\Corund.Effects\color-overlay.xnb" />
-    <EmbeddedResource Include="Content\Corund.Effects\desaturate.xnb" />
-    <EmbeddedResource Include="Content\Corund.Effects\gauss-blur.xnb" />
-    <EmbeddedResource Include="Content\Corund.Effects\radial-blur.xnb" />
-    <EmbeddedResource Include="Content\Corund.Effects\swirl.xnb" />
-    <EmbeddedResource Include="Content\Corund.Effects\texture-overlay.xnb" />
+    <MonoGameContentReference Include="Content\Content.mgcb" />
+    <EmbeddedResource Include="Content\Corund.Content\Effects\color-overlay.xnb" />
+    <EmbeddedResource Include="Content\Corund.Content\Effects\desaturate.xnb" />
+    <EmbeddedResource Include="Content\Corund.Content\Effects\gauss-blur.xnb" />
+    <EmbeddedResource Include="Content\Corund.Content\Effects\radial-blur.xnb" />
+    <EmbeddedResource Include="Content\Corund.Content\Effects\swirl.xnb" />
+    <EmbeddedResource Include="Content\Corund.Content\Effects\texture-overlay.xnb" />
+    <EmbeddedResource Include="Content\Corund.Content\Fonts\default.xnb" />
+    <None Include="Corund.Platform.Android.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +79,13 @@
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <Import Project="..\packages\MonoGame.Framework.Android.3.7.1.189\build\MonoGame.Framework.Android.targets" Condition="Exists('..\packages\MonoGame.Framework.Android.3.7.1.189\build\MonoGame.Framework.Android.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\MonoGame.Framework.Android.3.7.1.189\build\MonoGame.Framework.Android.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\MonoGame.Framework.Android.3.7.1.189\build\MonoGame.Framework.Android.targets'))" />
+  </Target>
   <!--
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
   -->

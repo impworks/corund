@@ -62,14 +62,9 @@ namespace Corund.Engine.Config
         public bool EnableAntiAliasing;
 
         /// <summary>
-        /// Platform-specific content provider (optional).
+        /// Platform-specific resource wrapper (optional).
         /// </summary>
-        public IContentProvider ContentProvider;
-
-        /// <summary>
-        /// Platform-specific accelerometer manager (optional).
-        /// </summary>
-        public IAccelerometerManager AccelerometerManager;
+        public IPlatformAdapter PlatformAdapter;
 
         #endregion
     }

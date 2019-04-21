@@ -69,6 +69,7 @@
     <Compile Include="Engine\Config\GameEngineOptions.cs" />
     <Compile Include="Engine\Config\IAccelerometerManager.cs" />
     <Compile Include="Engine\Config\IContentProvider.cs" />
+    <Compile Include="Engine\Config\IPlatformAdapter.cs" />
     <Compile Include="Engine\Config\ResolutionAdaptationMode.cs" />
     <Compile Include="Engine\EmbeddedContentManager.cs" />
     <Compile Include="Engine\GameEngine.cs" />
@@ -133,8 +134,8 @@
     <Compile Include="Visuals\TextObject.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="MonoGame.Framework, Version=3.6.0.1625, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MonoGame.Framework.Portable.3.6.0.1625\lib\portable-net45+win8+wpa81\MonoGame.Framework.dll</HintPath>
+    <Reference Include="MonoGame.Framework, Version=3.7.1.189, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MonoGame.Framework.Portable.3.7.1.189\lib\portable-net45+win8+wpa81\MonoGame.Framework.dll</HintPath>
     </Reference>
     <Reference Include="System.ServiceModel.Primitives">
       <HintPath>..\..\..\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETPortable\v4.5\System.ServiceModel.Primitives.dll</HintPath>
@@ -145,6 +146,7 @@
     <Compile Include="Engine\GameEngine.Current.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Corund.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

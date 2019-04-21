@@ -23,7 +23,7 @@ namespace Corund.Shaders
             Center = center;
             Amount = amount;
 
-            _effect = GameEngine.EmbeddedContent.Load<Effect>("radial-blur");
+            _effect = GameEngine.EmbeddedContent.Load<Effect>("Effects/radial-blur");
         }
 
         #endregion

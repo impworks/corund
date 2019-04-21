@@ -11,10 +11,10 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>IOS-specific components for Corund game engine.</description>
     <releaseNotes>Pre-release version.</releaseNotes>
-    <copyright>Copyright 2017</copyright>
+    <copyright>Copyright 2019</copyright>
     <tags>GameEngine 2D Shader</tags>
     <dependencies>
-        <dependency id="MonoGame.Framework.iOS" version="3.6.0.1625" />
+        <dependency id="MonoGame.Framework.iOS" version="3.7.1.189" />
         <dependency id="Corund" version="0.1.49" />
     </dependencies>
   </metadata>

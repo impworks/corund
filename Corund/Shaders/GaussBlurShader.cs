@@ -24,7 +24,7 @@ namespace Corund.Shaders
             if (GameEngine.EmbeddedContent == null)
                 throw new ArgumentException("ContentProvider is not specified in GameEngine configuration!");
 
-            _effect = GameEngine.EmbeddedContent.Load<Effect>("gauss-blur");
+            _effect = GameEngine.EmbeddedContent.Load<Effect>("Effects/gauss-blur");
             _renderTarget2 = CreateRenderTarget();
 
             Amount = blurAmount;

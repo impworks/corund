@@ -15,7 +15,7 @@ namespace Corund.Platform.IOS.Content
         /// <summary>
         /// Assembly-specific prefix for all resource names.
         /// </summary>
-        private const string RESOURCE_PREFIX = "Corund.Platform.IOS.Content.Corund.Effects";
+        private const string RESOURCE_PREFIX = "Corund.Platform.IOS.Content.Corund.Content";
 
         #endregion
 
@@ -42,7 +42,7 @@ namespace Corund.Platform.IOS.Content
         /// </summary>
         public Stream GetResource(string name)
         {
-            var stream = _assembly.GetManifestResourceStream($@"{RESOURCE_PREFIX}.{name}.xnb");
+            var stream = _assembly.GetManifestResourceStream($@"{RESOURCE_PREFIX}.{name.Replace('/', '.')}.xnb");
 
             if(stream == null)
                 throw new ArgumentException($"Embedded resource '{name}' is not available on this platform!");

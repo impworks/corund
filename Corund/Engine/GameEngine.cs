@@ -29,10 +29,11 @@ namespace Corund.Engine
             Sound = new SoundManager();
             Touch = new TouchManager();
             Debug = new DebugManager(Render.Device);
-            Accelerometer = opts.AccelerometerManager;
+            Accelerometer = opts.PlatformAdapter?.GetAccelerometerManager();
 
-            if (opts.ContentProvider != null)
-                EmbeddedContent = new EmbeddedContentManager(opts.Game.Services, opts.ContentProvider);
+            var embeddedContent = opts.PlatformAdapter?.GetEmbeddedContentProvider();
+            if (embeddedContent != null)
+                EmbeddedContent = new EmbeddedContentManager(opts.Game.Services, embeddedContent);
 
             _deferredActions = new List<Action>();
         }

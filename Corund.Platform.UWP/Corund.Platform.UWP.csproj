@@ -104,19 +104,22 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <None Include="Content\Content.mgcb" />
-    <EmbeddedResource Include="Content\Corund.Effects\color-overlay.xnb" />
-    <EmbeddedResource Include="Content\Corund.Effects\desaturate.xnb" />
-    <EmbeddedResource Include="Content\Corund.Effects\gauss-blur.xnb" />
-    <EmbeddedResource Include="Content\Corund.Effects\radial-blur.xnb" />
-    <EmbeddedResource Include="Content\Corund.Effects\swirl.xnb" />
-    <EmbeddedResource Include="Content\Corund.Effects\texture-overlay.xnb" />
+    <MonoGameContentReference Include="Content\Content.mgcb" />
+    <EmbeddedResource Include="Content\Corund.Content\Effects\color-overlay.xnb" />
+    <EmbeddedResource Include="Content\Corund.Content\Effects\desaturate.xnb" />
+    <EmbeddedResource Include="Content\Corund.Content\Effects\gauss-blur.xnb" />
+    <EmbeddedResource Include="Content\Corund.Content\Effects\radial-blur.xnb" />
+    <EmbeddedResource Include="Content\Corund.Content\Effects\swirl.xnb" />
+    <EmbeddedResource Include="Content\Corund.Content\Effects\texture-overlay.xnb" />
+    <EmbeddedResource Include="Content\Corund.Content\Fonts\default.xnb" />
+    <None Include="Corund.Platform.UWP.nuspec" />
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Content\UWPContentProvider.cs" />
     <Compile Include="Input\UWPAccelerometerManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UWPPlatformAdapter.cs" />
     <EmbeddedResource Include="Properties\Corund.Platform.UWP.rd.xml" />
   </ItemGroup>
   <ItemGroup>

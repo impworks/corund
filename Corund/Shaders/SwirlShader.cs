@@ -18,7 +18,7 @@ namespace Corund.Shaders
             Size = size;
             WarpCoefficient = coefficient;
 
-            _effect = GameEngine.EmbeddedContent.Load<Effect>("swirl");
+            _effect = GameEngine.EmbeddedContent.Load<Effect>("Effects/swirl");
         }
 
         #endregion

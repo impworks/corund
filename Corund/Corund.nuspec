@@ -11,10 +11,10 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Simple 2D game engine for MonoGame.</description>
     <releaseNotes>Pre-release version.</releaseNotes>
-    <copyright>Copyright 2017</copyright>
+    <copyright>Copyright 2019</copyright>
     <tags>GameEngine 2D Scene Render Geometry</tags>
     <dependencies>
-        <dependency id="MonoGame.Framework.Portable" version="3.6.0.1625" />
+        <dependency id="MonoGame.Framework.Portable" version="3.7.1.189" />
     </dependencies>
   </metadata>
 </package>

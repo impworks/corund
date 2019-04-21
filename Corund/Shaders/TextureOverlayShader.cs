@@ -25,7 +25,7 @@ namespace Corund.Shaders
             Scale = scale;
             Opacity = opacity;
 
-            _effect = GameEngine.EmbeddedContent.Load<Effect>("texture-overlay");
+            _effect = GameEngine.EmbeddedContent.Load<Effect>("Effects/texture-overlay");
         }
 
         #endregion

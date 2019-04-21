@@ -15,6 +15,12 @@ namespace Corund.Visuals
     {
         #region Constructor
 
+        public TextObject(string text)
+            : this(GameEngine.EmbeddedContent.Load<SpriteFont>("Fonts/default"), text)
+        {
+
+        }
+
         public TextObject(SpriteFont font, string text)
         {
             _font = font;

@@ -37,7 +37,7 @@ void Main()
 private void CreateFileTemplate(string effectName)
 {
 	var srcPath = GetPath("Utilities", "EffectTemplate.fx");
-	var destPath = GetPath("Corund.Effects", effectName + ".fx");
+	var destPath = GetPath("Corund.Content", "Effects", effectName + ".fx");
 
 	File.Copy(srcPath, destPath);
 }
@@ -54,7 +54,7 @@ private void AddToSolution(string effectName)
 
 	var line = string.Format(
 		"\t\t{0} = {0}",
-		$@"Corund.Effects\{effectName}.fx"
+		$@"Corund.Content\Effects\{effectName}.fx"
 	);
 
 	content.Insert(folderEnd - 1, new { Line = line, Index = 0 });
@@ -69,11 +69,11 @@ private void AddToContentProject(string effectName, string platform)
 
 	var newContent = new[]
 	{
-		$"#begin ../../Corund.Effects/{effectName}.fx",
+		$"#begin ../../Corund.Content/Effects/{effectName}.fx",
 		$"/importer:EffectImporter",
 		$"/processor:EffectProcessor",
 		$"/processorParam:DebugMode=Auto",
-		$"/build:../../Corund.Effects/{effectName}.fx",
+		$"/build:../../Corund.Content/Effects/{effectName}.fx",
 		$""
 	};
 	
@@ -95,7 +95,7 @@ private void AddToPlatformProject(string effectName, string platform)
 				ns + "EmbeddedResource",
 				new XAttribute(
 					"Include",
-					$@"Content\Corund.Effects\{effectName}.xnb"
+					$@"Content\Corund.Content\Effects\{effectName}.xnb"
 				)
 			)
 		)

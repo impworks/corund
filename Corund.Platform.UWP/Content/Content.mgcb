@@ -13,39 +13,45 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin ../../Corund.Effects/gauss-blur.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:../../Corund.Effects/gauss-blur.fx
+#begin ../../Corund.Content/Fonts/default.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:TextureFormat=Compressed
+/build:../../Corund.Content/Fonts/default.spritefont
 
-#begin ../../Corund.Effects/radial-blur.fx
+#begin ../../Corund.Content/Effects/gauss-blur.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:../../Corund.Effects/radial-blur.fx
+/build:../../Corund.Content/Effects/gauss-blur.fx
 
-#begin ../../Corund.Effects/color-overlay.fx
+#begin ../../Corund.Content/Effects/radial-blur.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:../../Corund.Effects/color-overlay.fx
+/build:../../Corund.Content/Effects/radial-blur.fx
 
-#begin ../../Corund.Effects/texture-overlay.fx
+#begin ../../Corund.Content/Effects/color-overlay.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:../../Corund.Effects/texture-overlay.fx
+/build:../../Corund.Content/Effects/color-overlay.fx
 
-#begin ../../Corund.Effects/desaturate.fx
+#begin ../../Corund.Content/Effects/texture-overlay.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:../../Corund.Effects/desaturate.fx
+/build:../../Corund.Content/Effects/texture-overlay.fx
 
-#begin ../../Corund.Effects/swirl.fx
+#begin ../../Corund.Content/Effects/desaturate.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:../../Corund.Effects/swirl.fx
+/build:../../Corund.Content/Effects/desaturate.fx
+
+#begin ../../Corund.Content/Effects/swirl.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:../../Corund.Content/Effects/swirl.fx
 
