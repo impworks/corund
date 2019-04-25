@@ -133,7 +133,6 @@ namespace Corund.Engine
         /// <summary>
         /// Returns the virtual touch state represented by the mouse state.
         /// </summary>
-        /// <returns></returns>
         private TouchLocationState? GetEmulatedTouchState(ButtonState current, ButtonState previous)
         {
             if (current == ButtonState.Released)
