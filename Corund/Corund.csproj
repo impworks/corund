@@ -82,6 +82,7 @@
     <Compile Include="Engine\RenderManager.cs" />
     <Compile Include="Engine\ScreenManager.cs" />
     <Compile Include="Frames\Window.cs" />
+    <Compile Include="Geometry\BoundingBoxBuilder.cs" />
     <Compile Include="Geometry\GeometryHelper.cs" />
     <Compile Include="Geometry\GeometryRect.cs" />
     <Compile Include="Geometry\GeometryRectGroup.cs" />
@@ -132,6 +133,9 @@
     <Compile Include="Visuals\Primitives\ObjectBase.cs" />
     <Compile Include="Visuals\SpriteObject.cs" />
     <Compile Include="Visuals\TextObject.cs" />
+    <Compile Include="Visuals\UI\IPanel.cs" />
+    <Compile Include="Visuals\UI\StackOrientation.cs" />
+    <Compile Include="Visuals\UI\StackPanel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework, Version=3.7.1.189, Culture=neutral, processorArchitecture=MSIL">

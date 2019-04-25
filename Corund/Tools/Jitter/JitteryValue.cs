@@ -45,7 +45,7 @@ namespace Corund.Tools.Jitter
         /// </summary>
         public float GetValue()
         {
-            if (Jitter.IsAlmostNull())
+            if (Jitter.IsAlmostZero())
                 return Median;
 
             return Median + RandomHelper.Float(-Jitter, Jitter);

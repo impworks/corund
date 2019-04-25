@@ -6,7 +6,7 @@
     public static class NumericHelper
     {
         /// <summary>
-        /// The mininum value to take into account when modifying object properties.
+        /// The minimum value to take into account when modifying object properties.
         /// Prevents coordinates, angle, etc from jitter degradation over time.
         /// </summary>
         public const float Epsilon = 0.0001f;
@@ -14,7 +14,7 @@
         /// <summary>
         /// Check whether a number is too small to account for.
         /// </summary>
-        public static bool IsAlmostNull(this float number)
+        public static bool IsAlmostZero(this float number)
         {
             return number < Epsilon
                    && number > -Epsilon;
@@ -28,7 +28,8 @@
         /// <param name="precision">Precision.</param>
         public static bool IsAlmost(this float number, float compareTo, float precision = Epsilon)
         {
-            return (number <= compareTo + precision) && (number >= compareTo - precision);
+            return number <= compareTo + precision
+                   && number >= compareTo - precision;
         }
     }
 }

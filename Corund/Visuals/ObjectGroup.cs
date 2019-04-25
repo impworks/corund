@@ -45,10 +45,19 @@ namespace Corund.Visuals
         public int Count => Children.Count;
 
         /// <summary>
-        /// The shortcut to a particular item in the list.
+        /// Gets or sets a particular item in the list.
         /// </summary>
         /// <param name="id">Item's ID.</param>
-        public virtual ObjectBase this[int id] => Children[id];
+        public virtual ObjectBase this[int id]
+        {
+            get => Children[id];
+            set
+            {
+                Detach(Children[id]);
+                Attach(value);
+                Children[id] = value;
+            }
+        }
 
         #endregion
 
@@ -57,23 +66,22 @@ namespace Corund.Visuals
         /// <summary>
         /// Add an object to the visual list.
         /// </summary>
-        /// <param name="child">Object to insert.</param>
+        /// <param name="obj">Object to insert.</param>
         /// <param name="toTop">Whether to put object on top or on bottom.</param>
-        public virtual T Add<T>(T child, bool toTop = true)
+        public virtual T Add<T>(T obj, bool toTop = true)
             where T: ObjectBase
         {
-            if (child == null || Children.Contains(child))
-                return child;
+            if (obj == null || Children.Contains(obj))
+                return obj;
 
-            (child.Parent as ObjectGroup)?.Children.Remove(child);
+            Attach(obj);
 
             if (toTop)
-                Children.Insert(0, child);
+                Children.Insert(0, obj);
             else
-                Children.Add(child);
+                Children.Add(obj);
 
-            child.Parent = this;
-            return child;
+            return obj;
         }
 
         /// <summary>
@@ -106,8 +114,9 @@ namespace Corund.Visuals
         /// <summary>
         /// Remove an object object from the list.
         /// </summary>
-        public void Remove(ObjectBase obj)
+        public virtual void Remove(ObjectBase obj)
         {
+            Detach(obj);
             Children.Remove(obj);
         }
 
@@ -116,15 +125,34 @@ namespace Corund.Visuals
         /// </summary>
         public virtual void RemoveAt(int idx)
         {
+            Detach(Children[idx]);
             Children.RemoveAt(idx);
         }
 
         /// <summary>
         /// Remove all the children from the list.
         /// </summary>
-        public void Clear()
+        public virtual void Clear()
         {
+            for (var idx = 0; idx < Children.Count; idx++)
+                Detach(Children[idx]);
+
             Children.Clear();
+        }
+
+        /// <summary>
+        /// Inserts the object at the specified position.
+        /// </summary>
+        public virtual T InsertAt<T>(int idx, T obj)
+            where T: ObjectBase
+        {
+            if (obj == null || Children.Contains(obj))
+                return obj;
+
+            Attach(obj);
+            Children.Insert(idx, obj);
+
+            return obj;
         }
 
         #endregion
@@ -155,6 +183,27 @@ namespace Corund.Visuals
             // draw in reverse: bottom to top
             for (var idx = Children.Count - 1; idx >= 0; idx--)
                 Children[idx].Draw();
+        }
+
+        #endregion
+
+        #region Private helpers
+
+        /// <summary>
+        /// Attaches the object to this group.
+        /// </summary>
+        protected void Attach(ObjectBase obj)
+        {
+            (obj.Parent as ObjectGroup)?.Children.Remove(obj);
+            obj.Parent = this;
+        }
+
+        /// <summary>
+        /// Detaches the object from this group.
+        /// </summary>
+        protected void Detach(ObjectBase obj)
+        {
+            obj.Parent = null;
         }
 
         #endregion

@@ -33,7 +33,7 @@ namespace Corund.Visuals.Primitives
             get => Momentum.Length();
             set
             {
-                if (Momentum.X.IsAlmostNull() && Momentum.Y.IsAlmostNull())
+                if (Momentum.X.IsAlmostZero() && Momentum.Y.IsAlmostZero())
                 {
                     Momentum = new Vector2(value, 0);
                 }
@@ -70,13 +70,13 @@ namespace Corund.Visuals.Primitives
 
             if ((pm & PauseMode.Momentum) == 0)
             {
-                if (!Rotation.IsAlmostNull())
+                if (!Rotation.IsAlmostZero())
                     Angle += delta * Rotation;
 
-                if (!Acceleration.IsAlmostNull())
+                if (!Acceleration.IsAlmostZero())
                     Speed += delta * Acceleration;
 
-                if (!Momentum.X.IsAlmostNull() || !Momentum.Y.IsAlmostNull())
+                if (!Momentum.X.IsAlmostZero() || !Momentum.Y.IsAlmostZero())
                     Position += delta * Momentum;
             }
         }

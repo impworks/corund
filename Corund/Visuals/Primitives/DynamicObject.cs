@@ -103,7 +103,7 @@ namespace Corund.Visuals.Primitives
                 }
             }
 
-            if (timeout.IsAlmostNull())
+            if (timeout.IsAlmostZero())
                 RemoveSelf(true);
             else
                 GameEngine.Current.Timeline.Add(timeout, () => RemoveSelf(true));

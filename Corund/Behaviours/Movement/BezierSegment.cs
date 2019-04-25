@@ -83,7 +83,7 @@ namespace Corund.Behaviours.Movement
             var C_2 = (float)(2 * Math.Sqrt(C));
             var BA = B / A_2;
 
-            if ((BA + C_2).IsAlmostNull())
+            if ((BA + C_2).IsAlmostZero())
                 return (Point2 - Point1).Length() + (Point3 - Point2).Length();
 
             return (A_32*Sabc + A_2*B*(Sabc - C_2) + (4*C*A - B*B)*(float) Math.Log((2*A_2 + BA + Sabc)/(BA + C_2)))/(4*A_32);

@@ -27,5 +27,10 @@ namespace Corund.Geometry
         /// Checks if current geometry is completely outside bounds.
         /// </summary>
         bool IsOutsideBounds(Rectangle bounds, TransformInfo? selfTransform);
+
+        /// <summary>
+        /// Returns the bounding box in parent coordinates, axes-aligned.
+        /// </summary>
+        Rectangle GetBoundingBox(TransformInfo? selfTransform);
     }
 }

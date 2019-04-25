@@ -291,7 +291,7 @@ namespace Corund.Tools.Interpolation
         /// <param name="tweenState">Tweening state between 0 (not applied) and 1 (completed).</param>
         public static float Elastic(float min, float max, float tweenState)
         {
-            if (tweenState.IsAlmostNull())
+            if (tweenState.IsAlmostZero())
                 return min;
             if (tweenState.IsAlmost(1))
                 return max;

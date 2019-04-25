@@ -58,7 +58,7 @@ namespace Corund.Tools.Jitter
         /// </summary>
         public Vector2 GetValue()
         {
-            if (Jitter.Length().IsAlmostNull())
+            if (Jitter.Length().IsAlmostZero())
                 return Median;
 
             var jX = RandomHelper.Float(-Jitter.X, Jitter.X);
