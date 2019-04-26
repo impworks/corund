@@ -57,6 +57,14 @@ namespace Corund.Tools.Helpers
             );
         }
 
+        /// <summary>
+        /// Returns the vector size as rectangle.
+        /// </summary>
+        public static Vector2 GetSize(this Rectangle rect)
+        {
+            return new Vector2(rect.Width / 2.0f, rect.Height / 2.0f);
+        }
+
         #endregion
     }
 }
