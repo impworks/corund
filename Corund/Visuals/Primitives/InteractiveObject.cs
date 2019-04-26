@@ -93,13 +93,13 @@ namespace Corund.Visuals.Primitives
             var transform = GetTransformInfo(false);
             foreach (var touch in GameEngine.Current.Touches)
             {
-                if (!GameEngine.Touch.CanHandleTouch(touch, this))
+                if (!GameEngine.Touch.CanHandle(touch, this))
                     continue;
 
                 if (Geometry.ContainsPoint(touch.Position, transform))
                 {
                     if(!tapThrough)
-                        GameEngine.Touch.HandleTouch(touch, this);
+                        GameEngine.Touch.Handle(touch, this);
 
                     return touch;
                 }
@@ -122,7 +122,7 @@ namespace Corund.Visuals.Primitives
             var transform = GetTransformInfo(false);
             foreach (var touch in GameEngine.Current.Touches)
             {
-                if (!GameEngine.Touch.CanHandleTouch(touch, this))
+                if (!GameEngine.Touch.CanHandle(touch, this))
                     continue;
 
                 if (Geometry.ContainsPoint(touch.Position, transform))

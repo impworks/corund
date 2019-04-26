@@ -60,7 +60,7 @@ namespace Corund.Engine
             foreach(var location in TouchPanel.GetState())
                 Touches.Add(location);
 
-            if (Touches.Count == 0)
+            if (GameEngine.Options.EnableMouse && Touches.Count == 0)
             {
                 var loc = ConvertMouseToTouch();
                 if(loc != null)
@@ -71,16 +71,16 @@ namespace Corund.Engine
         /// <summary>
         /// Checks if the current object can handle this touch.
         /// </summary>
-        public bool CanHandleTouch(TouchLocation touch, ObjectBase obj)
+        public bool CanHandle(TouchLocation touch, ObjectBase obj)
         {
-            return !_handledTouches.ContainsKey(touch.Id)
-                   || ReferenceEquals(obj, _handledTouches[touch.Id]);
+            _handledTouches.TryGetValue(touch.Id, out var handler);
+            return handler == null || ReferenceEquals(obj, handler);
         }
 
         /// <summary>
         /// Registers the touch location as handled by a specific object.
         /// </summary>
-        public void HandleTouch(TouchLocation touch, ObjectBase obj)
+        public void Handle(TouchLocation touch, ObjectBase obj)
         {
             if (!_handledTouches.ContainsKey(touch.Id))
                 _handledTouches[touch.Id] = obj;
@@ -109,6 +109,21 @@ namespace Corund.Engine
             var framePt = viewPt.Rotate(-cam.Angle)/cam.ScaleVector + cam.Offset;
 
             return new TouchLocation(touch.Id, touch.State, framePt);
+        }
+
+        /// <summary>
+        /// Returns a touch location by its ID.
+        /// </summary>
+        public TouchLocation? Find(int id)
+        {
+            for (var idx = 0; idx < Touches.Count; idx++)
+            {
+                var touch = Touches[idx];
+                if (touch.Id == id)
+                    return touch;
+            }
+
+            return null;
         }
 
         #endregion

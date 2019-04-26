@@ -66,6 +66,11 @@ namespace Corund.Engine.Config
         /// </summary>
         public IPlatformAdapter PlatformAdapter;
 
+        /// <summary>
+        /// Translate mouse coordinates to touch?
+        /// </summary>
+        public bool EnableMouse;
+
         #endregion
     }
 }
