@@ -1,4 +1,6 @@
-﻿using Corund.Tools.Helpers;
+﻿using System;
+using Corund.Tools;
+using Corund.Tools.Helpers;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 
@@ -7,12 +9,13 @@ namespace Corund.Visuals.UI
     /// <summary>
     /// A container that aligns items by a coordinate axis.
     /// </summary>
-    public class StackPanel: ObjectGroup, IPanel
+    public class StackPanel: ObjectGroup, IObjectGroup
     {
         #region Constructor
 
-        public StackPanel(StackOrientation orientation = StackOrientation.Down)
+        public StackPanel(KnownDirection orientation = KnownDirection.Down)
         {
+            Validate(orientation);
             _orientation = orientation;
             _lastPosition = Vector2.Zero;
         }
@@ -22,7 +25,7 @@ namespace Corund.Visuals.UI
         #region Fields
 
         private float _padding;
-        private StackOrientation _orientation;
+        private KnownDirection _orientation;
         private Vector2 _lastPosition;
 
         #endregion
@@ -48,7 +51,7 @@ namespace Corund.Visuals.UI
         /// <summary>
         /// Direction of the stack's growth.
         /// </summary>
-        public StackOrientation Orientation
+        public KnownDirection Orientation
         {
             get => _orientation;
             set
@@ -88,13 +91,13 @@ namespace Corund.Visuals.UI
             iobj.Position = _lastPosition;
 
             var box = iobj.Geometry.GetBoundingBox(iobj.GetTransformInfo(false));
-            if (Orientation == StackOrientation.Down)
+            if (Orientation == KnownDirection.Down)
                 _lastPosition.Y += (box.Height + _padding);
-            else if (Orientation == StackOrientation.Right)
+            else if (Orientation == KnownDirection.Right)
                 _lastPosition.X += (box.Width + _padding);
-            else if (Orientation == StackOrientation.Up)
+            else if (Orientation == KnownDirection.Up)
                 _lastPosition.Y -= (box.Height + _padding);
-            else if (Orientation == StackOrientation.Left)
+            else if (Orientation == KnownDirection.Left)
                 _lastPosition.X -= (box.Width + _padding);
         }
 
@@ -152,6 +155,24 @@ namespace Corund.Visuals.UI
                 base[id] = value;
                 RefreshLayout();
             }
+        }
+
+        #endregion
+
+        #region Private helpers
+
+        /// <summary>
+        /// Validates the stacks' growth direction.
+        /// </summary>
+        private void Validate(KnownDirection orientation)
+        {
+            var ok = orientation == KnownDirection.Down
+                     || orientation == KnownDirection.Right
+                     || orientation == KnownDirection.Up
+                     || orientation == KnownDirection.Left;
+
+            if(!ok)
+                throw new ArgumentOutOfRangeException(nameof(orientation), "Stack orientation may only be one of the following: Up, Down, Left, Right.");
         }
 
         #endregion

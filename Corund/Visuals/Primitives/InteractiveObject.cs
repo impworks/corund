@@ -128,7 +128,7 @@ namespace Corund.Visuals.Primitives
                 if (Geometry.ContainsPoint(touch.Position, transform))
                 {
                     if (!tapThrough)
-                        GameEngine.Touch.HandleTouch(touch, this);
+                        GameEngine.Touch.Handle(touch, this);
 
                     if(result == null)
                         result = new List<TouchLocation>();

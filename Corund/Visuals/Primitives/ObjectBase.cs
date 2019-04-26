@@ -134,6 +134,17 @@ namespace Corund.Visuals.Primitives
             return new TransformInfo(position, angle, scale);
         }
 
+        /// <summary>
+        /// Attaches another object to this one as a child.
+        /// </summary>
+        protected void Attach(ObjectBase obj)
+        {
+            if(obj.Parent is IObjectGroup group)
+                group.Remove(obj);
+
+            obj.Parent = this;
+        }
+
         #endregion
 
         #region Visual layering
