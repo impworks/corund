@@ -1,6 +1,6 @@
 ﻿using System;
 using Corund.Sprites;
-using Corund.Tools.Helpers;
+using Corund.Tools.UI;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework.Input.Touch;
 
@@ -18,29 +18,21 @@ namespace Corund.Visuals.UI
         protected const string ACTIVE_STATE = "active";
 
         #endregion
+
         #region Constructor
 
         /// <summary>
         /// Creates a button with a single state and default text.
         /// </summary>
-        public Button(Sprite sprite, string text)
-            : this(sprite, new TextObject(text))
+        public Button(string text, SpriteBase active, SpriteBase pressed = null, SpriteBase disabled = null)
+            : this(CreateText(text), active, pressed, disabled)
         {
-        }
-
-        /// <summary>
-        /// Creates a button with a single state and arbitrary contents.
-        /// </summary>
-        public Button(Sprite sprite, ObjectBase contents)
-            : this(sprite, null, null, contents)
-        {
-
         }
 
         /// <summary>
         /// Creates a button with all three states and arbitrary contents.
         /// </summary>
-        public Button(Sprite active, Sprite pressed, Sprite disabled, ObjectBase contents)
+        public Button(ObjectBase contents, SpriteBase active, SpriteBase pressed = null, SpriteBase disabled = null)
         {
             if (active == null)
                 throw new ArgumentNullException(nameof(active));
@@ -50,15 +42,13 @@ namespace Corund.Visuals.UI
 
             DefineSprite(active, ACTIVE_STATE);
 
-            if(pressed != null)
+            if (pressed != null)
                 DefineSprite(pressed, PRESSED_STATE);
-            if(disabled != null)
+            if (disabled != null)
                 DefineSprite(disabled, DISABLED_STATE);
 
             Attach(contents);
-
             _contents = contents;
-            _contents.Position = active.Geometry.GetBoundingBox(null).GetSize() / 2.0f;
         }
 
         #endregion
@@ -114,6 +104,31 @@ namespace Corund.Visuals.UI
             _touch = TryGetTouch();
             var state = _touch == null || !HasSprite(PRESSED_STATE) ? ACTIVE_STATE : PRESSED_STATE;
             SetSprite(state, false);
+
+            _contents.Update();
+        }
+
+        public override void Draw()
+        {
+            base.Draw();
+
+            _contents.Draw();
+        }
+
+        #endregion
+
+        #region Helpers
+
+        /// <summary>
+        /// Creates a centered text object from the string.
+        /// </summary>
+        private static TextObject CreateText(string text)
+        {
+            return new TextObject(text)
+            {
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
+            };
         }
 
         #endregion

@@ -62,7 +62,7 @@ namespace Corund.Tools.Helpers
         /// </summary>
         public static Vector2 GetSize(this Rectangle rect)
         {
-            return new Vector2(rect.Width / 2.0f, rect.Height / 2.0f);
+            return new Vector2(rect.Width, rect.Height);
         }
 
         #endregion
