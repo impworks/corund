@@ -53,6 +53,7 @@ namespace Corund.Visuals.UI
 
             Attach(contents);
             _contents = contents;
+            _contents.Position = (active.Size / 2) - active.HotSpot;
         }
 
         #endregion
