@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Corund.Frames;
 using Corund.Tools.Helpers;
-using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
@@ -18,7 +17,7 @@ namespace Corund.Engine
         public TouchManager()
         {
             Touches = new List<TouchLocation>(4);
-            _handledTouches = new Dictionary<int, ObjectBase>(4);
+            _handledTouches = new Dictionary<int, object>(4);
             _mouseButtonState = ButtonState.Released;
         }
 
@@ -29,7 +28,7 @@ namespace Corund.Engine
         /// <summary>
         /// List of touches that have been handled by an object.
         /// </summary>
-        private Dictionary<int, ObjectBase> _handledTouches;
+        private Dictionary<int, object> _handledTouches;
 
         /// <summary>
         /// Mouse button's last state for touch emulation.
@@ -71,7 +70,7 @@ namespace Corund.Engine
         /// <summary>
         /// Checks if the current object can handle this touch.
         /// </summary>
-        public bool CanHandle(TouchLocation touch, ObjectBase obj)
+        public bool CanHandle(TouchLocation touch, object obj)
         {
             _handledTouches.TryGetValue(touch.Id, out var handler);
             return handler == null || ReferenceEquals(obj, handler);
@@ -80,7 +79,7 @@ namespace Corund.Engine
         /// <summary>
         /// Registers the touch location as handled by a specific object.
         /// </summary>
-        public void Handle(TouchLocation touch, ObjectBase obj)
+        public void Handle(TouchLocation touch, object obj)
         {
             if (!_handledTouches.ContainsKey(touch.Id))
                 _handledTouches[touch.Id] = obj;

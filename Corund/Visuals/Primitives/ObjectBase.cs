@@ -68,7 +68,7 @@ namespace Corund.Visuals.Primitives
         /// <summary>
         /// Base object, to which current object is relative.
         /// </summary>
-        public ObjectBase Parent;
+        public ObjectBase Parent { get; set; }
 
         /// <summary>
         /// Gets or sets the flag indicating the object is to be displayed.

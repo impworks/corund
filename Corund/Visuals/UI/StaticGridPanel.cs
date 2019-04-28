@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Globalization;
+using Corund.Geometry;
 using Corund.Tools.Helpers;
 using Corund.Tools.UI;
 using Corund.Visuals.Primitives;
@@ -10,7 +11,7 @@ namespace Corund.Visuals.UI
     /// <summary>
     /// The grid with predefined columns and rows.
     /// </summary>
-    public class StaticGridPanel: ObjectGroupBase
+    public class StaticGridPanel: ObjectGroupBase, IGeometryObject
     {
         #region Constructors
 
@@ -45,6 +46,7 @@ namespace Corund.Visuals.UI
             Padding = padding;
             Width = width;
             Height = height;
+            Geometry = new GeometryRect(0, 0, width, height);
 
             _columns = ParseDefs(cols);
             _rows = ParseDefs(rows);
@@ -78,6 +80,11 @@ namespace Corund.Visuals.UI
         /// Full height of the grid.
         /// </summary>
         public readonly float Height;
+
+        /// <summary>
+        /// Geometry for this grid.
+        /// </summary>
+        public IGeometry Geometry { get; }
 
         #endregion
 

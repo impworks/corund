@@ -1,5 +1,7 @@
 ﻿using System;
+using Corund.Geometry;
 using Corund.Sprites;
+using Corund.Tools.Helpers;
 using Corund.Tools.UI;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework.Input.Touch;
@@ -40,6 +42,8 @@ namespace Corund.Visuals.UI
             if (contents == null)
                 throw new ArgumentNullException(nameof(contents));
 
+            Geometry = active.Geometry;
+
             DefineSprite(active, ACTIVE_STATE);
 
             if (pressed != null)
@@ -71,6 +75,12 @@ namespace Corund.Visuals.UI
         /// </summary>
         public bool Disabled;
 
+        /// <summary>
+        /// Geometry for tap checking.
+        /// Always refers to the default state.
+        /// </summary>
+        public override IGeometry Geometry { get; }
+
         #endregion
 
         #region Methods
@@ -101,7 +111,7 @@ namespace Corund.Visuals.UI
                 return;
             }
 
-            _touch = TryGetTouch();
+            _touch = this.TryGetTouch();
             var state = _touch == null || !HasSprite(PRESSED_STATE) ? ACTIVE_STATE : PRESSED_STATE;
             SetSprite(state, false);
 

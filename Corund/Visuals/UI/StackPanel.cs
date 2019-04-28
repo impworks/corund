@@ -1,4 +1,5 @@
 ﻿using System;
+using Corund.Geometry;
 using Corund.Tools;
 using Corund.Tools.Helpers;
 using Corund.Visuals.Primitives;
@@ -9,15 +10,18 @@ namespace Corund.Visuals.UI
     /// <summary>
     /// A container that aligns items by a coordinate axis.
     /// </summary>
-    public class StackPanel: ObjectGroup, IObjectGroup
+    public class StackPanel: ObjectGroup, IGeometryObject
     {
         #region Constructor
 
         public StackPanel(KnownDirection orientation = KnownDirection.Down)
         {
             Validate(orientation);
+
             _orientation = orientation;
             _lastPosition = Vector2.Zero;
+
+            _geometry = new GeometryRect(0, 0, 0, 0);
         }
 
         #endregion
@@ -27,6 +31,7 @@ namespace Corund.Visuals.UI
         private float _padding;
         private KnownDirection _orientation;
         private Vector2 _lastPosition;
+        private GeometryRect _geometry;
 
         #endregion
 
@@ -64,6 +69,11 @@ namespace Corund.Visuals.UI
             }
         }
 
+        /// <summary>
+        /// Geometry for this object.
+        /// </summary>
+        public IGeometry Geometry => _geometry;
+
         #endregion
 
         #region Methods
@@ -84,11 +94,11 @@ namespace Corund.Visuals.UI
         /// </summary>
         protected void PlaceObject(ObjectBase obj)
         {
-            var iobj = obj as InteractiveObject;
+            var iobj = obj as IGeometryObject;
             if (iobj?.Geometry == null)
                 return;
 
-            iobj.Position = _lastPosition;
+            obj.Position = _lastPosition;
 
             var box = iobj.Geometry.GetBoundingBox(iobj.GetTransformInfo(false));
             if (Orientation == KnownDirection.Down)
@@ -99,6 +109,8 @@ namespace Corund.Visuals.UI
                 _lastPosition.Y -= (box.Height + _padding);
             else if (Orientation == KnownDirection.Left)
                 _lastPosition.X -= (box.Width + _padding);
+
+            _geometry.Size = _lastPosition;
         }
 
         #endregion
