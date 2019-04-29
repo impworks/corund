@@ -74,7 +74,7 @@ namespace Corund.Visuals.UI
         /// Flag indicating that the button is disabled.
         /// It shows a different animation and does not fire events.
         /// </summary>
-        public bool Disabled;
+        public bool IsDisabled;
 
         /// <summary>
         /// Geometry for tap checking.
@@ -103,7 +103,7 @@ namespace Corund.Visuals.UI
         {
             base.Update();
 
-            if (Disabled)
+            if (IsDisabled)
             {
                 if (HasSprite(DISABLED_STATE))
                     SetSprite(DISABLED_STATE, false);
@@ -113,8 +113,7 @@ namespace Corund.Visuals.UI
             }
 
             _touch = this.TryGetTouch();
-            var state = _touch == null || !HasSprite(PRESSED_STATE) ? ACTIVE_STATE : PRESSED_STATE;
-            SetSprite(state, false);
+            UpdateClickedState(_touch);
 
             _contents.Update();
         }
@@ -133,13 +132,22 @@ namespace Corund.Visuals.UI
         /// <summary>
         /// Creates a centered text object from the string.
         /// </summary>
-        private static TextObject CreateText(string text)
+        protected static TextObject CreateText(string text)
         {
             return new TextObject(text)
             {
                 HorizontalAlignment = HorizontalAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center
             };
+        }
+
+        /// <summary>
+        /// Updates the button state.
+        /// </summary>
+        protected virtual void UpdateClickedState(TouchLocation? touch)
+        {
+            var state = touch == null || !HasSprite(PRESSED_STATE) ? ACTIVE_STATE : PRESSED_STATE;
+            SetSprite(state, false);
         }
 
         #endregion

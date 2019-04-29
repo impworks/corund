@@ -139,6 +139,7 @@
     <Compile Include="Visuals\SpriteObject.cs" />
     <Compile Include="Visuals\TextObject.cs" />
     <Compile Include="Visuals\UI\Button.cs" />
+    <Compile Include="Visuals\UI\CheckButton.cs" />
     <Compile Include="Visuals\UI\StaticGridPanel.cs" />
     <Compile Include="Visuals\UI\StackPanel.cs" />
   </ItemGroup>
