@@ -162,11 +162,7 @@ namespace Corund.Engine
 
             return target;
         }
-
-        #endregion
-
-        #region Private methods
-
+        
         /// <summary>
         /// Gets the appropriate sampler state depending on sprite mode and engine settings.
         /// </summary>
@@ -182,6 +178,36 @@ namespace Corund.Engine
                 ? SamplerState.PointWrap
                 : SamplerState.PointClamp;
         }
+
+        /// <summary>
+        /// Creates a fullscreen render target.
+        /// </summary>
+        public RenderTarget2D CreateRenderTarget()
+        {
+            var pp = GameEngine.Render.Device.PresentationParameters;
+            return CreateRenderTarget(pp.BackBufferWidth, pp.BackBufferHeight);
+        }
+
+        /// <summary>
+        /// Creates a RenderTarget of the specified size.
+        /// </summary>
+        public RenderTarget2D CreateRenderTarget(int width, int height)
+        {
+            return new RenderTarget2D(
+                GameEngine.Render.Device,
+                width,
+                height,
+                false,
+                GameEngine.Render.Device.PresentationParameters.BackBufferFormat,
+                DepthFormat.Depth24,
+                0,
+                RenderTargetUsage.PreserveContents
+            );
+        }
+
+        #endregion
+
+        #region Private methods
 
         /// <summary>
         /// Creates the default WorldViewProjection matrix.

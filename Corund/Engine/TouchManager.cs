@@ -113,11 +113,14 @@ namespace Corund.Engine
         /// <summary>
         /// Returns a touch location by its ID.
         /// </summary>
-        public TouchLocation? Find(int id)
+        /// <param name="id">Unique ID of the touch.</param>
+        /// <param name="inFrame">If true, touch position will be in Frame-based coordinates. Otherwise - in screen-based.</param>
+        public TouchLocation? Find(int id, bool inFrame = true)
         {
-            for (var idx = 0; idx < Touches.Count; idx++)
+            var source = inFrame ? GameEngine.Current.Touches : Touches;
+            for (var idx = 0; idx < source.Count; idx++)
             {
-                var touch = Touches[idx];
+                var touch = source[idx];
                 if (touch.Id == id)
                     return touch;
             }

@@ -70,17 +70,7 @@ namespace Corund.Shaders
         /// </summary>
         protected virtual RenderTarget2D CreateRenderTarget()
         {
-            var pp = GameEngine.Render.Device.PresentationParameters;
-            return new RenderTarget2D(
-                GameEngine.Render.Device,
-                pp.BackBufferWidth,
-                pp.BackBufferHeight,
-                false,
-                pp.BackBufferFormat,
-                DepthFormat.Depth24,
-                0,
-                RenderTargetUsage.PreserveContents
-            );
+            return GameEngine.Render.CreateRenderTarget();
         }
 
         #endregion

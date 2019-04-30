@@ -4,7 +4,6 @@ using Corund.Engine;
 using Corund.Engine.Config;
 using Corund.Geometry;
 using Corund.Tools;
-using Corund.Tools.Helpers;
 using Corund.Visuals;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
@@ -33,16 +32,7 @@ namespace Corund.Frames
             if(ViewSize.X < 1 || ViewSize.X > screen.X || ViewSize.Y < 1 || ViewSize.Y > screen.Y)
                 throw new ArgumentException("View size must be at least 1x1 pixels in size and not exceed the screen size!");
 
-            RenderTarget = new RenderTarget2D(
-                GameEngine.Render.Device,
-                (int)ViewSize.X,
-                (int)ViewSize.Y,
-                false,
-                GameEngine.Render.Device.PresentationParameters.BackBufferFormat,
-                DepthFormat.Depth24,
-                0,
-                RenderTargetUsage.PreserveContents
-            );
+            RenderTarget = GameEngine.Render.CreateRenderTarget((int)ViewSize.X, (int)ViewSize.Y);
             HotSpot = ViewSize/2;
             Position = GameEngine.Screen.Size/2;
 

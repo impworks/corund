@@ -105,11 +105,10 @@ namespace Corund.Tools.Helpers
         /// <param name="tapThrough">Flag indicating that touch should be available for underlying objects as well.</param>
         public static IList<TouchLocation> TryGetTouches(this IGeometryObject obj, bool tapThrough = false)
         {
-            List<TouchLocation> result = null;
-
             if (obj.Geometry == null)
-                return result;
+                return null;
 
+            List<TouchLocation> result = null;
             var transform = obj.GetTransformInfo(false);
             foreach (var touch in GameEngine.Current.Touches)
             {
