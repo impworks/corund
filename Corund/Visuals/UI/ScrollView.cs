@@ -44,10 +44,13 @@ namespace Corund.Visuals.UI
         private readonly RenderTarget2D _renderTarget;
         private readonly ScrollDirection _direction;
 
+        private Vector2? _origPosition;
+        private TouchLocation? _origTouch;
         private TouchLocation? _prevTouch;
         private Vector2 _scrollSpeed;
         private ObjectBase _content;
         private Vector2 _contentSize;
+        private bool _canScroll;
 
         #endregion
 
@@ -77,6 +80,7 @@ namespace Corund.Visuals.UI
                 Attach(value);
                 _content = value;
                 _contentSize = (value as IGeometryObject)?.Geometry.GetBoundingBox(null).GetSize() ?? Vector2.Zero;
+                _canScroll = CanScroll(_contentSize);
             }
         }
 
@@ -111,43 +115,49 @@ namespace Corund.Visuals.UI
 
         public override void Update()
         {
-            if (Content == null)
-                return;
-
-            var t = this.TryGetTouch(true);
-            if (t is TouchLocation touch)
+            if (_canScroll)
             {
-                if (_prevTouch == null)
+                var t = this.TryGetTouch(true);
+                if (t is TouchLocation touch)
                 {
-                    // stop inertial scroll on touch
-                    _scrollSpeed = Vector2.Zero;
-                }
-                else
-                {
-                    var mvmt = LimitDirection(touch.Position - _prevTouch.Value.Position);
-                    if (touch.State == TouchLocationState.Moved)
+                    if (_origTouch == null)
                     {
-                        // adjust the content's position
-                        MoveContent(mvmt);
+                        // stop inertial scroll on touch
+                        _scrollSpeed = Vector2.Zero;
+                        _origTouch = t;
+                        _origPosition = Content.Position;
                     }
-                    else if (touch.State == TouchLocationState.Released)
+                    else
                     {
-                        // start inertial scroll
-                        if (mvmt.LengthSquared() >= MIN_DISTANCE)
-                            _scrollSpeed = mvmt;
-                    }
-                }
-            }
+                        if (touch.State == TouchLocationState.Moved)
+                        {
+                            // freely move object with direction limit and elasticity
+                            var rawOffset = LimitDirection(touch.Position - _origTouch.Value.Position);
+                            var offset = LimitOffset(_origPosition.Value, rawOffset);
+                            Content.Position = _origPosition.Value + offset;
+                        }
+                        else if (touch.State == TouchLocationState.Released)
+                        {
+                            _origTouch = null;
 
-            if (!_scrollSpeed.LengthSquared().IsAlmostZero())
-            {
-                _scrollSpeed = _scrollSpeed * (1 - (FRICTION * GameEngine.Delta));
-                MoveContent(_scrollSpeed);
+                            // start inertial scroll
+                            var rawSwipe = LimitDirection(touch.Position - _prevTouch.Value.Position);
+                            if (rawSwipe.LengthSquared() >= MIN_DISTANCE)
+                                _scrollSpeed = rawSwipe;
+                        }
+                    }
+                }
+
+                if (!_scrollSpeed.LengthSquared().IsAlmostZero())
+                {
+                    _scrollSpeed = _scrollSpeed * (1 - (FRICTION * GameEngine.Delta));
+                    Content.Position += _scrollSpeed;
+                }
+
+                _prevTouch = t;
             }
 
             base.Update();
-
-            _prevTouch = t;
         }
 
         #endregion
@@ -155,12 +165,24 @@ namespace Corund.Visuals.UI
         #region Private helpers
 
         /// <summary>
-        /// Moves the content.
+        /// Applies the offset with limits to avoid overscrolling.
         /// </summary>
-        private void MoveContent(Vector2 offset)
+        private Vector2 LimitOffset(Vector2 orig, Vector2 offset)
         {
-            Content.Position += offset;
-            // todo: bounds!
+            var topLeft = orig  + offset;
+            var bottomRight = topLeft + _contentSize;
+
+            if (topLeft.X > 0)
+                offset.X -= topLeft.X;
+            else if (bottomRight.X < Size.X)
+                offset.X += (Size.X - bottomRight.X);
+
+            if (topLeft.Y > 0)
+                offset.Y -= topLeft.Y;
+            else if (bottomRight.Y < Size.Y)
+                offset.Y += (Size.Y - bottomRight.Y);
+
+            return offset;
         }
 
         /// <summary>
@@ -174,6 +196,15 @@ namespace Corund.Visuals.UI
                 vector.X = 0;
 
             return vector;
+        }
+
+        /// <summary>
+        /// Checks if the scrolling can be applied.
+        /// </summary>
+        private bool CanScroll(Vector2 contentSize)
+        {
+            return (_direction.HasFlag(ScrollDirection.Horizontal) && contentSize.X > Size.X)
+                || (_direction.HasFlag(ScrollDirection.Vertical) && contentSize.Y > Size.Y);
         }
 
         #endregion
