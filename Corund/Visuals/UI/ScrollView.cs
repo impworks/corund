@@ -50,7 +50,6 @@ namespace Corund.Visuals.UI
         private Vector2 _scrollSpeed;
         private ObjectBase _content;
         private Vector2 _contentSize;
-        private bool _canScroll;
 
         #endregion
 
@@ -79,8 +78,7 @@ namespace Corund.Visuals.UI
 
                 Attach(value);
                 _content = value;
-                _contentSize = (value as IGeometryObject)?.Geometry.GetBoundingBox(null).GetSize() ?? Vector2.Zero;
-                _canScroll = CanScroll(_contentSize);
+                _contentSize = GetContentSize(value);
             }
         }
 
@@ -115,7 +113,7 @@ namespace Corund.Visuals.UI
 
         public override void Update()
         {
-            if (_canScroll)
+            if (Content != null)
             {
                 var t = this.TryGetTouch(true);
                 if (t is TouchLocation touch)
@@ -158,6 +156,8 @@ namespace Corund.Visuals.UI
             }
 
             base.Update();
+
+            Content?.Update();
         }
 
         #endregion
@@ -199,12 +199,19 @@ namespace Corund.Visuals.UI
         }
 
         /// <summary>
-        /// Checks if the scrolling can be applied.
+        /// Returns the content size, taking the entire view if it is smaller.
         /// </summary>
-        private bool CanScroll(Vector2 contentSize)
+        private Vector2 GetContentSize(ObjectBase obj)
         {
-            return (_direction.HasFlag(ScrollDirection.Horizontal) && contentSize.X > Size.X)
-                || (_direction.HasFlag(ScrollDirection.Vertical) && contentSize.Y > Size.Y);
+            var objSize = (obj as IGeometryObject)?.Geometry.GetBoundingBox(null).GetSize() ?? Vector2.Zero;
+
+            if (objSize.X < Size.X)
+                objSize.X = Size.X;
+
+            if (objSize.Y < Size.Y)
+                objSize.Y = Size.Y;
+
+            return objSize;
         }
 
         #endregion

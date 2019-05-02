@@ -139,6 +139,9 @@ namespace Corund.Visuals.Primitives
         /// </summary>
         protected void Attach(ObjectBase obj)
         {
+            if (obj == null)
+                return;
+
             if(obj.Parent is IObjectGroup group)
                 group.Remove(obj);
 
