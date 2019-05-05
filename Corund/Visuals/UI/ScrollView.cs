@@ -18,12 +18,12 @@ namespace Corund.Visuals.UI
         /// <summary>
         /// Coefficient for slowing down the scroll.
         /// </summary>
-        private const float FRICTION = 0.2f;
+        private const float FRICTION = 6f;
 
         /// <summary>
         /// Minimum squared distance of a swipe to consider the scroll inertial.
         /// </summary>
-        private const float MIN_DISTANCE = 5;
+        private const float MIN_DISTANCE = 10;
 
         #endregion
 
@@ -113,51 +113,62 @@ namespace Corund.Visuals.UI
 
         public override void Update()
         {
-            if (Content != null)
+            if (Content == null)
             {
-                var t = this.TryGetTouch(true);
-                if (t is TouchLocation touch)
-                {
-                    if (_origTouch == null)
-                    {
-                        // stop inertial scroll on touch
-                        _scrollSpeed = Vector2.Zero;
-                        _origTouch = t;
-                        _origPosition = Content.Position;
-                    }
-                    else
-                    {
-                        if (touch.State == TouchLocationState.Moved)
-                        {
-                            // freely move object with direction limit and elasticity
-                            var rawOffset = LimitDirection(touch.Position - _origTouch.Value.Position);
-                            var offset = LimitOffset(_origPosition.Value, rawOffset);
-                            Content.Position = _origPosition.Value + offset;
-                        }
-                        else if (touch.State == TouchLocationState.Released)
-                        {
-                            _origTouch = null;
-
-                            // start inertial scroll
-                            var rawSwipe = LimitDirection(touch.Position - _prevTouch.Value.Position);
-                            if (rawSwipe.LengthSquared() >= MIN_DISTANCE)
-                                _scrollSpeed = rawSwipe;
-                        }
-                    }
-                }
-
-                if (!_scrollSpeed.LengthSquared().IsAlmostZero())
-                {
-                    _scrollSpeed = _scrollSpeed * (1 - (FRICTION * GameEngine.Delta));
-                    Content.Position += _scrollSpeed;
-                }
-
-                _prevTouch = t;
+                base.Update();
+                return;
             }
 
-            base.Update();
+            var t = this.TryGetTouch(true);
+            if (t is TouchLocation touch)
+            {
+                if (_origTouch == null)
+                {
+                    // stop inertial scroll on touch
+                    _scrollSpeed = Vector2.Zero;
+                    _origTouch = t;
+                    _origPosition = Content.Position;
+                }
+                else
+                {
+                    if (touch.State == TouchLocationState.Moved)
+                    {
+                        // freely move object with direction limit and elasticity
+                        var rawOffset = LimitDirection(touch.Position - _origTouch.Value.Position);
+                        var offset = LimitOffset(_origPosition.Value, rawOffset);
+                        Content.Position = _origPosition.Value + offset;
+                    }
+                    else if (touch.State == TouchLocationState.Released)
+                    {
+                        _origTouch = null;
+                        _origPosition = null;
 
-            Content?.Update();
+                        // start inertial scroll
+                        var rawSwipe = LimitDirection(touch.Position - _prevTouch.Value.Position);
+                        if (rawSwipe.LengthSquared() >= MIN_DISTANCE)
+                            _scrollSpeed = rawSwipe;
+                    }
+                }
+            }
+            else
+            {
+                _origTouch = null;
+                _origPosition = null;
+            }
+
+            if (!_scrollSpeed.LengthSquared().IsAlmostZero())
+            {
+                _scrollSpeed = _scrollSpeed * (1 - (FRICTION * GameEngine.Delta));
+                Content.Position += LimitOffset(Content.Position, _scrollSpeed);
+
+                if (_scrollSpeed.LengthSquared() <= 0.1)
+                    _scrollSpeed = Vector2.Zero;
+            }
+
+            _prevTouch = t;
+
+            base.Update();
+            Content.Update();
         }
 
         #endregion
