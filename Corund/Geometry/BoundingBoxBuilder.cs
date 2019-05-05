@@ -32,17 +32,17 @@ namespace Corund.Geometry
                 return;
             }
 
-            if (vec.X < _top)
-                _top = vec.X;
+            if (vec.X < _left)
+                _left = vec.X;
 
-            if (vec.X > _bottom)
-                _bottom = vec.X;
+            if (vec.X > _right)
+                _right = vec.X;
 
-            if (vec.Y < _left)
-                _left = vec.Y;
+            if (vec.Y < _top)
+                _top = vec.Y;
 
-            if (vec.Y > _right)
-                _right = vec.Y;
+            if (vec.Y > _bottom)
+                _bottom = vec.Y;
         }
 
         /// <summary>

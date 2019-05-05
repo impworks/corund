@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
 using Corund.Geometry;
-using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -48,11 +46,6 @@ namespace Corund.Engine
         /// </summary>
         public int FPS { get; private set; }
 
-        /// <summary>
-        /// Flag indicating that FPS must be calculated and written to the debug console.
-        /// </summary>
-        public bool DisplayFPS;
-
         #endregion
 
         #region Update
@@ -70,9 +63,6 @@ namespace Corund.Engine
                 FPS = _fpsCounter;
                 _fpsElapsedTime -= 1;
                 _fpsCounter = 0;
-
-                if(DisplayFPS)
-                    Debug.WriteLine($"FPS: {FPS}");
             }
         }
 
@@ -83,9 +73,9 @@ namespace Corund.Engine
         /// <summary>
         /// Renders the current geometry to screen.
         /// </summary>
-        public void DrawGeometry(InteractiveObject obj)
+        public void DrawGeometry(IGeometryObject obj)
         {
-            var geometry = obj.Geometry;
+            var geometry = obj?.Geometry;
             if (geometry == null)
                 return;
 
@@ -98,7 +88,7 @@ namespace Corund.Engine
                 return;
             }
 
-            if (geometry is GeometryRectGroup @group)
+            if (geometry is GeometryRectGroup group)
             {
                 foreach (var groupRect in group.Rectangles)
                 {
