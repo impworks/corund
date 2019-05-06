@@ -105,7 +105,7 @@
     <Compile Include="Sprites\Sprite.cs" />
     <Compile Include="Sprites\SpriteBase.cs" />
     <Compile Include="Sprites\TiledSprite.cs" />
-    <Compile Include="Tools\Helpers\IGeometryHelper.cs" />
+    <Compile Include="Tools\Helpers\GeometryHelper.cs" />
     <Compile Include="Tools\Helpers\KnownDirectionHelper.cs" />
     <Compile Include="Tools\Helpers\SpriteHelper.cs" />
     <Compile Include="Tools\KnownDirection.cs" />

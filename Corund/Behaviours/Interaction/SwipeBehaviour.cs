@@ -98,7 +98,7 @@ namespace Corund.Behaviours.Interaction
                     return;
                 }
 
-                var touch = GameEngine.Touch.Find(_start.Value.Id);
+                var touch = GameEngine.Touch.FindById(_start.Value.Id);
                 if (touch == null || touch?.State == TouchLocationState.Moved)
                     return;
 

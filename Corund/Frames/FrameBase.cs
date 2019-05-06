@@ -37,7 +37,7 @@ namespace Corund.Frames
             Position = GameEngine.Screen.Size/2;
 
             BackgroundColor = Color.Black;
-            Touches = new List<TouchLocation>();
+            LocalTouches = new List<TouchLocation>();
             Timeline = new TimelineManager();
             Camera = new Camera();
             ZOrderFunction = obj => _zOrder -= 0.0001f;
@@ -116,7 +116,7 @@ namespace Corund.Frames
         /// <summary>
         /// Touch locations translated to current frame.
         /// </summary>
-        public readonly List<TouchLocation> Touches;
+        public readonly List<TouchLocation> LocalTouches;
 
         /// <summary>
         /// The transform that must be applied during scene rendering to adapt the scene to current resolution.
@@ -165,12 +165,12 @@ namespace Corund.Frames
             if((pm & PauseMode.Timeline) == 0)
                 Timeline.Update();
 
-            Touches.Clear();
-            foreach (var globalTouch in GameEngine.Touch.Touches)
+            LocalTouches.Clear();
+            foreach (var globalTouch in GameEngine.Touch.GlobalTouches)
             {
                 var localTouch = GameEngine.Touch.TranslateToFrame(globalTouch, this);
                 if(localTouch != null)
-                    Touches.Add(localTouch.Value);
+                    LocalTouches.Add(localTouch.Value);
             }
 
             Camera.Update();

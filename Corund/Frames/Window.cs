@@ -74,7 +74,7 @@ namespace Corund.Frames
         {
             base.Update();
 
-            var touches = GameEngine.Touch.Touches;
+            var touches = GameEngine.Touch.GlobalTouches;
             if (CloseOnBackgroundTouch && !IsFadingOut)
             {
                 var frameRect = GetViewRectPolygon();

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Corund.Frames;
+using Corund.Geometry;
 using Corund.Tools.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -16,8 +17,9 @@ namespace Corund.Engine
 
         public TouchManager()
         {
-            Touches = new List<TouchLocation>(4);
+            GlobalTouches = new List<TouchLocation>(4);
             _handledTouches = new Dictionary<int, object>(4);
+            _capturedTouches = new Dictionary<int, object>(4);
             _mouseButtonState = ButtonState.Released;
         }
 
@@ -31,6 +33,11 @@ namespace Corund.Engine
         private Dictionary<int, object> _handledTouches;
 
         /// <summary>
+        /// Touches bound to a particular object.
+        /// </summary>
+        private Dictionary<int, object> _capturedTouches;
+
+        /// <summary>
         /// Mouse button's last state for touch emulation.
         /// </summary>
         private ButtonState _mouseButtonState;
@@ -42,7 +49,12 @@ namespace Corund.Engine
         /// <summary>
         /// Currently active touches.
         /// </summary>
-        public readonly List<TouchLocation> Touches;
+        public readonly List<TouchLocation> GlobalTouches;
+
+        /// <summary>
+        /// Touches bound to currently executing frame.
+        /// </summary>
+        public List<TouchLocation> LocalTouches => GameEngine.Current.Frame.LocalTouches;
 
         #endregion
 
@@ -54,16 +66,18 @@ namespace Corund.Engine
         public void Update()
         {
             _handledTouches.Clear();
-            Touches.Clear();
+            GlobalTouches.Clear();
 
             foreach(var location in TouchPanel.GetState())
-                Touches.Add(location);
+                GlobalTouches.Add(location);
 
-            if (GameEngine.Options.EnableMouse && Touches.Count == 0)
+            RefreshCaptures();
+
+            if (GameEngine.Options.EnableMouse && GlobalTouches.Count == 0)
             {
                 var loc = ConvertMouseToTouch();
                 if(loc != null)
-                    Touches.Add(loc.Value);
+                    GlobalTouches.Add(loc.Value);
             }
         }
 
@@ -83,6 +97,98 @@ namespace Corund.Engine
         {
             if (!_handledTouches.ContainsKey(touch.Id))
                 _handledTouches[touch.Id] = obj;
+        }
+
+        /// <summary>
+        /// Exclusively binds the touch to a particular object.
+        /// </summary>
+        public void Capture(TouchLocation touch, object obj)
+        {
+            if(!_capturedTouches.ContainsKey(touch.Id))
+                _capturedTouches.Add(touch.Id, obj);
+        }
+
+        /// <summary>
+        /// Releases the exclusive binding to a particular object.
+        /// </summary>
+        public void Release(TouchLocation touch)
+        {
+            _capturedTouches.Remove(touch.Id);
+        }
+
+        /// <summary>
+        /// Attempts to get a touch location for current object.
+        /// </summary>
+        /// <param name="obj">Object with a geometry definition.</param>
+        /// <param name="tapThrough">Flag indicating that touch should be available for underlying objects as well.</param>
+        public TouchLocation? TryGetTouch(IGeometryObject obj, bool tapThrough = false)
+        {
+            if (obj.Geometry == null)
+                return null;
+
+            var transform = obj.GetTransformInfo(false);
+            foreach (var touch in LocalTouches)
+            {
+                if (_capturedTouches.TryGetValue(touch.Id, out var captured))
+                {
+                    if (ReferenceEquals(obj, captured))
+                        return touch;
+
+                    continue;
+                }
+
+                if (!CanHandle(touch, obj))
+                    continue;
+
+                if (obj.Geometry.ContainsPoint(touch.Position, transform))
+                {
+                    if (!tapThrough)
+                        Handle(touch, obj);
+
+                    return touch;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Attempts to get all touch locations for current object.
+        /// </summary>
+        /// <param name="obj">Object with a geometry definition.</param>
+        /// <param name="tapThrough">Flag indicating that touch should be available for underlying objects as well.</param>
+        public IList<TouchLocation> TryGetTouches(IGeometryObject obj, bool tapThrough = false)
+        {
+            if (obj.Geometry == null)
+                return null;
+
+            List<TouchLocation> result = null;
+            var transform = obj.GetTransformInfo(false);
+            foreach (var touch in LocalTouches)
+            {
+                _capturedTouches.TryGetValue(touch.Id, out var captured);
+                if (captured != null && !ReferenceEquals(captured, obj))
+                    continue;
+
+                if (captured == null)
+                {
+                    if (!CanHandle(touch, obj))
+                        continue;
+
+                    if (!obj.Geometry.ContainsPoint(touch.Position, transform))
+                        continue;
+                }
+
+                if (!tapThrough)
+                    Handle(touch, obj);
+
+                if (result == null)
+                    result = new List<TouchLocation>();
+
+                result.Add(touch);
+            }
+
+            return result;
         }
 
         /// <summary>
@@ -115,12 +221,12 @@ namespace Corund.Engine
         /// </summary>
         /// <param name="id">Unique ID of the touch.</param>
         /// <param name="inFrame">If true, touch position will be in Frame-based coordinates. Otherwise - in screen-based.</param>
-        public TouchLocation? Find(int id, bool inFrame = true)
+        public TouchLocation? FindById(int id, bool inFrame = true)
         {
-            var source = inFrame ? GameEngine.Current.Touches : Touches;
+            var source = inFrame ? LocalTouches : GlobalTouches;
             for (var idx = 0; idx < source.Count; idx++)
             {
-                var touch = source[idx];
+                var touch = GlobalTouches[idx];
                 if (touch.Id == id)
                     return touch;
             }
@@ -162,6 +268,42 @@ namespace Corund.Engine
             return previous == ButtonState.Released
                 ? TouchLocationState.Pressed
                 : TouchLocationState.Moved;
+        }
+
+        /// <summary>
+        /// Releases captures for touch locations that are no longer active.
+        /// </summary>
+        private void RefreshCaptures()
+        {
+            if (_capturedTouches.Count == 0)
+                return;
+
+            List<int> keys = null;
+
+            foreach (var key in _capturedTouches.Keys)
+            {
+                var exists = false;
+                foreach (var touch in GlobalTouches)
+                {
+                    if (touch.Id == key)
+                    {
+                        exists = true;
+                        break;
+                    }
+                }
+
+                if (exists)
+                    continue;
+
+                if(keys == null)
+                    keys = new List<int>();
+
+                keys.Add(key);
+            }
+
+            if(keys != null)
+                foreach (var key in keys)
+                    _capturedTouches.Remove(key);
         }
 
         #endregion

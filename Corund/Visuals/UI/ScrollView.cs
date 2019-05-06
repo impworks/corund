@@ -128,6 +128,8 @@ namespace Corund.Visuals.UI
                     _scrollSpeed = Vector2.Zero;
                     _origTouch = t;
                     _origPosition = Content.Position;
+
+                    GameEngine.Touch.Capture(touch, this);
                 }
                 else
                 {
@@ -142,6 +144,8 @@ namespace Corund.Visuals.UI
                     {
                         _origTouch = null;
                         _origPosition = null;
+
+                        GameEngine.Touch.Release(touch);
 
                         // start inertial scroll
                         var rawSwipe = LimitDirection(touch.Position - _prevTouch.Value.Position);

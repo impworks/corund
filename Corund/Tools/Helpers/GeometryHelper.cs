@@ -9,7 +9,7 @@ namespace Corund.Tools.Helpers
     /// <summary>
     /// Helper methods for working with geometry.
     /// </summary>
-    public static class IGeometryHelper
+    public static class GeometryHelper
     {
         #region Collision detection
 
@@ -75,33 +75,17 @@ namespace Corund.Tools.Helpers
         /// <summary>
         /// Attempts to get a touch location for current object.
         /// </summary>
+        /// <param name="obj">Object with a geometry definition.</param>
         /// <param name="tapThrough">Flag indicating that touch should be available for underlying objects as well.</param>
         public static TouchLocation? TryGetTouch(this IGeometryObject obj, bool tapThrough = false)
         {
-            if (obj.Geometry == null)
-                return null;
-
-            var transform = obj.GetTransformInfo(false);
-            foreach (var touch in GameEngine.Current.Touches)
-            {
-                if (!GameEngine.Touch.CanHandle(touch, obj))
-                    continue;
-
-                if (obj.Geometry.ContainsPoint(touch.Position, transform))
-                {
-                    if (!tapThrough)
-                        GameEngine.Touch.Handle(touch, obj);
-
-                    return touch;
-                }
-            }
-
-            return null;
+            return GameEngine.Touch.TryGetTouch(obj, tapThrough);
         }
 
         /// <summary>
         /// Attempts to get all touch locations for current object.
         /// </summary>
+        /// <param name="obj">Object with a geometry definition.</param>
         /// <param name="tapThrough">Flag indicating that touch should be available for underlying objects as well.</param>
         public static IList<TouchLocation> TryGetTouches(this IGeometryObject obj, bool tapThrough = false)
         {
@@ -110,11 +94,8 @@ namespace Corund.Tools.Helpers
 
             List<TouchLocation> result = null;
             var transform = obj.GetTransformInfo(false);
-            foreach (var touch in GameEngine.Current.Touches)
+            foreach (var touch in GameEngine.Touch.LocalTouches)
             {
-                if (!GameEngine.Touch.CanHandle(touch, obj))
-                    continue;
-
                 if (obj.Geometry.ContainsPoint(touch.Position, transform))
                 {
                     if (!tapThrough)
