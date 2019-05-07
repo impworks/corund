@@ -11,7 +11,7 @@ namespace Corund.Visuals.UI
     /// <summary>
     /// A window that allows scrolling its content.
     /// </summary>
-    public class ScrollView: InteractiveObject
+    public class ScrollView: InteractiveObject, IView
     {
         #region Constants
 
@@ -227,6 +227,19 @@ namespace Corund.Visuals.UI
                 objSize.Y = Size.Y;
 
             return objSize;
+        }
+
+        #endregion
+
+        #region IView implementation
+
+        /// <summary>
+        /// Checks if the point in inside the view.
+        /// </summary>
+        public bool IsPointInView(Vector2 point)
+        {
+            var transform = GetTransformInfo(true);
+            return Geometry.ContainsPoint(point, transform);
         }
 
         #endregion

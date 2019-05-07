@@ -28,10 +28,11 @@ namespace Corund.Visuals.UI
 
         #region Fields
 
+        private readonly GeometryRect _geometry;
+
         private float _padding;
         private KnownDirection _orientation;
         private Vector2 _lastPosition;
-        private GeometryRect _geometry;
 
         #endregion
 

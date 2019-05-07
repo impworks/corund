@@ -2,6 +2,7 @@
 using Corund.Frames;
 using Corund.Geometry;
 using Corund.Tools.Helpers;
+using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Input.Touch;
@@ -137,7 +138,7 @@ namespace Corund.Engine
                     continue;
                 }
 
-                if (!CanHandle(touch, obj))
+                if (!CanHandle(touch, obj) || !IsPointInView(touch, obj))
                     continue;
 
                 if (obj.Geometry.ContainsPoint(touch.Position, transform))
@@ -172,7 +173,7 @@ namespace Corund.Engine
 
                 if (captured == null)
                 {
-                    if (!CanHandle(touch, obj))
+                    if (!CanHandle(touch, obj) || !IsPointInView(touch, obj))
                         continue;
 
                     if (!obj.Geometry.ContainsPoint(touch.Position, transform))
@@ -304,6 +305,26 @@ namespace Corund.Engine
             if(keys != null)
                 foreach (var key in keys)
                     _capturedTouches.Remove(key);
+        }
+
+        /// <summary>
+        /// Checks if the touch is inside a visible region occluded by the object's containers.
+        /// </summary>
+        private bool IsPointInView(TouchLocation touch, IGeometryObject obj)
+        {
+            var curr = obj.Parent;
+            while (true)
+            {
+                if (curr is FrameBase)
+                    break;
+
+                if (curr is IView view && !view.IsPointInView(touch.Position))
+                    return false;
+
+                curr = curr.Parent;
+            }
+
+            return true;
         }
 
         #endregion

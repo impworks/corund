@@ -9,7 +9,7 @@ namespace Corund.Tools.Helpers
     /// <summary>
     /// Helper methods for working with geometry.
     /// </summary>
-    public static class GeometryHelper
+    public static class GeometryObjectHelper
     {
         #region Collision detection
 
