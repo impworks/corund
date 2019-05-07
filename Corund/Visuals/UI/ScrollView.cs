@@ -23,7 +23,12 @@ namespace Corund.Visuals.UI
         /// <summary>
         /// Minimum squared distance of a swipe to consider the scroll inertial.
         /// </summary>
-        private const float MIN_DISTANCE = 10;
+        private const float MIN_INERTIAL_DISTANCE = 10;
+
+        /// <summary>
+        /// Minimum squared distance to drag before activating scroll mode.
+        /// </summary>
+        private const float MIN_CAPTURE_DISTANCE = 10;
 
         #endregion
 
@@ -47,6 +52,7 @@ namespace Corund.Visuals.UI
         private Vector2? _origPosition;
         private TouchLocation? _origTouch;
         private TouchLocation? _prevTouch;
+        private bool _isCaptured;
         private Vector2 _scrollSpeed;
         private ObjectBase _content;
         private Vector2 _contentSize;
@@ -124,32 +130,45 @@ namespace Corund.Visuals.UI
             {
                 if (_origTouch == null)
                 {
+                    if (!_scrollSpeed.LengthSquared().IsAlmostZero())
+                    {
+                        _isCaptured = true;
+                        GameEngine.Touch.Capture(touch, this);
+                    }
+
                     // stop inertial scroll on touch
                     _scrollSpeed = Vector2.Zero;
                     _origTouch = t;
                     _origPosition = Content.Position;
-
-                    GameEngine.Touch.Capture(touch, this);
                 }
                 else
                 {
                     if (touch.State == TouchLocationState.Moved)
                     {
-                        // freely move object with direction limit and elasticity
                         var rawOffset = LimitDirection(touch.Position - _origTouch.Value.Position);
-                        var offset = LimitOffset(_origPosition.Value, rawOffset);
-                        Content.Position = _origPosition.Value + offset;
+                        if (_isCaptured)
+                        {
+                            // freely move object with direction limit and elasticity
+                            var offset = LimitOffset(_origPosition.Value, rawOffset);
+                            Content.Position = _origPosition.Value + offset;
+                        }
+                        else if(rawOffset.LengthSquared() >= MIN_CAPTURE_DISTANCE)
+                        {
+                            _isCaptured = true;
+                            GameEngine.Touch.Capture(touch, this);
+                        }
                     }
                     else if (touch.State == TouchLocationState.Released)
                     {
                         _origTouch = null;
                         _origPosition = null;
+                        _isCaptured = false;
 
                         GameEngine.Touch.Release(touch);
 
                         // start inertial scroll
                         var rawSwipe = LimitDirection(touch.Position - _prevTouch.Value.Position);
-                        if (rawSwipe.LengthSquared() >= MIN_DISTANCE)
+                        if (rawSwipe.LengthSquared() >= MIN_INERTIAL_DISTANCE)
                             _scrollSpeed = rawSwipe;
                     }
                 }
@@ -158,6 +177,7 @@ namespace Corund.Visuals.UI
             {
                 _origTouch = null;
                 _origPosition = null;
+                _isCaptured = false;
             }
 
             if (!_scrollSpeed.LengthSquared().IsAlmostZero())
