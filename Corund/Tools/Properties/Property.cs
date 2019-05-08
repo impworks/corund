@@ -1,7 +1,9 @@
-﻿using Corund.Frames;
+﻿using Corund.Behaviours.Jitter;
+using Corund.Frames;
 using Corund.Sprites;
 using Corund.Visuals;
 using Corund.Visuals.Primitives;
+using Corund.Visuals.UI;
 using Microsoft.Xna.Framework;
 
 namespace Corund.Tools.Properties
@@ -161,12 +163,25 @@ namespace Corund.Tools.Properties
         #region Window
 
         /// <summary>
-        /// Descriptor for SpriteObject.CurrentSprite.HotSpot.
+        /// Descriptor for Window.ShadowColor.
         /// </summary>
         public static IPropertyDescriptor<Window, Color> WindowShadowColor = new PropertyDescriptor<Window, Color>(
             x => x.ShadowColor,
             (x, v) => x.ShadowColor = v,
             nameof(Window.ShadowColor)
+        );
+
+        #endregion
+
+        #region ScrollView
+
+        /// <summary>
+        /// Descriptor for ScrollView.Offset.
+        /// </summary>
+        public static IPropertyDescriptor<ScrollView, Vector2> ScrollViewOffset = new PropertyDescriptor<ScrollView, Vector2>(
+            x => x.Offset,
+            (x, v) => x.Offset = v,
+            nameof(ScrollView.Offset)
         );
 
         #endregion

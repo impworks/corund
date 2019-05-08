@@ -1,4 +1,6 @@
-﻿using Corund.Engine;
+﻿using System;
+using Corund.Engine;
+using Corund.Frames;
 using Corund.Geometry;
 using Corund.Tools.Helpers;
 using Corund.Visuals.Primitives;
@@ -36,7 +38,7 @@ namespace Corund.Visuals.UI
 
         public ScrollView(int width, int height, ScrollDirection dir = ScrollDirection.Vertical)
         {
-            Size = new Vector2(width, height);
+            ViewSize = new Vector2(width, height);
             Geometry = new GeometryRect(0, 0, width, height);
             _renderTarget = GameEngine.Render.CreateRenderTarget(width, height);
             _direction = dir;
@@ -64,7 +66,7 @@ namespace Corund.Visuals.UI
         /// <summary>
         /// Size of the window.
         /// </summary>
-        public readonly Vector2 Size;
+        public readonly Vector2 ViewSize;
 
         /// <summary>
         /// Geometry.
@@ -84,8 +86,49 @@ namespace Corund.Visuals.UI
 
                 Attach(value);
                 _content = value;
+                _content.Position = Vector2.Zero;
                 _contentSize = GetContentSize(value);
             }
+        }
+
+        /// <summary>
+        /// Offset of the scroll.
+        /// </summary>
+        public Vector2 Offset
+        {
+            get => -_content.Position;
+            set => _content.Position = LimitOffset(Vector2.Zero, LimitDirection(-value));
+        }
+
+        /// <summary>
+        /// Size of the content.
+        /// </summary>
+        public Vector2 ContentSize => _contentSize;
+
+        #endregion
+
+        #region Public methods
+
+        /// <summary>
+        /// Returns the offset required to bring the specified child object to the top of the view.
+        /// </summary>
+        public Vector2 GetOffsetForChild(ObjectBase obj)
+        {
+            var curr = obj;
+            var offset = Vector2.Zero;
+            while (true)
+            {
+                offset -= curr.Position;
+                curr = curr.Parent;
+
+                if (ReferenceEquals(curr, this))
+                    break;
+
+                if(curr is FrameBase || curr is null)
+                    throw new ArgumentException("Object is not a descendant of this view!");
+            }
+
+            return offset;
         }
 
         #endregion
@@ -209,13 +252,13 @@ namespace Corund.Visuals.UI
 
             if (topLeft.X > 0)
                 offset.X -= topLeft.X;
-            else if (bottomRight.X < Size.X)
-                offset.X += (Size.X - bottomRight.X);
+            else if (bottomRight.X < ViewSize.X)
+                offset.X += (ViewSize.X - bottomRight.X);
 
             if (topLeft.Y > 0)
                 offset.Y -= topLeft.Y;
-            else if (bottomRight.Y < Size.Y)
-                offset.Y += (Size.Y - bottomRight.Y);
+            else if (bottomRight.Y < ViewSize.Y)
+                offset.Y += (ViewSize.Y - bottomRight.Y);
 
             return offset;
         }
@@ -240,11 +283,11 @@ namespace Corund.Visuals.UI
         {
             var objSize = (obj as IGeometryObject)?.Geometry.GetBoundingBox(null).GetSize() ?? Vector2.Zero;
 
-            if (objSize.X < Size.X)
-                objSize.X = Size.X;
+            if (objSize.X < ViewSize.X)
+                objSize.X = ViewSize.X;
 
-            if (objSize.Y < Size.Y)
-                objSize.Y = Size.Y;
+            if (objSize.Y < ViewSize.Y)
+                objSize.Y = ViewSize.Y;
 
             return objSize;
         }
