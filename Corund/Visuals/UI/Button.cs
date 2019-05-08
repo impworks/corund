@@ -44,6 +44,7 @@ namespace Corund.Visuals.UI
 
             Geometry = active.Geometry;
 
+            _activeSprite = active;
             DefineSprite(active, ACTIVE_STATE);
 
             if (pressed != null)
@@ -51,19 +52,36 @@ namespace Corund.Visuals.UI
             if (disabled != null)
                 DefineSprite(disabled, DISABLED_STATE);
 
-            Attach(contents);
-            _contents = contents;
-            _contents.Position = (active.Size / 2) - active.HotSpot;
+            Contents = contents;
         }
 
         #endregion
 
         #region Fields
 
+        private ObjectBase _contents;
+        private readonly SpriteBase _activeSprite;
+
         /// <summary>
         /// Contents of the button (like text).
         /// </summary>
-        protected ObjectBase _contents;
+        protected ObjectBase Contents
+        {
+            get => _contents;
+            set
+            {
+                if (_contents == value)
+                    return;
+
+                _contents = value;
+
+                if (value != null)
+                {
+                    Attach(_contents);
+                    _contents.Position = (_activeSprite.Size / 2) - _activeSprite.HotSpot;
+                }
+            }
+        }
 
         /// <summary>
         /// Saved touch.

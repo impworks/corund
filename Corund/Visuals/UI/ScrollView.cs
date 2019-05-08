@@ -164,7 +164,7 @@ namespace Corund.Visuals.UI
                         _origPosition = null;
                         _isCaptured = false;
 
-                        GameEngine.Touch.Release(touch);
+                        GameEngine.Defer(() => GameEngine.Touch.Release(touch));
 
                         // start inertial scroll
                         var rawSwipe = LimitDirection(touch.Position - _prevTouch.Value.Position);
