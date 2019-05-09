@@ -4,7 +4,6 @@ using Corund.Frames;
 using Corund.Tools.Helpers;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input.Touch;
 
 namespace Corund.Visuals.UI

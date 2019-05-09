@@ -48,6 +48,7 @@ namespace Corund.Visuals.UI
 
         protected ObjectBase _content;
         protected bool _isCaptured;
+        protected bool _isDisabled;
         protected Vector2 _contentSize;
         protected Vector2? _origPosition;
         protected TouchLocation? _origTouch;
@@ -120,7 +121,7 @@ namespace Corund.Visuals.UI
 
         public override void Update()
         {
-            if (_content == null)
+            if (_content == null || _isDisabled)
             {
                 base.Update();
                 return;

@@ -1,5 +1,4 @@
-﻿using Corund.Behaviours.Jitter;
-using Corund.Frames;
+﻿using Corund.Frames;
 using Corund.Sprites;
 using Corund.Visuals;
 using Corund.Visuals.Primitives;
