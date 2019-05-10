@@ -162,7 +162,7 @@ namespace Corund.Visuals.UI
             get => base[id];
             set
             {
-                if (base[id] == value)
+                if (ReferenceEquals(base[id], value))
                     return;
 
                 base[id] = value;

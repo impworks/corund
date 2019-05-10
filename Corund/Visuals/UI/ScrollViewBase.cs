@@ -145,13 +145,13 @@ namespace Corund.Visuals.UI
                     }
                     else if (touch.State == TouchLocationState.Released)
                     {
+                        OnTouchReleased(touch);
+
                         _origTouch = null;
                         _origPosition = null;
                         _isCaptured = false;
 
                         GameEngine.Defer(() => GameEngine.Touch.Release(touch));
-
-                        OnTouchReleased(touch);
                     }
                 }
             }
@@ -184,7 +184,7 @@ namespace Corund.Visuals.UI
             var rawOffset = LimitDirection(touch.Position - _origTouch.Value.Position);
             if (_isCaptured)
             {
-                // freely move object with direction limit and elasticity
+                // freely move object with direction limit
                 var offset = LimitOffset(_origPosition.Value, rawOffset);
                 _content.Position = _origPosition.Value + offset;
             }
@@ -234,9 +234,10 @@ namespace Corund.Visuals.UI
         protected Vector2 LimitDirection(Vector2 vector)
         {
             if (_direction == ScrollDirection.Horizontal)
-                vector.Y = 0;
-            else if (_direction == ScrollDirection.Vertical)
-                vector.X = 0;
+                return new Vector2(vector.X, 0);
+
+            if (_direction == ScrollDirection.Vertical)
+                return new Vector2(0, vector.Y);
 
             return vector;
         }
