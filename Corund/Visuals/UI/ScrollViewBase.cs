@@ -34,8 +34,8 @@ namespace Corund.Visuals.UI
                 throw new ArgumentOutOfRangeException(nameof(height), "View height must be at least 1");
 
             ViewSize = new Vector2(width, height);
-            Geometry = new GeometryRect(0, 0, width, height);
-            _renderTarget = GameEngine.Render.CreateRenderTarget(width, height);
+            _viewRect = new GeometryRect(0, 0, width, height);
+            _renderTarget = GameEngine.Render.CreateRenderTarget();
             _direction = dir;
         }
 
@@ -45,6 +45,7 @@ namespace Corund.Visuals.UI
 
         protected readonly RenderTarget2D _renderTarget;
         protected readonly ScrollDirection _direction;
+        protected readonly GeometryRect _viewRect;
 
         protected ObjectBase _content;
         protected bool _isCaptured;
@@ -66,7 +67,7 @@ namespace Corund.Visuals.UI
         /// <summary>
         /// Geometry.
         /// </summary>
-        public override IGeometry Geometry { get; }
+        public override IGeometry Geometry => _viewRect;
 
         /// <summary>
         /// Size of the content.
@@ -100,16 +101,17 @@ namespace Corund.Visuals.UI
             GameEngine.Render.PopContext();
 
             GameEngine.Render.TryBeginBatch(BlendState.AlphaBlend);
-            var transform = GetTransformInfo(true);
             var z = GameEngine.Current.ZOrderFunction(this);
+            var tf = GetTransformInfo(true);
+            var box = _viewRect.GetBoundingBox(tf);
             GameEngine.Render.SpriteBatch.Draw(
                 _renderTarget,
-                transform.Position,
-                null,
+                tf.Position,
+                box,
                 Tint,
-                transform.Angle,
+                tf.Angle,
                 Vector2.Zero,
-                transform.ScaleVector,
+                tf.ScaleVector,
                 SpriteEffects.None,
                 z
             );
@@ -121,14 +123,14 @@ namespace Corund.Visuals.UI
 
         public override void Update()
         {
-            if (_content == null || _isDisabled)
+            if (_content == null)
             {
                 base.Update();
                 return;
             }
 
             var t = this.TryGetTouch(true);
-            if (t is TouchLocation touch)
+            if (t is TouchLocation touch && !_isDisabled)
             {
                 if (_origTouch == null)
                 {

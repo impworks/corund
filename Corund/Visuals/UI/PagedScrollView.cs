@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Corund.Engine;
 using Corund.Tools.Helpers;
 using Corund.Tools.Interpolation;
@@ -74,7 +73,7 @@ namespace Corund.Visuals.UI
             var drag = LimitDirection(touch.Position - _origTouch.Value.Position);
             var delta = _direction == ScrollDirection.Horizontal ? drag.X : drag.Y;
             var page = Page + (Math.Abs(delta) < MIN_SCROLL_DISTANCE ? 0 : delta < 0 ? 1 : -1);
-
+            
             if (page >= 0 && page < PageCount)
                 ScrollToPage(page);
         }
@@ -147,10 +146,9 @@ namespace Corund.Visuals.UI
             var pos = -GetPageOffset(page, center: false);
 
             _isDisabled = true;
-            _contentGroup.Tween(Property.Position, pos, time, Interpolate.Linear);
+            _contentGroup.Tween(Property.Position, pos, time, Interpolate.EaseOutMedium);
             GameEngine.Current.Timeline.Add(time, () =>
             {
-                Debug.WriteLine($"[{DateTime.Now:HH:mm:ss.ffff}] ScrollFinished");
                 _page = page;
                 _isDisabled = false;
             });
