@@ -35,7 +35,6 @@ namespace Corund.Visuals.UI
 
             ViewSize = new Vector2(width, height);
             _viewRect = new GeometryRect(0, 0, width, height);
-            _renderTarget = GameEngine.Render.CreateRenderTarget();
             _direction = dir;
         }
 
@@ -43,7 +42,6 @@ namespace Corund.Visuals.UI
 
         #region Fields
 
-        protected readonly RenderTarget2D _renderTarget;
         protected readonly ScrollDirection _direction;
         protected readonly GeometryRect _viewRect;
 
@@ -96,25 +94,28 @@ namespace Corund.Visuals.UI
             if (_content == null)
                 return;
 
-            GameEngine.Render.PushContext(_renderTarget, Color.Transparent);
-            _content.Draw();
-            GameEngine.Render.PopContext();
+            using (var rt = GameEngine.Render.LeaseRenderTarget())
+            {
+                GameEngine.Render.PushContext(rt.RenderTarget, Color.Transparent);
+                _content.Draw();
+                GameEngine.Render.PopContext();
 
-            GameEngine.Render.TryBeginBatch(BlendState.AlphaBlend);
-            var z = GameEngine.Current.ZOrderFunction(this);
-            var tf = GetTransformInfo(true);
-            var box = _viewRect.GetBoundingBox(tf);
-            GameEngine.Render.SpriteBatch.Draw(
-                _renderTarget,
-                tf.Position,
-                box,
-                Tint,
-                tf.Angle,
-                Vector2.Zero,
-                tf.ScaleVector,
-                SpriteEffects.None,
-                z
-            );
+                GameEngine.Render.TryBeginBatch(BlendState.AlphaBlend);
+                var z = GameEngine.Current.ZOrderFunction(this);
+                var tf = GetTransformInfo(true);
+                var box = _viewRect.GetBoundingBox(tf);
+                GameEngine.Render.SpriteBatch.Draw(
+                    rt.RenderTarget,
+                    tf.Position,
+                    box,
+                    Tint,
+                    tf.Angle,
+                    Vector2.Zero,
+                    tf.ScaleVector,
+                    SpriteEffects.None,
+                    z
+                );
+            }
         }
 
         #endregion

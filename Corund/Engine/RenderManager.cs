@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Corund.Engine.Config;
+using Corund.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -32,6 +33,7 @@ namespace Corund.Engine
             DeviceManager.ApplyChanges();
 
             _renderStack = new Stack<RenderTarget2D>(4);
+            _renderTargetPool = new Stack<RenderTarget2D>(4);
 
             SpriteBatch = new SpriteBatch(Device);
             WorldViewProjection = GetWorldViewProjectionMatrix(Device.Viewport);
@@ -40,6 +42,16 @@ namespace Corund.Engine
         #endregion
 
         #region Fields
+
+        private readonly Stack<RenderTarget2D> _renderStack;
+        private readonly Stack<RenderTarget2D> _renderTargetPool;
+        private BlendState _blendState;
+        private bool? _tileMode;
+        private bool _isStarted;
+        
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Reference to graphics device.
@@ -68,26 +80,6 @@ namespace Corund.Engine
         /// To be used by shaders.
         /// </summary>
         public readonly Matrix WorldViewProjection;
-
-        /// <summary>
-        /// Stack of current render targets.
-        /// </summary>
-        private readonly Stack<RenderTarget2D> _renderStack;
-
-        /// <summary>
-        /// Currently set blending state.
-        /// </summary>
-        private BlendState _blendState;
-
-        /// <summary>
-        /// Current tiling mode.
-        /// </summary>
-        private bool? _tileMode;
-
-        /// <summary>
-        /// Flag indicating that the current sprite batch is started
-        /// </summary>
-        private bool _isStarted;
 
         #endregion
 
@@ -177,6 +169,15 @@ namespace Corund.Engine
             return tileMode
                 ? SamplerState.PointWrap
                 : SamplerState.PointClamp;
+        }
+
+        /// <summary>
+        /// Acquires a RenderTarget from the pool.
+        /// </summary>
+        public RenderTargetLease LeaseRenderTarget()
+        {
+            var rt = _renderTargetPool.Count > 0 ? _renderTargetPool.Pop() : CreateRenderTarget();
+            return new RenderTargetLease(rt, () => _renderTargetPool.Push(rt));
         }
 
         /// <summary>

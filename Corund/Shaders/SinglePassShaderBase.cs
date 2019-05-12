@@ -15,24 +15,34 @@ namespace Corund.Shaders
 
         public override void DrawWrapper(DynamicObject obj, Action innerDraw)
         {
-            // PASS 1: inner -> RT
+            using (var rt = GameEngine.Render.LeaseRenderTarget())
             {
-                GameEngine.Render.PushContext(_renderTarget, Color.Transparent);
+                // PASS 1: inner -> RT
+                {
+                    GameEngine.Render.PushContext(rt.RenderTarget, Color.Transparent);
 
-                innerDraw();
+                    innerDraw();
 
-                GameEngine.Render.PopContext();
-            }
+                    GameEngine.Render.PopContext();
+                }
 
-            // PASS 2: RT -> base, overlay
-            {
-                _effect.Parameters["WorldViewProjection"].SetValue(GameEngine.Render.WorldViewProjection);
+                // PASS 2: RT -> base, overlay
+                {
+                    _effect.Parameters["WorldViewProjection"].SetValue(GameEngine.Render.WorldViewProjection);
 
-                ConfigureShader(obj);
+                    ConfigureShader(obj);
 
-                GameEngine.Render.SpriteBatch.Begin(0, BlendState.AlphaBlend, GameEngine.Render.GetSamplerState(false), null, null, _effect);
-                GameEngine.Render.SpriteBatch.Draw(_renderTarget, RenderTargetRect, Color.White);
-                GameEngine.Render.SpriteBatch.End();
+                    GameEngine.Render.SpriteBatch.Begin(
+                        0,
+                        BlendState.AlphaBlend,
+                        GameEngine.Render.GetSamplerState(false),
+                        null,
+                        null,
+                        _effect
+                    );
+                    GameEngine.Render.SpriteBatch.Draw(rt.RenderTarget, RenderTargetRect, Color.White);
+                    GameEngine.Render.SpriteBatch.End();
+                }
             }
         }
 
