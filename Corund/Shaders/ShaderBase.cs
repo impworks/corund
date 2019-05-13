@@ -11,26 +11,12 @@ namespace Corund.Shaders
     /// </summary>
     public abstract class ShaderBase
     {
-        #region Constructor
-
-        public ShaderBase()
-        {
-            _renderTarget = CreateRenderTarget();
-        }
-
-        #endregion
-
         #region Fields
 
         /// <summary>
         /// Reference to compiled effect.
         /// </summary>
         protected Effect _effect;
-
-        /// <summary>
-        /// Intermediate render target to draw on.
-        /// </summary>
-        protected RenderTarget2D _renderTarget;
 
         #endregion
 
@@ -64,24 +50,6 @@ namespace Corund.Shaders
         /// Sets up context for drawing onto the intermediate texture.
         /// </summary>
         public abstract void DrawWrapper(DynamicObject obj, Action innerDraw);
-
-        /// <summary>
-        /// Creates the render target for this shader.
-        /// </summary>
-        protected virtual RenderTarget2D CreateRenderTarget()
-        {
-            var pp = GameEngine.Render.Device.PresentationParameters;
-            return new RenderTarget2D(
-                GameEngine.Render.Device,
-                pp.BackBufferWidth,
-                pp.BackBufferHeight,
-                false,
-                pp.BackBufferFormat,
-                DepthFormat.Depth24,
-                0,
-                RenderTargetUsage.PreserveContents
-            );
-        }
 
         #endregion
     }

@@ -83,6 +83,20 @@ namespace Corund.Geometry
             return GeometryHelper.IsRectOutsideBounds(poly, bounds);
         }
 
+        /// <summary>
+        /// Returns a bounding box for the geometry.
+        /// </summary>
+        public Rectangle GetBoundingBox(TransformInfo? selfTransform)
+        {
+            var poly = CreateRectPolygon(selfTransform);
+            var bounds = new BoundingBoxBuilder();
+            bounds.AddPoint(poly.LeftUpper);
+            bounds.AddPoint(poly.LeftLower);
+            bounds.AddPoint(poly.RightUpper);
+            bounds.AddPoint(poly.RightLower);
+            return bounds.GetRectangle();
+        }
+
         #endregion
 
         #region Helpers

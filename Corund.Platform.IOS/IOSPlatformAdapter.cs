@@ -7,7 +7,7 @@ namespace Corund.Platform.IOS
     /// <summary>
     /// IOS-specific wrapper provider.
     /// </summary>
-    public class UWPPlatformAdapter : IPlatformAdapter
+    public class IOSPlatformAdapter : IPlatformAdapter
     {
         public IContentProvider GetEmbeddedContentProvider() => new IOSContentProvider();
         public IAccelerometerManager GetAccelerometerManager() => new IOSAccelerometerManager();

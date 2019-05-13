@@ -82,10 +82,12 @@
     <Compile Include="Engine\RenderManager.cs" />
     <Compile Include="Engine\ScreenManager.cs" />
     <Compile Include="Frames\Window.cs" />
+    <Compile Include="Geometry\BoundingBoxBuilder.cs" />
     <Compile Include="Geometry\GeometryHelper.cs" />
     <Compile Include="Geometry\GeometryRect.cs" />
     <Compile Include="Geometry\GeometryRectGroup.cs" />
     <Compile Include="Geometry\IGeometry.cs" />
+    <Compile Include="Geometry\IGeometryObject.cs" />
     <Compile Include="Geometry\RectPolygon.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shaders\DesaturateShader.cs" />
@@ -103,7 +105,9 @@
     <Compile Include="Sprites\Sprite.cs" />
     <Compile Include="Sprites\SpriteBase.cs" />
     <Compile Include="Sprites\TiledSprite.cs" />
+    <Compile Include="Tools\Helpers\GeometryObjectHelper.cs" />
     <Compile Include="Tools\Helpers\KnownDirectionHelper.cs" />
+    <Compile Include="Tools\Helpers\SpriteHelper.cs" />
     <Compile Include="Tools\KnownDirection.cs" />
     <Compile Include="Tools\Helpers\DynamicObjectHelper.cs" />
     <Compile Include="Tools\Helpers\RandomHelper.cs" />
@@ -112,6 +116,8 @@
     <Compile Include="Tools\Properties\Property.cs" />
     <Compile Include="Tools\Properties\PropertyDescriptor.cs" />
     <Compile Include="Tools\Range.cs" />
+    <Compile Include="Tools\Render\RenderContext.cs" />
+    <Compile Include="Tools\Render\RenderTargetLease.cs" />
     <Compile Include="Tools\TransformInfo.cs" />
     <Compile Include="Tools\Helpers\NumericHelper.cs" />
     <Compile Include="Tools\Helpers\VectorHelper.cs" />
@@ -128,10 +134,21 @@
     <Compile Include="Visuals\Particles\ParticleGroup.cs" />
     <Compile Include="Visuals\Primitives\DynamicObject.cs" />
     <Compile Include="Visuals\Primitives\InteractiveObject.cs" />
+    <Compile Include="Visuals\Primitives\IObjectGroup.cs" />
+    <Compile Include="Visuals\Primitives\IView.cs" />
     <Compile Include="Visuals\Primitives\MovingObject.cs" />
     <Compile Include="Visuals\Primitives\ObjectBase.cs" />
+    <Compile Include="Visuals\Primitives\ObjectGroupBase.cs" />
     <Compile Include="Visuals\SpriteObject.cs" />
     <Compile Include="Visuals\TextObject.cs" />
+    <Compile Include="Visuals\UI\Button.cs" />
+    <Compile Include="Visuals\UI\CheckButton.cs" />
+    <Compile Include="Visuals\UI\PagedScrollView.cs" />
+    <Compile Include="Visuals\UI\ScrollDirection.cs" />
+    <Compile Include="Visuals\UI\ScrollView.cs" />
+    <Compile Include="Visuals\UI\ScrollViewBase.cs" />
+    <Compile Include="Visuals\UI\StaticGridPanel.cs" />
+    <Compile Include="Visuals\UI\StackPanel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="MonoGame.Framework, Version=3.7.1.189, Culture=neutral, processorArchitecture=MSIL">

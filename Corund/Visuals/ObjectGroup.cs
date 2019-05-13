@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Corund.Engine;
+﻿using System.Collections.Generic;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 
@@ -9,13 +7,12 @@ namespace Corund.Visuals
     /// <summary>
     /// A meta-object that can contain any number of child objects.
     /// </summary>
-    public class ObjectGroup: DynamicObject, IEnumerable<ObjectBase>
+    public class ObjectGroup: ObjectGroupBase
     {
         #region Constructors
 
         public ObjectGroup()
         {
-            Children = new List<ObjectBase>();
         }
 
         public ObjectGroup(Vector2 position)
@@ -32,48 +29,27 @@ namespace Corund.Visuals
 
         #endregion
 
-        #region Properties
-
-        /// <summary>
-        /// List of objects managed by the group.
-        /// </summary>
-        public readonly List<ObjectBase> Children;
-
-        /// <summary>
-        /// The shortcut to the number of objects in the list.
-        /// </summary>
-        public int Count => Children.Count;
-
-        /// <summary>
-        /// The shortcut to a particular item in the list.
-        /// </summary>
-        /// <param name="id">Item's ID.</param>
-        public virtual ObjectBase this[int id] => Children[id];
-
-        #endregion
-
         #region Methods
 
         /// <summary>
         /// Add an object to the visual list.
         /// </summary>
-        /// <param name="child">Object to insert.</param>
+        /// <param name="obj">Object to insert.</param>
         /// <param name="toTop">Whether to put object on top or on bottom.</param>
-        public virtual T Add<T>(T child, bool toTop = true)
+        public virtual T Add<T>(T obj, bool toTop = true)
             where T: ObjectBase
         {
-            if (child == null || Children.Contains(child))
-                return child;
+            if (obj == null || Children.Contains(obj))
+                return obj;
 
-            (child.Parent as ObjectGroup)?.Children.Remove(child);
+            Attach(obj);
 
             if (toTop)
-                Children.Insert(0, child);
+                Children.Insert(0, obj);
             else
-                Children.Add(child);
+                Children.Add(obj);
 
-            child.Parent = this;
-            return child;
+            return obj;
         }
 
         /// <summary>
@@ -104,71 +80,18 @@ namespace Corund.Visuals
         }
 
         /// <summary>
-        /// Remove an object object from the list.
+        /// Inserts the object at the specified position.
         /// </summary>
-        public void Remove(ObjectBase obj)
+        public virtual T InsertAt<T>(int idx, T obj)
+            where T: ObjectBase
         {
-            Children.Remove(obj);
-        }
+            if (obj == null || Children.Contains(obj))
+                return obj;
 
-        /// <summary>
-        /// Remove an object at given position from the list.
-        /// </summary>
-        public virtual void RemoveAt(int idx)
-        {
-            Children.RemoveAt(idx);
-        }
+            Attach(obj);
+            Children.Insert(idx, obj);
 
-        /// <summary>
-        /// Remove all the children from the list.
-        /// </summary>
-        public void Clear()
-        {
-            Children.Clear();
-        }
-
-        #endregion
-
-        #region ObjectBase overrides
-
-        /// <summary>
-        /// Update all sub-items inside the batch.
-        /// </summary>
-        public override void Update()
-        {
-            base.Update();
-
-            var previousPause = GameEngine.Current.PauseMode;
-            GameEngine.Current.PauseMode |= PauseMode;
-
-            foreach (var curr in Children)
-                curr.Update();
-
-            GameEngine.Current.PauseMode = previousPause;
-        }
-
-        /// <summary>
-        /// Redraw all the items inside the batch.
-        /// </summary>
-        protected override void DrawInternal()
-        {
-            // draw in reverse: bottom to top
-            for (var idx = Children.Count - 1; idx >= 0; idx--)
-                Children[idx].Draw();
-        }
-
-        #endregion
-
-        #region IEnumerable implementation
-
-        public IEnumerator<ObjectBase> GetEnumerator()
-        {
-            return Children.GetEnumerator();
-        }
-
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
+            return obj;
         }
 
         #endregion

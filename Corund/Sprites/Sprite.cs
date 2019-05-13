@@ -12,6 +12,12 @@ namespace Corund.Sprites
     {
         #region Constructor
 
+        public Sprite(string res)
+            : this(GameEngine.Content.Load<Texture2D>(res))
+        {
+
+        }
+
         public Sprite(Texture2D texture)
             : base(texture)
         {

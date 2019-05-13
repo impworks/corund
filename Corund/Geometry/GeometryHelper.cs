@@ -41,7 +41,7 @@ namespace Corund.Geometry
             if (AreRectsTooFar(rect1, rect2))
                 return false;
 
-            if(rect1.Angle.IsAlmostNull() && rect2.Angle.IsAlmostNull())
+            if(rect1.Angle.IsAlmostZero() && rect2.Angle.IsAlmostZero())
                 return TestAlignedCollision(rect1, rect2);
 
             return TestOrientedCollision(rect1, rect2);

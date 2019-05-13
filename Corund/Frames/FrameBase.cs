@@ -4,7 +4,7 @@ using Corund.Engine;
 using Corund.Engine.Config;
 using Corund.Geometry;
 using Corund.Tools;
-using Corund.Tools.Helpers;
+using Corund.Tools.Render;
 using Corund.Visuals;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
@@ -33,21 +33,12 @@ namespace Corund.Frames
             if(ViewSize.X < 1 || ViewSize.X > screen.X || ViewSize.Y < 1 || ViewSize.Y > screen.Y)
                 throw new ArgumentException("View size must be at least 1x1 pixels in size and not exceed the screen size!");
 
-            RenderTarget = new RenderTarget2D(
-                GameEngine.Render.Device,
-                (int)ViewSize.X,
-                (int)ViewSize.Y,
-                false,
-                GameEngine.Render.Device.PresentationParameters.BackBufferFormat,
-                DepthFormat.Depth24,
-                0,
-                RenderTargetUsage.PreserveContents
-            );
+            RenderTarget = GameEngine.Render.CreateRenderTarget((int)ViewSize.X, (int)ViewSize.Y);
             HotSpot = ViewSize/2;
             Position = GameEngine.Screen.Size/2;
 
             BackgroundColor = Color.Black;
-            Touches = new List<TouchLocation>();
+            LocalTouches = new List<TouchLocation>();
             Timeline = new TimelineManager();
             Camera = new Camera();
             ZOrderFunction = obj => _zOrder -= 0.0001f;
@@ -126,7 +117,7 @@ namespace Corund.Frames
         /// <summary>
         /// Touch locations translated to current frame.
         /// </summary>
-        public readonly List<TouchLocation> Touches;
+        public readonly List<TouchLocation> LocalTouches;
 
         /// <summary>
         /// The transform that must be applied during scene rendering to adapt the scene to current resolution.
@@ -142,12 +133,11 @@ namespace Corund.Frames
         /// </summary>
         public override void Draw()
         {
-            GameEngine.Render.PushContext(RenderTarget, BackgroundColor);
-
-            _zOrder = 1;
-            base.Draw();
-
-            GameEngine.Render.PopContext();
+            using (new RenderContext(RenderTarget, BackgroundColor))
+            {
+                _zOrder = 1;
+                base.Draw();
+            }
         }
 
         /// <summary>
@@ -175,12 +165,12 @@ namespace Corund.Frames
             if((pm & PauseMode.Timeline) == 0)
                 Timeline.Update();
 
-            Touches.Clear();
-            foreach (var globalTouch in GameEngine.Touch.Touches)
+            LocalTouches.Clear();
+            foreach (var globalTouch in GameEngine.Touch.GlobalTouches)
             {
                 var localTouch = GameEngine.Touch.TranslateToFrame(globalTouch, this);
                 if(localTouch != null)
-                    Touches.Add(localTouch.Value);
+                    LocalTouches.Add(localTouch.Value);
             }
 
             Camera.Update();

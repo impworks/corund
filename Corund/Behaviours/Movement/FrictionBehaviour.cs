@@ -32,7 +32,7 @@ namespace Corund.Behaviours.Movement
 
         public override void UpdateObjectState(DynamicObject obj)
         {
-            if (obj.Speed.IsAlmostNull())
+            if (obj.Speed.IsAlmostZero())
                 return;
 
             obj.Speed *= (1 - Friction);

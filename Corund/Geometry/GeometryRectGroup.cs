@@ -42,10 +42,8 @@ namespace Corund.Geometry
         public bool ContainsPoint(Vector2 point, TransformInfo? selfTransform)
         {
             for(var idx = 0; idx < Rectangles.Count; idx++)
-            {
                 if (Rectangles[idx].ContainsPoint(point, selfTransform))
                     return true;
-            }
 
             return false;
         }
@@ -96,11 +94,10 @@ namespace Corund.Geometry
             for (var idx = 0; idx < other.Rectangles.Count; idx++)
             {
                 var otherPoly = other.Rectangles[idx].CreateRectPolygon(otherTransform);
+
                 for (var idx2 = 0; idx2 < polys.Length; idx2++)
-                {
                     if (GeometryHelper.AreRectsOverlapping(polys[idx2], otherPoly))
                         return true;
-                }
             }
 
             return false;
@@ -134,6 +131,24 @@ namespace Corund.Geometry
             }
 
             return true;
+        }
+
+        /// <summary>
+        /// Returns the bounding box for the group of rectangles.
+        /// </summary>
+        public Rectangle GetBoundingBox(TransformInfo? selfTransform)
+        {
+            var bounds = new BoundingBoxBuilder();
+            for (var idx = 0; idx < Rectangles.Count; idx++)
+            {
+                var poly = Rectangles[idx].CreateRectPolygon(selfTransform);
+                bounds.AddPoint(poly.LeftUpper);
+                bounds.AddPoint(poly.LeftLower);
+                bounds.AddPoint(poly.RightUpper);
+                bounds.AddPoint(poly.RightLower);
+            }
+
+            return bounds.GetRectangle();
         }
 
         #endregion

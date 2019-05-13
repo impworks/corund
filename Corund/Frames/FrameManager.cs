@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Corund.Behaviours.Fade;
 using Corund.Engine;
 using Corund.Tools;
+using Corund.Tools.Render;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -107,18 +108,18 @@ namespace Corund.Frames
             }
 
             // pass 2: draw rendertargets to screen
-            GameEngine.Render.PushContext(null, Color.Black);
-            GameEngine.Render.TryBeginBatch(BlendState.AlphaBlend);
-
-            var count = _frames.Count;
-            for(var idx = 0; idx < count; idx++)
+            using (new RenderContext(null, Color.Black))
             {
-                var frame = _frames[idx];
-                var zOrder = idx/count;
-                frame.FinalizeDraw(zOrder);
-            }
+                GameEngine.Render.TryBeginBatch(BlendState.AlphaBlend);
 
-            GameEngine.Render.PopContext();
+                var count = _frames.Count;
+                for (var idx = 0; idx < count; idx++)
+                {
+                    var frame = _frames[idx];
+                    var zOrder = idx / count;
+                    frame.FinalizeDraw(zOrder);
+                }
+            }
         }
 
         #endregion

@@ -68,7 +68,7 @@ namespace Corund.Visuals.Primitives
         /// <summary>
         /// Base object, to which current object is relative.
         /// </summary>
-        public ObjectBase Parent;
+        public ObjectBase Parent { get; set; }
 
         /// <summary>
         /// Gets or sets the flag indicating the object is to be displayed.
@@ -132,6 +132,20 @@ namespace Corund.Visuals.Primitives
 
             // this does not include ResolutionAdaptationMode transforms
             return new TransformInfo(position, angle, scale);
+        }
+
+        /// <summary>
+        /// Attaches another object to this one as a child.
+        /// </summary>
+        protected void Attach(ObjectBase obj)
+        {
+            if (obj == null)
+                return;
+
+            if(obj.Parent is IObjectGroup group)
+                group.Remove(obj);
+
+            obj.Parent = this;
         }
 
         #endregion

@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using Corund.Frames;
 using Corund.Tools;
 using Corund.Visuals.Primitives;
-using Microsoft.Xna.Framework.Input.Touch;
 
 namespace Corund.Engine
 {
@@ -28,11 +26,6 @@ namespace Corund.Engine
             /// Shortcut to frame's timer.
             /// </summary>
             public static TimelineManager Timeline => Frame.Timeline;
-
-            /// <summary>
-            /// Touch locations translated to current frame coordinates.
-            /// </summary>
-            public static List<TouchLocation> Touches => Frame.Touches;
 
             /// <summary>
             /// Z-coordinate sort function.

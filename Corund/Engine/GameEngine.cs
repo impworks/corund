@@ -148,6 +148,9 @@ namespace Corund.Engine
         /// </summary>
         private static void ExecuteDeferredActions()
         {
+            if (_deferredActions.Count == 0)
+                return;
+
             var actions = _deferredActions;
             _deferredActions = new List<Action>();
 

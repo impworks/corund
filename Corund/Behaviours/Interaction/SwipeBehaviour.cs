@@ -98,11 +98,11 @@ namespace Corund.Behaviours.Interaction
                     return;
                 }
 
-                var touch = FindTouchById(_start.Value.Id);
-                if (touch == null || touch.Value.State == TouchLocationState.Moved)
+                var touch = GameEngine.Touch.FindById(_start.Value.Id);
+                if (touch == null || touch?.State == TouchLocationState.Moved)
                     return;
 
-                if (touch.Value.State == TouchLocationState.Released)
+                if (touch?.State == TouchLocationState.Released)
                 {
                     var vec = touch.Value.Position - _start.Value.Position;
                     var dist = vec.Length() / _duration;
@@ -122,19 +122,6 @@ namespace Corund.Behaviours.Interaction
 
                 _start = null;
             }
-        }
-
-        /// <summary>
-        /// Gets a touch from current scene by its ID.
-        /// Throws an exception otherwise.
-        /// </summary>
-        private TouchLocation? FindTouchById(int id)
-        {
-            foreach (var touch in GameEngine.Current.Touches)
-                if (touch.Id == id)
-                    return touch;
-
-            return null;
         }
 
         #endregion

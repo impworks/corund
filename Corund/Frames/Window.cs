@@ -74,19 +74,19 @@ namespace Corund.Frames
         {
             base.Update();
 
-            var touches = GameEngine.Touch.Touches;
+            var touches = GameEngine.Touch.GlobalTouches;
             if (CloseOnBackgroundTouch && !IsFadingOut)
             {
                 var frameRect = GetViewRectPolygon();
                 foreach (var touch in touches)
                 {
-                    if (!GameEngine.Touch.CanHandleTouch(touch, this))
+                    if (!GameEngine.Touch.CanHandle(touch, this))
                         continue;
 
                     if (!GeometryHelper.IsPointInsideRect(frameRect, touch.Position))
                         continue;
 
-                    GameEngine.Touch.HandleTouch(touch, this);
+                    GameEngine.Touch.Handle(touch, this);
                     RemoveSelf();
                 }
             }
@@ -94,7 +94,7 @@ namespace Corund.Frames
             if (!AllowBackgroundTouches)
             {
                 foreach(var touch in touches)
-                    GameEngine.Touch.HandleTouch(touch, this);
+                    GameEngine.Touch.Handle(touch, this);
             }
         }
 

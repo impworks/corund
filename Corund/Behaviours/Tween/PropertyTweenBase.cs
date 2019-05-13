@@ -17,7 +17,7 @@ namespace Corund.Behaviours.Tween
 
         protected PropertyTweenBase(IPropertyDescriptor<TPropBase, TProperty> descriptor, TProperty targetValue, float duration, InterpolationMethod interpolation = null)
         {
-            if(duration.IsAlmostNull())
+            if(duration.IsAlmostZero())
                 throw new ArgumentException("Effect duration cannot be null.", nameof(duration));
 
             _descriptor = descriptor;

@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Corund.Engine.Config;
+using Corund.Tools;
+using Corund.Tools.Render;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -32,6 +34,7 @@ namespace Corund.Engine
             DeviceManager.ApplyChanges();
 
             _renderStack = new Stack<RenderTarget2D>(4);
+            _renderTargetPool = new Stack<RenderTarget2D>(4);
 
             SpriteBatch = new SpriteBatch(Device);
             WorldViewProjection = GetWorldViewProjectionMatrix(Device.Viewport);
@@ -40,6 +43,16 @@ namespace Corund.Engine
         #endregion
 
         #region Fields
+
+        private readonly Stack<RenderTarget2D> _renderStack;
+        private readonly Stack<RenderTarget2D> _renderTargetPool;
+        private BlendState _blendState;
+        private bool? _tileMode;
+        private bool _isStarted;
+        
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Reference to graphics device.
@@ -68,26 +81,6 @@ namespace Corund.Engine
         /// To be used by shaders.
         /// </summary>
         public readonly Matrix WorldViewProjection;
-
-        /// <summary>
-        /// Stack of current render targets.
-        /// </summary>
-        private readonly Stack<RenderTarget2D> _renderStack;
-
-        /// <summary>
-        /// Currently set blending state.
-        /// </summary>
-        private BlendState _blendState;
-
-        /// <summary>
-        /// Current tiling mode.
-        /// </summary>
-        private bool? _tileMode;
-
-        /// <summary>
-        /// Flag indicating that the current sprite batch is started
-        /// </summary>
-        private bool _isStarted;
 
         #endregion
 
@@ -156,17 +149,11 @@ namespace Corund.Engine
             EndBatch();
 
             var target = _renderStack.Pop();
-
-            if (_renderStack.Count > 0)
-                Device.SetRenderTarget(_renderStack.Peek());
+            Device.SetRenderTarget(_renderStack.Count > 0 ? _renderStack.Peek() : null);
 
             return target;
         }
-
-        #endregion
-
-        #region Private methods
-
+        
         /// <summary>
         /// Gets the appropriate sampler state depending on sprite mode and engine settings.
         /// </summary>
@@ -182,6 +169,45 @@ namespace Corund.Engine
                 ? SamplerState.PointWrap
                 : SamplerState.PointClamp;
         }
+
+        /// <summary>
+        /// Acquires a RenderTarget from the pool.
+        /// </summary>
+        public RenderTargetLease LeaseRenderTarget()
+        {
+            var rt = _renderTargetPool.Count > 0 ? _renderTargetPool.Pop() : CreateRenderTarget();
+            return new RenderTargetLease(rt, () => _renderTargetPool.Push(rt));
+        }
+
+        /// <summary>
+        /// Creates a fullscreen render target.
+        /// </summary>
+        public RenderTarget2D CreateRenderTarget()
+        {
+            var pp = GameEngine.Render.Device.PresentationParameters;
+            return CreateRenderTarget(pp.BackBufferWidth, pp.BackBufferHeight);
+        }
+
+        /// <summary>
+        /// Creates a RenderTarget of the specified size.
+        /// </summary>
+        public RenderTarget2D CreateRenderTarget(int width, int height)
+        {
+            return new RenderTarget2D(
+                GameEngine.Render.Device,
+                width,
+                height,
+                false,
+                GameEngine.Render.Device.PresentationParameters.BackBufferFormat,
+                DepthFormat.Depth24,
+                0,
+                RenderTargetUsage.PreserveContents
+            );
+        }
+
+        #endregion
+
+        #region Private methods
 
         /// <summary>
         /// Creates the default WorldViewProjection matrix.

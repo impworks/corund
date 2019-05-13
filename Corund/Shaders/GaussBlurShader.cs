@@ -1,5 +1,6 @@
 ﻿using System;
 using Corund.Engine;
+using Corund.Tools.Render;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -25,7 +26,6 @@ namespace Corund.Shaders
                 throw new ArgumentException("ContentProvider is not specified in GameEngine configuration!");
 
             _effect = GameEngine.EmbeddedContent.Load<Effect>("Effects/gauss-blur");
-            _renderTarget2 = CreateRenderTarget();
 
             Amount = blurAmount;
         }
@@ -38,11 +38,6 @@ namespace Corund.Shaders
         ///  Amount of blur to be applied.
         /// </summary>
         private Vector2 _amount;
-
-        /// <summary>
-        /// Secondary render target.
-        /// </summary>
-        private readonly RenderTarget2D _renderTarget2;
 
         /// <summary>
         /// Blur parameters for 1st pass (blur X).
@@ -66,9 +61,10 @@ namespace Corund.Shaders
             get => _amount;
             set
             {
+                var size = GameEngine.Screen.Size;
                 _amount = value;
-                _horizontalParameters = CreateBlurParameters(1.0f / _renderTarget.Width, 0);
-                _verticalParameters = CreateBlurParameters(0, 1.0f / _renderTarget.Height);
+                _horizontalParameters = CreateBlurParameters(1.0f / size.X, 0);
+                _verticalParameters = CreateBlurParameters(0, 1.0f / size.Y);
             }
         }
 
@@ -78,38 +74,38 @@ namespace Corund.Shaders
 
         public override void DrawWrapper(DynamicObject obj, Action innerDraw)
         {
-            // PASS 1: inner -> RT1
+            using (var rt1 = GameEngine.Render.LeaseRenderTarget())
+            using (var rt2 = GameEngine.Render.LeaseRenderTarget())
             {
-                GameEngine.Render.PushContext(_renderTarget, Color.Transparent);
+                // PASS 1: inner -> RT1
+                {
+                    using (new RenderContext(rt1.RenderTarget, Color.Transparent))
+                        innerDraw();
+                }
 
-                innerDraw();
+                // PASS 2: RT1 -> RT2, blur X
+                {
+                    using (new RenderContext(rt2.RenderTarget, Color.Transparent))
+                    {
+                        _effect.Parameters["WorldViewProjection"].SetValue(GameEngine.Render.WorldViewProjection);
+                        _effect.Parameters["SampleWeights"].SetValue(_horizontalParameters.Weights);
+                        _effect.Parameters["SampleOffsets"].SetValue(_horizontalParameters.Offsets);
 
-                GameEngine.Render.PopContext();
-            }
+                        GameEngine.Render.SpriteBatch.Begin(0, BlendState.AlphaBlend, GameEngine.Render.GetSamplerState(false), null, null, _effect);
+                        GameEngine.Render.SpriteBatch.Draw(rt1.RenderTarget, RenderTargetRect, Color.White);
+                        GameEngine.Render.SpriteBatch.End();
+                    }
+                }
 
-            // PASS 2: RT1 -> RT2, blur X
-            {
-                GameEngine.Render.PushContext(_renderTarget2, Color.Transparent);
+                // PASS 3: RT -> base, blur Y
+                {
+                    _effect.Parameters["SampleWeights"].SetValue(_verticalParameters.Weights);
+                    _effect.Parameters["SampleOffsets"].SetValue(_verticalParameters.Offsets);
 
-                _effect.Parameters["WorldViewProjection"].SetValue(GameEngine.Render.WorldViewProjection);
-                _effect.Parameters["SampleWeights"].SetValue(_horizontalParameters.Weights);
-                _effect.Parameters["SampleOffsets"].SetValue(_horizontalParameters.Offsets);
-
-                GameEngine.Render.SpriteBatch.Begin(0, BlendState.AlphaBlend, GameEngine.Render.GetSamplerState(false), null, null, _effect);
-                GameEngine.Render.SpriteBatch.Draw(_renderTarget, RenderTargetRect, Color.White);
-                GameEngine.Render.SpriteBatch.End();
-
-                GameEngine.Render.PopContext();
-            }
-
-            // PASS 3: RT -> base, blur Y
-            {
-                _effect.Parameters["SampleWeights"].SetValue(_verticalParameters.Weights);
-                _effect.Parameters["SampleOffsets"].SetValue(_verticalParameters.Offsets);
-
-                GameEngine.Render.SpriteBatch.Begin(0, BlendState.AlphaBlend, GameEngine.Render.GetSamplerState(false), null, null, _effect);
-                GameEngine.Render.SpriteBatch.Draw(_renderTarget2, RenderTargetRect, Color.White);
-                GameEngine.Render.SpriteBatch.End();
+                    GameEngine.Render.SpriteBatch.Begin(0, BlendState.AlphaBlend, GameEngine.Render.GetSamplerState(false), null, null, _effect);
+                    GameEngine.Render.SpriteBatch.Draw(rt2.RenderTarget, RenderTargetRect, Color.White);
+                    GameEngine.Render.SpriteBatch.End();
+                }
             }
         }
 
@@ -178,24 +174,6 @@ namespace Corund.Shaders
             var theta = _amount.X * dx + _amount.Y * dy;
 
             return (float)(1.0 / Math.Sqrt(2 * Math.PI * theta) * Math.Exp(-(n * n) / (2 * theta * theta)));
-        }
-
-        /// <summary>
-        /// Creates the render target.
-        /// </summary>
-        protected override RenderTarget2D CreateRenderTarget()
-        {
-            var size = RenderTargetRect;
-            return new RenderTarget2D(
-                GameEngine.Render.Device,
-                size.Width,
-                size.Height,
-                false,
-                GameEngine.Render.Device.PresentationParameters.BackBufferFormat,
-                DepthFormat.Depth24,
-                0,
-                RenderTargetUsage.PreserveContents
-            );
         }
 
         #endregion
