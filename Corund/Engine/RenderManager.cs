@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Corund.Engine.Config;
-using Corund.Tools;
 using Corund.Tools.Render;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -37,7 +36,7 @@ namespace Corund.Engine
             _renderTargetPool = new Stack<RenderTarget2D>(4);
 
             SpriteBatch = new SpriteBatch(Device);
-            WorldViewProjection = GetWorldViewProjectionMatrix(Device.Viewport);
+            WorldViewProjection = GetWorldViewProjectionMatrix(Device.DisplayMode.Width, Device.DisplayMode.Height);
         }
 
         #endregion
@@ -212,10 +211,10 @@ namespace Corund.Engine
         /// <summary>
         /// Creates the default WorldViewProjection matrix.
         /// </summary>
-        private static Matrix GetWorldViewProjectionMatrix(Viewport viewport)
+        private static Matrix GetWorldViewProjectionMatrix(float width, float height)
         {
             var halfPixel = Matrix.CreateTranslation(-0.5f, -0.5f, 0);
-            var offCenter = Matrix.CreateOrthographicOffCenter(0, viewport.Width, viewport.Height, 0, 0, 1);
+            var offCenter = Matrix.CreateOrthographicOffCenter(0, width, height, 0, 0, 1);
             return halfPixel*offCenter;
         }
 

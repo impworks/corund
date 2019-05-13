@@ -61,10 +61,10 @@ namespace Corund.Shaders
             get => _amount;
             set
             {
-                var size = GameEngine.Screen.Size;
+                var size = GameEngine.Render.Device.PresentationParameters;
                 _amount = value;
-                _horizontalParameters = CreateBlurParameters(1.0f / size.X, 0);
-                _verticalParameters = CreateBlurParameters(0, 1.0f / size.Y);
+                _horizontalParameters = CreateBlurParameters(1.0f / size.BackBufferWidth, 0);
+                _verticalParameters = CreateBlurParameters(0, 1.0f / size.BackBufferHeight);
             }
         }
 
@@ -124,7 +124,7 @@ namespace Corund.Shaders
             var sampleOffsets = new Vector2[sampleCount];
 
             // The first sample always has a zero offset.
-            sampleWeights[0] = ComputeWeight(0, dx, dy);
+            sampleWeights[0] = ComputeWeight(0, dx);
             sampleOffsets[0] = new Vector2(0);
 
             // Maintain a sum of all the weighting values.
@@ -135,7 +135,7 @@ namespace Corund.Shaders
             for (var i = 0; i < sampleCount / 2; i++)
             {
                 // Store weights for the positive and negative taps.
-                var weight = ComputeWeight(i + 1, dx, dy);
+                var weight = ComputeWeight(i + 1, dx);
 
                 sampleWeights[i * 2 + 1] = weight;
                 sampleWeights[i * 2 + 2] = weight;
@@ -169,10 +169,9 @@ namespace Corund.Shaders
         /// <summary>
         /// Calculates the blur weight coefficient for a particular point.
         /// </summary>
-        private float ComputeWeight(float n, float dx, float dy)
+        private float ComputeWeight(float n, float dx)
         {
-            var theta = _amount.X * dx + _amount.Y * dy;
-
+            var theta = dx > 0 ? _amount.X : _amount.Y;
             return (float)(1.0 / Math.Sqrt(2 * Math.PI * theta) * Math.Exp(-(n * n) / (2 * theta * theta)));
         }
 
