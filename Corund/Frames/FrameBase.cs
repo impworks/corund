@@ -4,6 +4,7 @@ using Corund.Engine;
 using Corund.Engine.Config;
 using Corund.Geometry;
 using Corund.Tools;
+using Corund.Tools.Render;
 using Corund.Visuals;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
@@ -132,12 +133,11 @@ namespace Corund.Frames
         /// </summary>
         public override void Draw()
         {
-            GameEngine.Render.PushContext(RenderTarget, BackgroundColor);
-
-            _zOrder = 1;
-            base.Draw();
-
-            GameEngine.Render.PopContext();
+            using (new RenderContext(RenderTarget, BackgroundColor))
+            {
+                _zOrder = 1;
+                base.Draw();
+            }
         }
 
         /// <summary>

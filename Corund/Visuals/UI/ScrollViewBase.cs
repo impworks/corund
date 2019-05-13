@@ -2,6 +2,7 @@
 using Corund.Engine;
 using Corund.Geometry;
 using Corund.Tools.Helpers;
+using Corund.Tools.Render;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -96,9 +97,8 @@ namespace Corund.Visuals.UI
 
             using (var rt = GameEngine.Render.LeaseRenderTarget())
             {
-                GameEngine.Render.PushContext(rt.RenderTarget, Color.Transparent);
-                _content.Draw();
-                GameEngine.Render.PopContext();
+                using (new RenderContext(rt.RenderTarget, Color.Transparent))
+                    _content.Draw();
 
                 GameEngine.Render.TryBeginBatch(BlendState.AlphaBlend);
                 var z = GameEngine.Current.ZOrderFunction(this);
@@ -109,7 +109,7 @@ namespace Corund.Visuals.UI
                     tf.Position,
                     box,
                     Tint,
-                    tf.Angle,
+                    0,
                     Vector2.Zero,
                     tf.ScaleVector,
                     SpriteEffects.None,

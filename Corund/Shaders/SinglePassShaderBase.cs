@@ -1,5 +1,6 @@
 ﻿using System;
 using Corund.Engine;
+using Corund.Tools.Render;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -19,11 +20,8 @@ namespace Corund.Shaders
             {
                 // PASS 1: inner -> RT
                 {
-                    GameEngine.Render.PushContext(rt.RenderTarget, Color.Transparent);
-
-                    innerDraw();
-
-                    GameEngine.Render.PopContext();
+                    using (new RenderContext(rt.RenderTarget, Color.Transparent))
+                        innerDraw();
                 }
 
                 // PASS 2: RT -> base, overlay

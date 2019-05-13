@@ -1,5 +1,6 @@
 ﻿using System;
 using Corund.Engine;
+using Corund.Tools.Render;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -78,26 +79,22 @@ namespace Corund.Shaders
             {
                 // PASS 1: inner -> RT1
                 {
-                    GameEngine.Render.PushContext(rt1.RenderTarget, Color.Transparent);
-
-                    innerDraw();
-
-                    GameEngine.Render.PopContext();
+                    using (new RenderContext(rt1.RenderTarget, Color.Transparent))
+                        innerDraw();
                 }
 
                 // PASS 2: RT1 -> RT2, blur X
                 {
-                    GameEngine.Render.PushContext(rt2.RenderTarget, Color.Transparent);
+                    using (new RenderContext(rt2.RenderTarget, Color.Transparent))
+                    {
+                        _effect.Parameters["WorldViewProjection"].SetValue(GameEngine.Render.WorldViewProjection);
+                        _effect.Parameters["SampleWeights"].SetValue(_horizontalParameters.Weights);
+                        _effect.Parameters["SampleOffsets"].SetValue(_horizontalParameters.Offsets);
 
-                    _effect.Parameters["WorldViewProjection"].SetValue(GameEngine.Render.WorldViewProjection);
-                    _effect.Parameters["SampleWeights"].SetValue(_horizontalParameters.Weights);
-                    _effect.Parameters["SampleOffsets"].SetValue(_horizontalParameters.Offsets);
-
-                    GameEngine.Render.SpriteBatch.Begin(0, BlendState.AlphaBlend, GameEngine.Render.GetSamplerState(false), null, null, _effect);
-                    GameEngine.Render.SpriteBatch.Draw(rt1.RenderTarget, RenderTargetRect, Color.White);
-                    GameEngine.Render.SpriteBatch.End();
-
-                    GameEngine.Render.PopContext();
+                        GameEngine.Render.SpriteBatch.Begin(0, BlendState.AlphaBlend, GameEngine.Render.GetSamplerState(false), null, null, _effect);
+                        GameEngine.Render.SpriteBatch.Draw(rt1.RenderTarget, RenderTargetRect, Color.White);
+                        GameEngine.Render.SpriteBatch.End();
+                    }
                 }
 
                 // PASS 3: RT -> base, blur Y

@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Corund.Tools
+namespace Corund.Tools.Render
 {
     /// <summary>
     /// A handle for using a render target acquired from a pool.

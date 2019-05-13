@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Corund.Engine.Config;
 using Corund.Tools;
+using Corund.Tools.Render;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -148,9 +149,7 @@ namespace Corund.Engine
             EndBatch();
 
             var target = _renderStack.Pop();
-
-            if (_renderStack.Count > 0)
-                Device.SetRenderTarget(_renderStack.Peek());
+            Device.SetRenderTarget(_renderStack.Count > 0 ? _renderStack.Peek() : null);
 
             return target;
         }

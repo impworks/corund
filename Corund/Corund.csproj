@@ -116,7 +116,8 @@
     <Compile Include="Tools\Properties\Property.cs" />
     <Compile Include="Tools\Properties\PropertyDescriptor.cs" />
     <Compile Include="Tools\Range.cs" />
-    <Compile Include="Tools\RenderTargetLease.cs" />
+    <Compile Include="Tools\Render\RenderContext.cs" />
+    <Compile Include="Tools\Render\RenderTargetLease.cs" />
     <Compile Include="Tools\TransformInfo.cs" />
     <Compile Include="Tools\Helpers\NumericHelper.cs" />
     <Compile Include="Tools\Helpers\VectorHelper.cs" />
