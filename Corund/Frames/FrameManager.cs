@@ -47,6 +47,7 @@ namespace Corund.Frames
         public void Remove(FrameBase frame)
         {
             _frames.Remove(frame);
+            frame.Dispose();
         }
 
         /// <summary>

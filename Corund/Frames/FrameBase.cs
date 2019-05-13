@@ -16,7 +16,7 @@ namespace Corund.Frames
     /// <summary>
     /// Base class for all game frames and pop-up windows.
     /// </summary>
-    public abstract class FrameBase: ObjectGroup
+    public abstract class FrameBase: ObjectGroup, IDisposable
     {
         #region Constructors
 
@@ -178,12 +178,24 @@ namespace Corund.Frames
             base.Update();
         }
 
+        #endregion
+
+        #region Lifecycle
+
         /// <summary>
         /// Creates frame objects and settings when the frame is in current context.
         /// </summary>
         protected virtual void Initialize()
         {
             // do nothing yet.
+        }
+
+        /// <summary>
+        /// Releases the resources required by this frame.
+        /// </summary>
+        public virtual void Dispose()
+        {
+            RenderTarget?.Dispose();
         }
 
         #endregion
