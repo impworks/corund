@@ -9,7 +9,7 @@ namespace Corund.Shaders
     /// <summary>
     /// Base class for shader effects.
     /// </summary>
-    public abstract class ShaderBase
+    public abstract class ShaderBase: IShader
     {
         #region Fields
 

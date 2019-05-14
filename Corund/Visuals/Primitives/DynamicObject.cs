@@ -36,7 +36,7 @@ namespace Corund.Visuals.Primitives
         /// <summary>
         /// Current shader effect applied to the object.
         /// </summary>
-        public ShaderBase Shader;
+        public IShader Shader;
 
         #endregion
 

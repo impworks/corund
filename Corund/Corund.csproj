@@ -93,6 +93,8 @@
     <Compile Include="Shaders\DesaturateShader.cs" />
     <Compile Include="Shaders\GaussBlurShader.cs" />
     <Compile Include="Shaders\ColorOverlayShader.cs" />
+    <Compile Include="Shaders\IShader.cs" />
+    <Compile Include="Shaders\MultiShader.cs" />
     <Compile Include="Shaders\RadialBlurShader.cs" />
     <Compile Include="Shaders\ShaderBase.cs" />
     <Compile Include="Shaders\SinglePassShaderBase.cs" />
