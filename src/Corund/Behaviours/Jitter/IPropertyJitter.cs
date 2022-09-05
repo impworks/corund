@@ -5,7 +5,7 @@ namespace Corund.Behaviours.Jitter;
 public interface IPropertyJitter
 {
     /// <summary>
-    /// Name of the tweened property.
+    /// Name of the jittered property.
     /// </summary>
     string PropertyName { get; }
 

@@ -74,7 +74,7 @@ public static class DynamicObjectHelper
         var name = descriptor.Name;
         foreach (var behaviour in obj.Behaviours)
         {
-            if (!(behaviour is IPropertyTween tween) || tween.PropertyName != name)
+            if (behaviour is not IPropertyTween tween || tween.PropertyName != name)
                 continue;
 
             tween.StopTween(obj, skipToFinalValue);
@@ -171,7 +171,7 @@ public static class DynamicObjectHelper
     public static void Jitter<TObject, TPropBase>(this TObject obj, IPropertyDescriptor<TPropBase, Vector2> descriptor, float delay, float xRange, float yRange, bool isRelative = false)
         where TObject : DynamicObject, TPropBase
     {
-        AddBehaviour(obj, new Vector2Jitter<TObject, TPropBase>(descriptor, delay, xRange, yRange, isRelative));
+        AddBehaviour(obj, new Vector2Jitter<TObject, TPropBase>(descriptor, delay, new Vector2(xRange, yRange), isRelative));
     }
 
     /// <summary>

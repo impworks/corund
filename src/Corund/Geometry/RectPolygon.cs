@@ -12,6 +12,18 @@ public struct RectPolygon
     #region Constructors
 
     /// <summary>
+    /// Creates an axis-aligned polygon from 2 points.
+    /// </summary>
+    public RectPolygon(Vector2 leftUpper, Vector2 rightLower)
+    {
+        LeftUpper = leftUpper;
+        RightUpper = new Vector2(rightLower.X, leftUpper.Y);
+        RightLower = rightLower;
+        LeftLower = new Vector2(leftUpper.X, rightLower.Y);
+        Angle = 0;
+    }
+
+    /// <summary>
     /// Creates the polygon from 4 points of a rectangle.
     /// </summary>
     public RectPolygon(Vector2 leftUpper, Vector2 rightUpper, Vector2 rightLower, Vector2 leftLower, float angle)

@@ -9,7 +9,7 @@ namespace Corund.Behaviours.Jitter;
 /// Float jitter effect.
 /// </summary>
 [DebuggerDisplay("ColorJitter: [{_descriptor.Name}] {_range} (each {_delay} s, relative = {_isRelative})")]
-public class FloatJitter<TObject, TPropBase> : PropertyJitterBase<TObject, TPropBase, float>
+public class FloatJitter<TObject, TPropBase> : PropertyJitterBase<TObject, TPropBase, float, float>
     where TObject: DynamicObject, TPropBase
 {
     #region Constructor
@@ -22,54 +22,21 @@ public class FloatJitter<TObject, TPropBase> : PropertyJitterBase<TObject, TProp
     /// <param name="range">Jitter magnitude.</param>
     /// <param name="isRelative">Flag indicating that magnitude is a fraction of the actual value, rather than an absolute.</param>
     public FloatJitter(IPropertyDescriptor<TPropBase, float> descriptor, float delay, float range, bool isRelative = false)
-        : base(descriptor, delay)
+        : base(descriptor, delay, range, isRelative)
     {
-        _range = range;
-        _isRelative = isRelative;
     }
 
     #endregion
 
-    #region Fields
+    #region Overrides
 
-    /// <summary>
-    /// Jitter range.
-    /// </summary>
-    private readonly float _range;
+    protected override float Add(float a, float b) => a + b;
+    protected override float Subtract(float a, float b) => a - b;
 
-    /// <summary>
-    /// Flag indicating that the range is a fraction of the actual value, rather than an absolute.
-    /// </summary>
-    private readonly bool _isRelative;
-
-    /// <summary>
-    /// Previously applied jitter.
-    /// </summary>
-    private float _lastJitter;
-
-    #endregion
-
-    #region Methods
-
-    /// <summary>
-    /// Cancels out previous jitter.
-    /// </summary>
-    protected override float CancelPrevious(float value)
+    protected override float Generate(float value)
     {
-        return value - _lastJitter;
-    }
-
-    /// <summary>
-    /// Applies new jitter.
-    /// </summary>
-    protected override float ApplyNew(float value)
-    {
-        var r = _range;
-        if (_isRelative)
-            r *= value;
-
-        _lastJitter = RandomHelper.Float(-r, r);
-        return value + _lastJitter;
+        var r = _range * (_isRelative ? value : 1);
+        return RandomHelper.Float(-r, r);
     }
 
     #endregion

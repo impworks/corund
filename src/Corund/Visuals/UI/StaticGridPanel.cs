@@ -160,7 +160,7 @@ public class StaticGridPanel: ObjectGroupBase, IGeometryObject
                 continue;
             }
 
-            var isFixed = source[source.Length - 1] != '*';
+            var isFixed = source[^1] != '*';
             var sizeStr = isFixed ? source : source.TrimEnd('*');
             var size = float.Parse(sizeStr, CultureInfo.InvariantCulture);
 

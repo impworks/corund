@@ -9,75 +9,38 @@ namespace Corund.Behaviours.Jitter;
 /// <summary>
 /// Float jitter effect.
 /// </summary>
-[DebuggerDisplay("ColorJitter: [{_descriptor.Name}] {_xRange}, {_yRange} (each {_delay} s, relative = {_isRelative})")]
-public class Vector2Jitter<TObject, TPropBase> : PropertyJitterBase<TObject, TPropBase, Vector2>
+[DebuggerDisplay("Vector2Jitter: [{_descriptor.Name}] {_xRange}, {_yRange} (each {_delay} s, relative = {_isRelative})")]
+public class Vector2Jitter<TObject, TPropBase> : PropertyJitterBase<TObject, TPropBase, Vector2, Vector2>
     where TObject : DynamicObject, TPropBase
 {
     #region Constructor
 
     /// <summary>
-    /// Creates a new FloatJitter effect.
+    /// Creates a new Vector2Jitter effect.
     /// </summary>
     /// <param name="descriptor">Property to affect.</param>
     /// <param name="delay">Time between value changes in seconds.</param>
-    /// <param name="xRange">Jitter magnitude for X coordinate.</param>
-    /// <param name="yRange">Jitter magnitude for Y coordinate.</param>
+    /// <param name="range">Jitter magnitude.</param>
     /// <param name="isRelative">Flag indicating that magnitude is a fraction of the actual value, rather than an absolute.</param>
-    public Vector2Jitter(IPropertyDescriptor<TPropBase, Vector2> descriptor, float delay, float xRange, float yRange, bool isRelative = false)
-        : base(descriptor, delay)
+    public Vector2Jitter(IPropertyDescriptor<TPropBase, Vector2> descriptor, float delay, Vector2 range, bool isRelative = false)
+        : base(descriptor, delay, range, isRelative)
     {
-        _xRange = xRange;
-        _yRange = yRange;
-        _isRelative = isRelative;
     }
 
     #endregion
 
-    #region Fields
+    #region Overrides
 
-    private readonly float _xRange;
-    private readonly float _yRange;
+    protected override Vector2 Add(Vector2 a, Vector2 b) => a + b;
+    protected override Vector2 Subtract(Vector2 a, Vector2 b) => a - b;
 
-    /// <summary>
-    /// Flag indicating that the range is a fraction of the actual value, rather than an absolute.
-    /// </summary>
-    private readonly bool _isRelative;
-
-    /// <summary>
-    /// Previously applied jitter.
-    /// </summary>
-    private Vector2 _lastJitter;
-
-    #endregion
-
-    #region Methods
-
-    /// <summary>
-    /// Cancels out previous jitter.
-    /// </summary>
-    protected override Vector2 CancelPrevious(Vector2 value)
+    protected override Vector2 Generate(Vector2 value)
     {
-        return value - _lastJitter;
-    }
-
-    /// <summary>
-    /// Applies new jitter.
-    /// </summary>
-    protected override Vector2 ApplyNew(Vector2 value)
-    {
-        var rx = _xRange;
-        var ry = _yRange;
-        if (_isRelative)
-        {
-            rx *= value.X;
-            ry *= value.Y;
-        }
-
-        _lastJitter = new Vector2(
-            RandomHelper.Float(-rx, rx),
-            RandomHelper.Float(-ry, ry)
+        var r = _isRelative ? _range * value : _range;
+        return new Vector2(
+            RandomHelper.Float(-r.X, r.X),
+            RandomHelper.Float(-r.Y, r.Y)
         );
-        return value + _lastJitter;
     }
 
     #endregion

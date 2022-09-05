@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Corund.Engine;
-using Corund.Engine.Config;
 using Corund.Geometry;
 using Corund.Tools;
 using Corund.Tools.Render;
@@ -42,7 +41,7 @@ public abstract class FrameBase: ObjectGroup, IDisposable
         Timeline = new TimelineManager();
         Camera = new Camera();
         ZOrderFunction = _ => _zOrder -= 0.0001f;
-        ResolutionAdaptationTransform = GetResolutionAdaptationTransform();
+        ResolutionAdaptationTransform = GameEngine.Options.ResolutionAdapter.GetFrameTransformInfo(ViewSize);
     }
          
     #endregion
@@ -232,34 +231,6 @@ public abstract class FrameBase: ObjectGroup, IDisposable
             info.Translate(ll),
             Angle
         );
-    }
-
-    /// <summary>
-    /// Returns the appropriate transform.
-    /// </summary>
-    protected TransformInfo GetResolutionAdaptationTransform()
-    {
-        var mode = GameEngine.Options.ResolutionAdaptationMode;
-        var vp = GameEngine.Screen.Viewport;
-
-        if (mode == ResolutionAdaptationMode.Adjust)
-            return TransformInfo.None;
-
-        if (mode == ResolutionAdaptationMode.Center)
-        {
-            var offset = (vp - ViewSize) / 2;
-            return new TransformInfo(offset, 0, Vector2.One);
-        }
-
-        if (mode == ResolutionAdaptationMode.CenterAndResize)
-        {
-            var scale = 1.0f / Math.Max(ViewSize.X / vp.X, ViewSize.Y / vp.Y);
-            var newSize = ViewSize * scale;
-            var offset = (vp - newSize) / 2;
-            return new TransformInfo(offset, 0, new Vector2(scale));
-        }
-
-        throw new ArgumentException($"Unknown resolution adaptation mode: {mode}");
     }
 
     #endregion

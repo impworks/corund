@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Corund.Behaviours.Fade;
 using Corund.Engine;
+using Corund.Geometry;
 using Corund.Tools;
 using Corund.Tools.Render;
 using Microsoft.Xna.Framework;
@@ -120,6 +121,13 @@ public class FrameManager
                 var zOrder = idx / count;
                 frame.FinalizeDraw(zOrder);
             }
+
+            GameEngine.Debug.DrawRectPolygon(
+                new RectPolygon(
+                    Vector2.Zero,
+                    GameEngine.Screen.NativeSize
+                )
+            );
         }
     }
 

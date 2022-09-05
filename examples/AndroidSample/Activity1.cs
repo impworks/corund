@@ -23,10 +23,33 @@ public class Activity1 : AndroidGameActivity
     protected override void OnCreate(Bundle bundle)
     {
         base.OnCreate(bundle);
+
         _game = new Game1();
         _view = _game.Services.GetService(typeof(View)) as View;
 
         SetContentView(_view);
         _game.Run();
+    }
+
+    public override void OnWindowFocusChanged(bool hasFocus)
+    {
+        if(hasFocus)
+            SetImmersive();
+
+        base.OnWindowFocusChanged(hasFocus);
+    }
+
+    private void SetImmersive()
+    {
+        if (_view == null)
+            return;
+
+        _view.SystemUiVisibility = (StatusBarVisibility)
+            (SystemUiFlags.LayoutStable |
+             SystemUiFlags.LayoutHideNavigation |
+             SystemUiFlags.LayoutFullscreen |
+             SystemUiFlags.HideNavigation |
+             SystemUiFlags.Fullscreen |
+             SystemUiFlags.ImmersiveSticky);
     }
 }

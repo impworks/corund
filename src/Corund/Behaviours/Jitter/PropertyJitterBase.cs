@@ -7,15 +7,17 @@ namespace Corund.Behaviours.Jitter;
 /// <summary>
 /// Base class for property jitter behaviours.
 /// </summary>
-public abstract class PropertyJitterBase<TObject, TPropBase, TProperty>: BehaviourBase, IPropertyJitter
+public abstract class PropertyJitterBase<TObject, TPropBase, TProperty, TRange>: BehaviourBase, IPropertyJitter
     where TObject: DynamicObject, TPropBase
 {
     #region Constructor
 
-    public PropertyJitterBase(IPropertyDescriptor<TPropBase, TProperty> descriptor, float delay)
+    public PropertyJitterBase(IPropertyDescriptor<TPropBase, TProperty> descriptor, float delay, TRange range, bool isRelative)
     {
         _descriptor = descriptor;
         _delay = delay;
+        _range = range;
+        _isRelative = isRelative;
     }
 
     #endregion
@@ -36,6 +38,22 @@ public abstract class PropertyJitterBase<TObject, TPropBase, TProperty>: Behavio
     /// Time elapsed since last jitter application.
     /// </summary>
     private float _elapsedTime;
+
+    /// <summary>
+    /// Flag indicating that the range is a fraction of the actual value, rather than an absolute.
+    /// </summary>
+    protected readonly bool _isRelative;
+
+    /// <summary>
+    /// Jitter range.
+    /// Works as a radius: the new value is modified in the range of [-x, x] for each of the components.
+    /// </summary>
+    protected readonly TRange _range;
+
+    /// <summary>
+    /// Previous jitter value (to cancel out before applying a new one).
+    /// </summary>
+    protected TRange _lastJitter;
 
     #endregion
 
@@ -61,8 +79,11 @@ public abstract class PropertyJitterBase<TObject, TPropBase, TProperty>: Behavio
 
         _elapsedTime -= _delay;
 
-        var clearValue = CancelPrevious(_descriptor.Getter((TObject)obj));
-        _descriptor.Setter((TObject) obj, ApplyNew(clearValue));
+        var currentValue = _descriptor.Getter((TObject) obj);
+        var clearValue = Subtract(currentValue, _lastJitter);
+        _lastJitter = Generate(clearValue);
+        var newValue = Add(clearValue, _lastJitter);
+        _descriptor.Setter((TObject) obj, newValue);
     }
 
     /// <summary>
@@ -70,19 +91,24 @@ public abstract class PropertyJitterBase<TObject, TPropBase, TProperty>: Behavio
     /// </summary>
     public override void Unbind(DynamicObject obj)
     {
-        var clearValue = CancelPrevious(_descriptor.Getter((TObject)obj));
+        var clearValue = Subtract(_descriptor.Getter((TObject)obj), _lastJitter);
         _descriptor.Setter((TObject)obj, clearValue);
     }
 
     /// <summary>
-    /// Cancels out previous jitter.
+    /// Combines values.
     /// </summary>
-    protected abstract TProperty CancelPrevious(TProperty value);
+    protected abstract TProperty Add(TProperty a, TRange b);
 
     /// <summary>
-    /// Applies new jitter.
+    /// Subtracts values.
     /// </summary>
-    protected abstract TProperty ApplyNew(TProperty value);
+    protected abstract TProperty Subtract(TProperty a, TRange b);
+
+    /// <summary>
+    /// Creates a new jitter value.
+    /// </summary>
+    protected abstract TRange Generate(TProperty currentValue);
 
     #endregion
 }

@@ -21,7 +21,6 @@ public class Game1 : Game
     {
         GameEngine.Init(new GameEngineOptions(this, _gdm)
         {
-            ResolutionAdaptationMode = ResolutionAdaptationMode.Adjust,
             Orientation = DisplayOrientation.Portrait,
             EnableAntiAliasing = false,
             PlatformAdapter = new AndroidPlatformAdapter()

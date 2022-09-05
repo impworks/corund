@@ -105,7 +105,7 @@ public class DebugManager
     /// <summary>
     /// Renders a single rectangle.
     /// </summary>
-    private void DrawRectPolygon(RectPolygon rect)
+    public void DrawRectPolygon(RectPolygon rect)
     {
         DrawLine(rect.LeftUpper, rect.RightUpper);
         DrawLine(rect.RightUpper, rect.RightLower);
@@ -116,7 +116,7 @@ public class DebugManager
     /// <summary>
     /// Renders a line.
     /// </summary>
-    private void DrawLine(Vector2 from, Vector2 to)
+    public void DrawLine(Vector2 from, Vector2 to)
     {
         var angle = (float)Math.Atan2(to.Y - from.Y, to.X - from.X);
         var length = Vector2.Distance(from, to);

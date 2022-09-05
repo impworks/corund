@@ -14,11 +14,9 @@ public class ScreenManager
     {
         Orientation = options.Orientation;
 
-        var vp = options.GraphicsDeviceManager.GraphicsDevice.Viewport;
-        Viewport = new Vector2(vp.Width, vp.Height);
-        Size = options.ResolutionAdaptationMode == ResolutionAdaptationMode.Adjust
-            ? Viewport
-            : options.DesiredScreenSize;
+        var dm = options.GraphicsDeviceManager.GraphicsDevice.DisplayMode;
+        NativeSize = new Vector2(dm.Width, dm.Height);
+        Size = options.ResolutionAdapter.GetLogicalScreenSize(NativeSize);
 
         if (options.Orientation == DisplayOrientation.Portrait && Size.X > Size.Y)
             Size = new Vector2(Size.Y, Size.X);
@@ -51,9 +49,9 @@ public class ScreenManager
     public Vector2 Center => Size/2;
 
     /// <summary>
-    /// Gets the pixel size of the device's screen.
+    /// Gets actual screen size in pixels.
     /// </summary>
-    public readonly Vector2 Viewport;
+    public readonly Vector2 NativeSize;
 
     #endregion
 }

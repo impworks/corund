@@ -1,5 +1,4 @@
-﻿using System;
-using Corund.Engine;
+﻿using Corund.Engine;
 using Corund.Tools.Helpers;
 using Corund.Tools.Properties;
 using Corund.Visuals.Primitives;

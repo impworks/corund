@@ -76,19 +76,15 @@ public partial class TimelineManager
     /// </summary>
     public void Remove(int id)
     {
-        TimelineRecord rec = null;
         for (var idx = 0; idx < _keyFrames.Count; idx++)
         {
             var curr = _keyFrames[idx];
             if (curr.RecordId == id)
             {
-                rec = curr;
-                break;
+                _keyFrames.Remove(curr);
+                return;
             }
         }
-
-        if (rec != null)
-            _keyFrames.Remove(rec);
     }
 
     /// <summary>

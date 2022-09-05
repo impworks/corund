@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Corund.Tools.ResolutionAdapters;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 
 namespace Corund.Engine.Config;
@@ -17,8 +18,7 @@ public class GameEngineOptions
         Content = game.Content;
 
         Orientation = DisplayOrientation.Portrait;
-        ResolutionAdaptationMode = ResolutionAdaptationMode.Adjust;
-        DesiredScreenSize = new Vector2(480, 800);
+        ResolutionAdapter = new NativeResolutionAdapter();
     }
 
     #endregion
@@ -46,17 +46,6 @@ public class GameEngineOptions
     public DisplayOrientation Orientation;
 
     /// <summary>
-    /// The preferred way of adjusting the game to actual screen size.
-    /// </summary>
-    public ResolutionAdaptationMode ResolutionAdaptationMode;
-
-    /// <summary>
-    /// Screen size for which the game has been tailored.
-    /// Not applicable in ResolutionAdaptationMode.Adjust.
-    /// </summary>
-    public Vector2 DesiredScreenSize;
-
-    /// <summary>
     /// Use anti-aliased rendering or not?
     /// </summary>
     public bool EnableAntiAliasing;
@@ -65,6 +54,11 @@ public class GameEngineOptions
     /// Platform-specific resource wrapper (optional).
     /// </summary>
     public IPlatformAdapter PlatformAdapter;
+
+    /// <summary>
+    /// Resolution adapter (defaults to Native).
+    /// </summary>
+    public IResolutionAdapter ResolutionAdapter;
 
     /// <summary>
     /// Translate mouse coordinates to touch?

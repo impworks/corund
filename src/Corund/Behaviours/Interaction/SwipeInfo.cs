@@ -20,7 +20,7 @@ public struct SwipeInfo
     public readonly Vector2 Origin;
 
     /// <summary>
-    /// The point where the swipe has finished (in frame coordinates).
+    /// The swipe vector (in frame coordinates).
     /// </summary>
     public readonly Vector2 Vector;
 
