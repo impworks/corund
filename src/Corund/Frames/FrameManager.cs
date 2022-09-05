@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using Corund.Behaviours.Fade;
 using Corund.Engine;
-using Corund.Geometry;
 using Corund.Tools;
 using Corund.Tools.Render;
 using Microsoft.Xna.Framework;
@@ -85,14 +84,9 @@ public class FrameManager
     /// </summary>
     public void Update()
     {
-        GameEngine.Current.PauseMode = PauseMode.None;
-
         // update frames from top to bottom
         for (var idx = _frames.Count - 1; idx >= 0; idx--)
-        {
-            var curr = GameEngine.Current.Frame = _frames[idx];
-            curr.Update();
-        }
+            (GameEngine.Current.Frame = _frames[idx]).Update();
     }
 
     /// <summary>
@@ -121,13 +115,6 @@ public class FrameManager
                 var zOrder = idx / count;
                 frame.FinalizeDraw(zOrder);
             }
-
-            GameEngine.Debug.DrawRectPolygon(
-                new RectPolygon(
-                    Vector2.Zero,
-                    GameEngine.Screen.NativeSize
-                )
-            );
         }
     }
 

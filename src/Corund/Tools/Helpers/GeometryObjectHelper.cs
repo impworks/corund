@@ -109,5 +109,13 @@ public static class GeometryObjectHelper
         return result;
     }
 
+    /// <summary>
+    /// Checks if the object has an active touch with the specified state.
+    /// </summary>
+    public static bool HasTouch(this IGeometryObject obj, TouchLocationState? state = TouchLocationState.Pressed, bool tapThrough = false)
+    {
+        return obj.TryGetTouch(tapThrough) is {State: var s} && (state == null || state == s);
+    }
+
     #endregion
 }

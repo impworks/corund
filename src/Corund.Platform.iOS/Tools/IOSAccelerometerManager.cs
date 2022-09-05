@@ -6,11 +6,11 @@ namespace Corund.Platform.iOS.Tools;
 /// <summary>
 /// iOS-specific implementation of IAccelerometerManager.
 /// </summary>
-public class IOSAccelerometerManager: IAccelerometerManager
+public class iOSAccelerometerManager: IAccelerometerManager
 {
     #region Constructor
 
-    public IOSAccelerometerManager()
+    public iOSAccelerometerManager()
     {
         _accelerometer = new Accelerometer();
         _accelerometer.CurrentValueChanged += OnReadingChanged;

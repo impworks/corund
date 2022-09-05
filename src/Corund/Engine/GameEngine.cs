@@ -1,15 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using Corund.Engine.Config;
+using Corund.Engine.Prompts;
 using Corund.Frames;
 using Corund.Sound;
+using Corund.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 
 namespace Corund.Engine;
 
 /// <summary>
-/// The main class that governs all inner workings of Corund game engine.
+/// The main class that governs all inner workings of the Corund game engine.
 /// </summary>
 public static partial class GameEngine
 {
@@ -30,10 +32,11 @@ public static partial class GameEngine
         Touch = new TouchManager();
         Debug = new DebugManager(Render.Device);
         Accelerometer = opts.PlatformAdapter?.GetAccelerometerManager();
+        Prompt = opts.PlatformAdapter?.GetPromptManager();
 
-        var embeddedContent = opts.PlatformAdapter?.GetEmbeddedContentProvider();
-        if (embeddedContent != null)
-            EmbeddedContent = new EmbeddedContentManager(opts.Game.Services, embeddedContent);
+        var ecp = opts.PlatformAdapter?.GetEmbeddedContentProvider();
+        if (ecp != null)
+            EmbeddedContent = new EmbeddedContentManager(opts.Game.Services, ecp);
 
         _deferredActions = new List<Action>();
     }
@@ -93,9 +96,14 @@ public static partial class GameEngine
     public static TouchManager Touch { get; private set; }
 
     /// <summary>
-    /// The touch manager (optional).
+    /// The accelerometer manager (optional, depends on the platform).
     /// </summary>
     public static IAccelerometerManager Accelerometer { get; private set; }
+
+    /// <summary>
+    /// The prompt manager (optional, depends on the platform).
+    /// </summary>
+    public static IPromptManager Prompt { get; private set; }
 
     /// <summary>
     /// List of actions to execute after all update loops have completed.
@@ -112,8 +120,10 @@ public static partial class GameEngine
     public static void Update(GameTime time)
     {
         Delta = (float)time.ElapsedGameTime.TotalSeconds;
+        Current.PauseMode = PauseMode.None;
 
         Touch.Update();
+        Prompt?.Update();
         Frames.Update();
         Debug.Update();
 

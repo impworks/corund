@@ -1,4 +1,6 @@
-﻿namespace Corund.Engine.Config;
+﻿using Corund.Engine.Prompts;
+
+namespace Corund.Engine.Config;
 
 /// <summary>
 /// Interface for adapters that wrap platform-specific logic in a unified interface.
@@ -14,4 +16,9 @@ public interface IPlatformAdapter
     /// Returns the accelerometer wrapper.
     /// </summary>
     IAccelerometerManager GetAccelerometerManager();
+
+    /// <summary>
+    /// Returns the platform-specific prompt manager.
+    /// </summary>
+    IPromptManager GetPromptManager();
 }
