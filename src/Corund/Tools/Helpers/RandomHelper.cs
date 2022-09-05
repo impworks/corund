@@ -65,7 +65,7 @@ public class RandomHelper
     public static T Pick<T>(params T[] items)
     {
         if (items.Length == 0)
-            return default(T);
+            return default;
 
         // works better on bigger numbers
         var id = _random.Next(items.Length * 100);
@@ -78,7 +78,7 @@ public class RandomHelper
     public static T Pick<T>(List<T> items)
     {
         if (items.Count == 0)
-            return default(T);
+            return default;
 
         // works better on bigger numbers
         var id = _random.Next(items.Count * 100);

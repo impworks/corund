@@ -9,8 +9,6 @@ namespace Corund.Tools.Helpers;
 /// </summary>
 public static class VectorHelper
 {
-    #region Methods
-
     /// <summary>
     /// Rotates the vector around its origin point by given amount of degrees.
     /// </summary>
@@ -71,20 +69,9 @@ public static class VectorHelper
     /// </summary>
     public static Vector2 GetAlignmentVector(HorizontalAlignment halign, VerticalAlignment valign)
     {
-        var x = halign == HorizontalAlignment.Left
-            ? 0f
-            : halign == HorizontalAlignment.Center
-                ? 0.5f
-                : 1f;
-
-        var y = valign == VerticalAlignment.Top
-            ? 0f
-            : valign == VerticalAlignment.Center
-                ? 0.5f
-                : 1f;
-
-        return new Vector2(x, y);
+        return new Vector2(
+            (int)halign * 0.5f,
+            (int)valign * 0.5f
+        );
     }
-
-    #endregion
 }

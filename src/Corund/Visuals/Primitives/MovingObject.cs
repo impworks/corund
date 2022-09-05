@@ -1,5 +1,4 @@
-﻿using System;
-using Corund.Engine;
+﻿using Corund.Engine;
 using Corund.Tools;
 using Corund.Tools.Helpers;
 using Microsoft.Xna.Framework;
@@ -25,40 +24,6 @@ public abstract class MovingObject: ObjectBase
     /// </summary>
     public Vector2 Momentum;
 
-    /// <summary>
-    /// Gets or sets object's speed.
-    /// </summary>
-    public float Speed
-    {
-        get => Momentum.Length();
-        set
-        {
-            if (Momentum.X.IsAlmostZero() && Momentum.Y.IsAlmostZero())
-            {
-                Momentum = new Vector2(value, 0);
-            }
-            else
-            {
-                Momentum.Normalize();
-                Momentum *= value;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Speed derivative.
-    /// </summary>
-    public float Acceleration;
-
-    /// <summary>
-    /// Gets or sets the object's direction.
-    /// </summary>
-    public float Direction
-    {
-        get => (float)Math.Atan2(Momentum.Y, Momentum.X);
-        set => Momentum = VectorHelper.FromLength(Momentum.Length(), value);
-    }
-
     #endregion
 
     #region Methods
@@ -72,9 +37,6 @@ public abstract class MovingObject: ObjectBase
         {
             if (!Rotation.IsAlmostZero())
                 Angle += delta * Rotation;
-
-            if (!Acceleration.IsAlmostZero())
-                Speed += delta * Acceleration;
 
             if (!Momentum.X.IsAlmostZero() || !Momentum.Y.IsAlmostZero())
                 Position += delta * Momentum;

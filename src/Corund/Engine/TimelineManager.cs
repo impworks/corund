@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Corund.Engine;
 
 /// <summary>
 /// A class that can execute events at given points of time.
 /// </summary>
-public partial class TimelineManager
+public class TimelineManager
 {
     #region Constructor
 
@@ -34,11 +35,6 @@ public partial class TimelineManager
     /// </summary>
     private readonly List<TimelineRecord> _keyFrames;
 
-    /// <summary>
-    /// The maximum record ID.
-    /// </summary>
-    private int _maxRecordId;
-
     #endregion
 
     #region Methods
@@ -47,14 +43,9 @@ public partial class TimelineManager
     /// Add a keyframe to the list.
     /// </summary>
     /// <returns>Event handle: pass to Remove() to cancel the keyframe.</returns>
-    public int Add(float time, Action action)
+    public TimelineRecord Add(float time, Action action)
     {
-        var record = new TimelineRecord
-        {
-            Time = time + CurrentTime,
-            Action = action,
-            RecordId = _maxRecordId++
-        };
+        var record = new TimelineRecord(action, CurrentTime + time);
 
         for (var idx = 0; idx < _keyFrames.Count; idx++)
         {
@@ -62,29 +53,22 @@ public partial class TimelineManager
             if (curr.Time > record.Time)
             {
                 _keyFrames.Insert(idx, record);
-                return record.RecordId;
+                return record;
             }
         }
 
         // the current item is the last
         _keyFrames.Add(record);
-        return record.RecordId;
+        return record;
     }
 
     /// <summary>
     /// Remove a keyframe by it's ID.
     /// </summary>
-    public void Remove(int id)
+    public void Remove(TimelineRecord record)
     {
-        for (var idx = 0; idx < _keyFrames.Count; idx++)
-        {
-            var curr = _keyFrames[idx];
-            if (curr.RecordId == id)
-            {
-                _keyFrames.Remove(curr);
-                return;
-            }
-        }
+        if(record != null)
+            _keyFrames.Remove(record);
     }
 
     /// <summary>
@@ -111,6 +95,13 @@ public partial class TimelineManager
         if (idx > 0)
             _keyFrames.RemoveRange(0, idx);
     }
+
+    #endregion
+
+    #region TimelineRecord
+
+    [DebuggerDisplay("TimelineRecord ({Time})")]
+    public record TimelineRecord(Action Action, float Time);
 
     #endregion
 }

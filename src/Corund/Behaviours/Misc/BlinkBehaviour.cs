@@ -40,7 +40,7 @@ public class BlinkBehaviour : BehaviourBase, IEffect
     /// <summary>
     /// Timer key for the next event.
     /// </summary>
-    private int _timerKey;
+    private TimelineManager.TimelineRecord _timerKey;
 
     /// <summary>
     /// Number of times the object has blinked already.
@@ -81,7 +81,7 @@ public class BlinkBehaviour : BehaviourBase, IEffect
             _elapsedBlinks++;
             _timerKey = _elapsedBlinks < _blinkCount
                 ? GameEngine.Current.Timeline.Add(span, Blink)
-                : -1;
+                : null;
         }
 
         Blink();

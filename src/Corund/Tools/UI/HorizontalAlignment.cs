@@ -5,7 +5,7 @@
 /// </summary>
 public enum HorizontalAlignment
 {
-    Left,
-    Center,
-    Right
+    Left = 0, // sic! underlying numbers are used in calculations
+    Center = 1,
+    Right = 2
 }

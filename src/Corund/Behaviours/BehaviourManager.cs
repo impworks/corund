@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Reflection;
 using Corund.Engine;
 using Corund.Tools.Helpers;
@@ -9,13 +10,14 @@ namespace Corund.Behaviours;
 /// <summary>
 /// A utility object that handles behaviours attached to an object at runtime.
 /// </summary>
-public class BehaviourManager: List<BehaviourBase>
+public class BehaviourManager: IEnumerable<BehaviourBase>
 {
     #region Constructor
 
     public BehaviourManager(DynamicObject parent)
     {
         _parent = parent;
+        _behaviours = new List<BehaviourBase>(4);
     }
 
     #endregion
@@ -23,6 +25,7 @@ public class BehaviourManager: List<BehaviourBase>
     #region Fields
 
     private readonly DynamicObject _parent;
+    private readonly List<BehaviourBase> _behaviours;
 
     #endregion
 
@@ -33,7 +36,7 @@ public class BehaviourManager: List<BehaviourBase>
     /// </summary>
     public void Update()
     {
-        foreach (var behaviour in this)
+        foreach (var behaviour in _behaviours)
         {
             behaviour.UpdateObjectState(_parent);
 
@@ -51,19 +54,19 @@ public class BehaviourManager: List<BehaviourBase>
     /// <summary>
     /// Adds the behaviour to the list.
     /// </summary>
-    public new void Add(BehaviourBase behaviour)
+    public void Add(BehaviourBase behaviour)
     {
         behaviour.Bind(_parent);
-        base.Add(behaviour);
+        _behaviours.Add(behaviour);
     }
 
     /// <summary>
     /// Inserts a behaviour at the specified position.
     /// </summary>
-    public new void Insert(int position, BehaviourBase behaviour)
+    public void Insert(int position, BehaviourBase behaviour)
     {
         behaviour.Bind(_parent);
-        base.Insert(position, behaviour);
+        _behaviours.Insert(position, behaviour);
     }
 
     /// <summary>
@@ -74,7 +77,7 @@ public class BehaviourManager: List<BehaviourBase>
     {
         var targetType = typeof(T);
 
-        foreach (var behaviour in this)
+        foreach (var behaviour in _behaviours)
             if (behaviour.GetType() == targetType)
                 return (T)behaviour;
 
@@ -84,21 +87,10 @@ public class BehaviourManager: List<BehaviourBase>
     /// <summary>
     /// Removes the behaviour from the list.
     /// </summary>
-    public new void Remove(BehaviourBase behaviour)
+    public void Remove(BehaviourBase behaviour)
     {
         behaviour.Unbind(_parent);
-        base.Remove(behaviour);
-    }
-
-    /// <summary>
-    /// Removes the behaviour from the list by its position.
-    /// </summary>
-    public new void RemoveAt(int index)
-    {
-        if(index >= 0 && index < Count)
-            this[index].Unbind(_parent);
-
-        base.RemoveAt(index);
+        _behaviours.Remove(behaviour);
     }
 
     /// <summary>
@@ -107,13 +99,11 @@ public class BehaviourManager: List<BehaviourBase>
     public void Remove<T>() where T : BehaviourBase
     {
         var targetType = typeof(T);
-
-        for (var i = 0; i < Count; i++)
+        for (var idx = 0; idx < _behaviours.Count; idx++)
         {
-            var type = this[i].GetType();
-            if (type == targetType)
+            if (_behaviours[idx].GetType() == targetType)
             {
-                RemoveAt(i);
+                _behaviours.RemoveAt(idx);
                 return;
             }
         }
@@ -124,9 +114,19 @@ public class BehaviourManager: List<BehaviourBase>
     /// </summary>
     public void RemoveAll<T>() where T : BehaviourBase
     {
-        var type = typeof(T).GetTypeInfo();
-        RemoveAll(x => x.GetType().GetTypeInfo().IsAssignableFrom(type));
+        var targetType = typeof(T).GetTypeInfo();
+
+        for (var idx = _behaviours.Count - 1; idx >= 0; idx--)
+            if (_behaviours[idx].GetType().GetTypeInfo().IsAssignableFrom(targetType))
+                _behaviours.RemoveAt(idx);
     }
+
+    #endregion
+
+    #region IEnumerable implementation
+
+    public IEnumerator<BehaviourBase> GetEnumerator() => _behaviours.GetEnumerator();
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     #endregion
 }

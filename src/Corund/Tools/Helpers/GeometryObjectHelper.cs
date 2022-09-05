@@ -96,16 +96,14 @@ public static class GeometryObjectHelper
         var transform = obj.GetTransformInfo(false);
         foreach (var touch in GameEngine.Touch.LocalTouches)
         {
-            if (obj.Geometry.ContainsPoint(touch.Position, transform))
-            {
-                if (!tapThrough)
-                    GameEngine.Touch.Handle(touch, obj);
+            if (!obj.Geometry.ContainsPoint(touch.Position, transform))
+                continue;
 
-                if (result == null)
-                    result = new List<TouchLocation>();
+            if (!tapThrough)
+                GameEngine.Touch.Handle(touch, obj);
 
-                result.Add(touch);
-            }
+            result ??= new List<TouchLocation>();
+            result.Add(touch);
         }
 
         return result;

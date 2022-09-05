@@ -32,10 +32,10 @@ public class FrictionBehaviour: BehaviourBase
 
     public override void UpdateObjectState(DynamicObject obj)
     {
-        if (obj.Speed.IsAlmostZero())
+        if (obj.Momentum.LengthSquared().IsAlmostZero() || Friction.IsAlmostZero())
             return;
 
-        obj.Speed *= (1 - Friction);
+        obj.Momentum *= (1 - Friction);
     }
 
     #endregion

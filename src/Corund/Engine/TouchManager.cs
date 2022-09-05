@@ -262,7 +262,7 @@ public class TouchManager
         if (current == ButtonState.Released)
         {
             return previous == ButtonState.Released
-                ? (TouchLocationState?) null
+                ? null
                 : TouchLocationState.Released;
         }
 
@@ -296,9 +296,7 @@ public class TouchManager
             if (exists)
                 continue;
 
-            if(keys == null)
-                keys = new List<int>();
-
+            keys ??= new List<int>();
             keys.Add(key);
         }
 

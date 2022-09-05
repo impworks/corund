@@ -5,7 +5,7 @@
 /// </summary>
 public enum VerticalAlignment
 {
-    Top,
-    Center,
-    Bottom
+    Top = 0, // sic! underlying numbers are used in calculations
+    Center = 1,
+    Bottom = 2
 }

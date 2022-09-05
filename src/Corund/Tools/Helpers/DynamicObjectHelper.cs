@@ -121,35 +121,40 @@ public static class DynamicObjectHelper
         }
 
         var origValue = descriptor.Getter(obj);
-        Action anim = null;
 
-        anim = () =>
+        void ApplyTweenInternal()
         {
             var tween = tweenFactory();
             AddBehaviour(obj, tween);
 
             if (tweenBack)
             {
-                GameEngine.Current.Timeline.Add(duration, () =>
-                {
-                    AddBehaviour(obj, tween.Reverse());
+                GameEngine.Current.Timeline.Add(
+                    duration,
+                    () =>
+                    {
+                        AddBehaviour(obj, tween.Reverse());
 
-                    if(loop)
-                        GameEngine.Current.Timeline.Add(duration, anim);
-                });
+                        if (loop)
+                            GameEngine.Current.Timeline.Add(duration, ApplyTweenInternal);
+                    }
+                );
             }
             else if (loop)
             {
-                GameEngine.Current.Timeline.Add(duration, () =>
-                {
-                    descriptor.Setter(obj, origValue);
+                GameEngine.Current.Timeline.Add(
+                    duration,
+                    () =>
+                    {
+                        descriptor.Setter(obj, origValue);
 
-                    anim();
-                });
+                        ApplyTweenInternal();
+                    }
+                );
             }
-        };
+        }
 
-        anim();
+        ApplyTweenInternal();
     }
 
     #endregion
@@ -216,7 +221,6 @@ public static class DynamicObjectHelper
     public static void Stop(this DynamicObject obj)
     {
         obj.Momentum = Vector2.Zero;
-        obj.Acceleration = 0;
         obj.StopTweening(Property.Position);
     }
 
@@ -237,7 +241,6 @@ public static class DynamicObjectHelper
     /// <param name="interpolation">Interpolation method to use.</param>
     public static void MoveTo(this DynamicObject obj, Vector2 point, float time, InterpolationMethod interpolation = null)
     {
-        obj.Direction = obj.Position.AngleTo(point);
         obj.Tween(Property.Position, point, time, interpolation);
     }
 
