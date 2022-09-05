@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0-android31.0</TargetFramework>
+    <SupportedOSPlatformVersion>27.0</SupportedOSPlatformVersion>
+    <OutputType>Exe</OutputType>
+    <ApplicationId>com.impworks.corund.AndroidSample</ApplicationId>
+    <ApplicationVersion>1</ApplicationVersion>
+    <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <NoWarn>1701;1702;1416</NoWarn>
+    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <EnableLLVM>False</EnableLLVM>
+    <TrimMode>copyused</TrimMode>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <NoWarn>1701;1702;1416</NoWarn>
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
+    <RunAOTCompilation>True</RunAOTCompilation>
+    <EnableLLVM>False</EnableLLVM>
+    <PublishTrimmed>True</PublishTrimmed>
+    <TrimMode>copyused</TrimMode>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
+    <PackageReference Include="MonoGame.Framework.Android" Version="3.8.1.303" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\Corund.Platform.Android\Corund.Platform.Android.csproj" />
+    <ProjectReference Include="..\..\src\Corund\Corund.csproj" />
+  </ItemGroup>
+  <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
+    <Message Text="Restoring dotnet tools" Importance="High" />
+    <Exec Command="dotnet tool restore" />
+  </Target>
+</Project>

@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>net6.0-ios</TargetFramework>
+        <MonoGamePlatform>iOS</MonoGamePlatform>
+    </PropertyGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="Content\Resources\**\*.xnb" />
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="MonoGame.Framework.iOS" Version="3.8.1.303" PrivateAssets="All" />
+    </ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Corund\Corund.csproj" />
+    </ItemGroup>
+</Project>
