@@ -1,30 +1,29 @@
 ﻿using Foundation;
 using UIKit;
 
-namespace iOSSample
+namespace iOSSample;
+
+[Register("AppDelegate")]
+internal class Program : UIApplicationDelegate
 {
-    [Register("AppDelegate")]
-    internal class Program : UIApplicationDelegate
+    private static Game1 game;
+
+    internal static void RunGame()
     {
-        private static Game1 game;
+        game = new Game1();
+        game.Run();
+    }
 
-        internal static void RunGame()
-        {
-            game = new Game1();
-            game.Run();
-        }
+    /// <summary>
+    /// The main entry point for the application.
+    /// </summary>
+    static void Main(string[] args)
+    {
+        UIApplication.Main(args, null, typeof(Program));
+    }
 
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        static void Main(string[] args)
-        {
-            UIApplication.Main(args, null, typeof(Program));
-        }
-
-        public override void FinishedLaunching(UIApplication app)
-        {
-            RunGame();
-        }
+    public override void FinishedLaunching(UIApplication app)
+    {
+        RunGame();
     }
 }

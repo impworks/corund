@@ -1,18 +1,17 @@
-﻿namespace Corund.Engine.Config
+﻿namespace Corund.Engine.Config;
+
+/// <summary>
+/// Interface for adapters that wrap platform-specific logic in a unified interface.
+/// </summary>
+public interface IPlatformAdapter
 {
     /// <summary>
-    /// Interface for adapters that wrap platform-specific logic in a unified interface.
+    /// Returns the content provider that returns default resources (shaders, fonts, etc).
     /// </summary>
-    public interface IPlatformAdapter
-    {
-        /// <summary>
-        /// Returns the content provider that returns default resources (shaders, fonts, etc).
-        /// </summary>
-        IContentProvider GetEmbeddedContentProvider();
+    IContentProvider GetEmbeddedContentProvider();
 
-        /// <summary>
-        /// Returns the accelerometer wrapper.
-        /// </summary>
-        IAccelerometerManager GetAccelerometerManager();
-    }
+    /// <summary>
+    /// Returns the accelerometer wrapper.
+    /// </summary>
+    IAccelerometerManager GetAccelerometerManager();
 }

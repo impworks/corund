@@ -4,52 +4,51 @@ using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
-namespace Corund.Engine
+namespace Corund.Engine;
+
+/// <summary>
+/// IContentProvider implementation that returns data from an embedded resource stream.
+/// </summary>
+public class EmbeddedContentProvider : IContentProvider
 {
-    /// <summary>
-    /// IContentProvider implementation that returns data from an embedded resource stream.
-    /// </summary>
-    public class EmbeddedContentProvider : IContentProvider
+    #region Constructor
+
+    public EmbeddedContentProvider(Assembly assembly, string prefix)
     {
-        #region Constructor
+        _assembly = assembly;
+        _prefix = prefix;
+    }
 
-        public EmbeddedContentProvider(Assembly assembly, string prefix)
-        {
-            _assembly = assembly;
-            _prefix = prefix;
-        }
+    #endregion
 
-        #endregion
+    #region Fields
 
-        #region Fields
+    /// <summary>
+    /// Reference to current assembly.
+    /// </summary>
+    private readonly Assembly _assembly;
 
-        /// <summary>
-        /// Reference to current assembly.
-        /// </summary>
-        private readonly Assembly _assembly;
+    /// <summary>
+    /// Assembly-specific prefix for all resource names.
+    /// </summary>
+    private readonly string _prefix;
 
-        /// <summary>
-        /// Assembly-specific prefix for all resource names.
-        /// </summary>
-        private readonly string _prefix;
+    #endregion
 
-        #endregion
+    /// <summary>
+    /// Returns the stream for specified resource, if any.
+    /// </summary>
+    public Stream GetResource(string name)
+    {
+        var resources = _assembly.GetManifestResourceNames();
+        foreach(var r in resources)
+            Debug.WriteLine(r);
 
-        /// <summary>
-        /// Returns the stream for specified resource, if any.
-        /// </summary>
-        public Stream GetResource(string name)
-        {
-            var resources = _assembly.GetManifestResourceNames();
-            foreach(var r in resources)
-                Debug.WriteLine(r);
+        var stream = _assembly.GetManifestResourceStream($@"{_prefix}.{name.Replace('/', '.')}.xnb");
 
-            var stream = _assembly.GetManifestResourceStream($@"{_prefix}.{name.Replace('/', '.')}.xnb");
+        if (stream == null)
+            throw new ArgumentException($"Embedded resource '{name}' is not available on this platform!");
 
-            if (stream == null)
-                throw new ArgumentException($"Embedded resource '{name}' is not available on this platform!");
-
-            return stream;
-        }
+        return stream;
     }
 }

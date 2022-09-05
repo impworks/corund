@@ -3,21 +3,20 @@ using Corund.Engine;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Corund.Tools.Render
-{
-    /// <summary>
-    /// Temporary context for rendering to a texture.
-    /// </summary>
-    public class RenderContext: IDisposable
-    {
-        public RenderContext(RenderTarget2D rt, Color? clearColor = null)
-        {
-            GameEngine.Render.PushContext(rt, clearColor);
-        }
+namespace Corund.Tools.Render;
 
-        public void Dispose()
-        {
-            GameEngine.Render.PopContext();
-        }
+/// <summary>
+/// Temporary context for rendering to a texture.
+/// </summary>
+public class RenderContext: IDisposable
+{
+    public RenderContext(RenderTarget2D rt, Color? clearColor = null)
+    {
+        GameEngine.Render.PushContext(rt, clearColor);
+    }
+
+    public void Dispose()
+    {
+        GameEngine.Render.PopContext();
     }
 }

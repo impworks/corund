@@ -1,26 +1,25 @@
 ﻿using System.Collections.Generic;
 
-namespace Corund.Visuals.Primitives
+namespace Corund.Visuals.Primitives;
+
+/// <summary>
+/// Interface for object groups that keep track of objects.
+/// </summary>
+public interface IObjectGroup: IEnumerable<ObjectBase>
 {
     /// <summary>
-    /// Interface for object groups that keep track of objects.
+    /// Removes the object from this group.
+    /// The group may need to update its geometry.
     /// </summary>
-    public interface IObjectGroup: IEnumerable<ObjectBase>
-    {
-        /// <summary>
-        /// Removes the object from this group.
-        /// The group may need to update its geometry.
-        /// </summary>
-        void Remove(ObjectBase obj);
+    void Remove(ObjectBase obj);
 
-        /// <summary>
-        /// Removes all objects from the group.
-        /// </summary>
-        void Clear();
+    /// <summary>
+    /// Removes all objects from the group.
+    /// </summary>
+    void Clear();
 
-        /// <summary>
-        /// Number of objects in the group.
-        /// </summary>
-        int Count { get; }
-    }
+    /// <summary>
+    /// Number of objects in the group.
+    /// </summary>
+    int Count { get; }
 }

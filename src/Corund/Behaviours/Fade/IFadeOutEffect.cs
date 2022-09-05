@@ -1,15 +1,14 @@
 ﻿using Corund.Visuals.Primitives;
 
-namespace Corund.Behaviours.Fade
+namespace Corund.Behaviours.Fade;
+
+/// <summary>
+/// Marker interface for fade out effects.
+/// </summary>
+public interface IFadeOutEffect: IEffect
 {
     /// <summary>
-    /// Marker interface for fade out effects.
+    /// Start the fade out effect.
     /// </summary>
-    public interface IFadeOutEffect: IEffect
-    {
-        /// <summary>
-        /// Start the fade out effect.
-        /// </summary>
-        void ActivateFadeOut(DynamicObject obj);
-    }
+    void ActivateFadeOut(DynamicObject obj);
 }

@@ -1,21 +1,20 @@
 ﻿using System;
 using Corund.Visuals.Primitives;
 
-namespace Corund.Shaders
+namespace Corund.Shaders;
+
+/// <summary>
+/// Interface for shader implementations.
+/// </summary>
+public interface IShader
 {
     /// <summary>
-    /// Interface for shader implementations.
+    /// Draws the object's contents onto an intermediate texture.
     /// </summary>
-    public interface IShader
-    {
-        /// <summary>
-        /// Draws the object's contents onto an intermediate texture.
-        /// </summary>
-        void DrawWrapper(DynamicObject obj, Action innerDraw);
+    void DrawWrapper(DynamicObject obj, Action innerDraw);
 
-        /// <summary>
-        /// Updates the shader's inner state, if necessary.
-        /// </summary>
-        void Update();
-    }
+    /// <summary>
+    /// Updates the shader's inner state, if necessary.
+    /// </summary>
+    void Update();
 }

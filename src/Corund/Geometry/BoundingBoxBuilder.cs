@@ -1,63 +1,62 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace Corund.Geometry
+namespace Corund.Geometry;
+
+/// <summary>
+/// A helper for building a bounding box for a set of points.
+/// </summary>
+public struct BoundingBoxBuilder
 {
+    #region Fields
+
+    private bool _hasValues;
+    private float _top;
+    private float _left;
+    private float _right;
+    private float _bottom;
+
+    #endregion
+
+    #region Methods
+
     /// <summary>
-    /// A helper for building a bounding box for a set of points.
+    /// Adds a point to the area.
     /// </summary>
-    public struct BoundingBoxBuilder
+    public void AddPoint(Vector2 vec)
     {
-        #region Fields
-
-        private bool _hasValues;
-        private float _top;
-        private float _left;
-        private float _right;
-        private float _bottom;
-
-        #endregion
-
-        #region Methods
-
-        /// <summary>
-        /// Adds a point to the area.
-        /// </summary>
-        public void AddPoint(Vector2 vec)
+        if (!_hasValues)
         {
-            if (!_hasValues)
-            {
-                _left = _right = vec.X;
-                _bottom = _top = vec.Y;
-                _hasValues = true;
-                return;
-            }
-
-            if (vec.X < _left)
-                _left = vec.X;
-
-            if (vec.X > _right)
-                _right = vec.X;
-
-            if (vec.Y < _top)
-                _top = vec.Y;
-
-            if (vec.Y > _bottom)
-                _bottom = vec.Y;
+            _left = _right = vec.X;
+            _bottom = _top = vec.Y;
+            _hasValues = true;
+            return;
         }
 
-        /// <summary>
-        /// Gets the bounding box rectangle.
-        /// </summary>
-        public Rectangle GetRectangle()
-        {
-            return new Rectangle(
-                (int) _left,
-                (int) _top,
-                (int) (_right - _left),
-                (int) (_bottom - _top)
-            );
-        }
+        if (vec.X < _left)
+            _left = vec.X;
 
-        #endregion
+        if (vec.X > _right)
+            _right = vec.X;
+
+        if (vec.Y < _top)
+            _top = vec.Y;
+
+        if (vec.Y > _bottom)
+            _bottom = vec.Y;
     }
+
+    /// <summary>
+    /// Gets the bounding box rectangle.
+    /// </summary>
+    public Rectangle GetRectangle()
+    {
+        return new Rectangle(
+            (int) _left,
+            (int) _top,
+            (int) (_right - _left),
+            (int) (_bottom - _top)
+        );
+    }
+
+    #endregion
 }

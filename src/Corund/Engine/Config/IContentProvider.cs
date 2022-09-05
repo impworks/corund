@@ -1,15 +1,14 @@
 ﻿using System.IO;
 
-namespace Corund.Engine.Config
+namespace Corund.Engine.Config;
+
+/// <summary>
+/// Platform-specific resource provider interface.
+/// </summary>
+public interface IContentProvider
 {
     /// <summary>
-    /// Platform-specific resource provider interface.
+    /// Returns a resource stream.
     /// </summary>
-    public interface IContentProvider
-    {
-        /// <summary>
-        /// Returns a resource stream.
-        /// </summary>
-        Stream GetResource(string name);
-    }
+    Stream GetResource(string name);
 }

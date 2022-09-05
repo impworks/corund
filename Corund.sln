@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32825.248
@@ -14,6 +14,24 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AndroidSample", "examples\AndroidSample\AndroidSample.csproj", "{69789A41-4E5C-49E9-97DE-2F7589A3B90C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "iOSSample", "examples\IOSSample\iOSSample.csproj", "{FAF47C4B-64C6-45A0-A8F2-3B1E2131A6A5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{3416C55D-4227-4EEF-AD66-79861D9948E0}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Effects", "Effects", "{48933D54-7995-4B9E-AD06-E824680CD90E}"
+	ProjectSection(SolutionItems) = preProject
+		src\Resources\Effects\color-overlay.fx = src\Resources\Effects\color-overlay.fx
+		src\Resources\Effects\desaturate.fx = src\Resources\Effects\desaturate.fx
+		src\Resources\Effects\gauss-blur.fx = src\Resources\Effects\gauss-blur.fx
+		src\Resources\Effects\radial-blur.fx = src\Resources\Effects\radial-blur.fx
+		src\Resources\Effects\swirl.fx = src\Resources\Effects\swirl.fx
+		src\Resources\Effects\texture-overlay.fx = src\Resources\Effects\texture-overlay.fx
+		src\Resources\Effects\foo.fx = src\Resources\Effects\foo.fx
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Fonts", "Fonts", "{8572E263-1160-49CC-A780-21CC68591B61}"
+	ProjectSection(SolutionItems) = preProject
+		src\Resources\Fonts\default.spritefont = src\Resources\Fonts\default.spritefont
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -130,6 +148,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{69789A41-4E5C-49E9-97DE-2F7589A3B90C} = {65D9EAE2-FC38-420E-BDFC-B78084CD3835}
 		{FAF47C4B-64C6-45A0-A8F2-3B1E2131A6A5} = {65D9EAE2-FC38-420E-BDFC-B78084CD3835}
+		{48933D54-7995-4B9E-AD06-E824680CD90E} = {3416C55D-4227-4EEF-AD66-79861D9948E0}
+		{8572E263-1160-49CC-A780-21CC68591B61} = {3416C55D-4227-4EEF-AD66-79861D9948E0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F488469F-A232-4F31-B973-CF10BE3A679D}
