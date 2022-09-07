@@ -10,7 +10,7 @@ namespace Corund.Behaviours.Interaction;
 /// <summary>
 /// A callback to be executed when a swipe has been detected.
 /// </summary>
-public class SwipeBehaviour : BehaviourBase
+public class SwipeBehaviour : IBehaviour, IBindableBehaviour
 {
     #region Constants
 
@@ -69,13 +69,18 @@ public class SwipeBehaviour : BehaviourBase
 
     #region Methods
 
-    public override void Bind(DynamicObject obj)
+    public void Bind(DynamicObject obj)
     {
         if (obj is not InteractiveObject)
             throw new ArgumentException("Object must derive from InteractiveObject to handle swipes.");
     }
 
-    public override void UpdateObjectState(DynamicObject obj)
+    public void Unbind(DynamicObject obj)
+    {
+        // does nothing
+    }
+
+    public void UpdateObjectState(DynamicObject obj)
     {
         if (_start == null)
         {

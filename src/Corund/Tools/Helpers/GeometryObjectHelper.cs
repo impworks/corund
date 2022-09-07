@@ -11,6 +11,18 @@ namespace Corund.Tools.Helpers;
 /// </summary>
 public static class GeometryObjectHelper
 {
+    #region Bounds
+
+    /// <summary>
+    /// Returns the bounding box for the sprite.
+    /// </summary>
+    public static Rectangle GetBoundingBox(this IGeometryObject obj, bool toScreen = false)
+    {
+        return obj.Geometry.GetBoundingBox(obj.GetTransformInfo(toScreen));
+    }
+
+    #endregion
+
     #region Collision detection
 
     /// <summary>

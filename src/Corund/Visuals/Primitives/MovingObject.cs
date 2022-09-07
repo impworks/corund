@@ -2,6 +2,7 @@
 using Corund.Tools;
 using Corund.Tools.Helpers;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace Corund.Visuals.Primitives;
 
@@ -24,6 +25,35 @@ public abstract class MovingObject: ObjectBase
     /// </summary>
     public Vector2 Momentum;
 
+    /// <summary>
+    /// Gets or sets object's speed.
+    /// </summary>
+    public float Speed
+    {
+        get => Momentum.Length();
+        set
+        {
+            if (Momentum.X.IsAlmostZero() && Momentum.Y.IsAlmostZero())
+            {
+                Momentum = new Vector2(value, 0);
+            }
+            else
+            {
+                Momentum.Normalize();
+                Momentum *= value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Gets or sets the object's direction.
+    /// </summary>
+    public float Direction
+    {
+        get => (float)Math.Atan2(Momentum.Y, Momentum.X);
+        set => Momentum = VectorHelper.FromLength(Momentum.Length(), value);
+    }
+
     #endregion
 
     #region Methods
@@ -33,7 +63,7 @@ public abstract class MovingObject: ObjectBase
         var pm = GameEngine.Current.PauseMode | PauseMode;
         var delta = GameEngine.Delta;
 
-        if ((pm & PauseMode.Momentum) == 0)
+        if ((pm & PauseMode.Movement) == 0)
         {
             if (!Rotation.IsAlmostZero())
                 Angle += delta * Rotation;

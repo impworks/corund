@@ -11,7 +11,7 @@ namespace Corund.Behaviours.Fade;
 /// Creates a fade in effect when applied to an object.
 /// </summary>
 [DebuggerDisplay("FadeOut ({_style}, Duration = {Duration})")]
-public class FadeOutBehaviour: BehaviourBase, IFadeOutEffect
+public class FadeOutBehaviour: IBehaviour, IFadeOutEffect
 {
     #region Constructor
 
@@ -41,10 +41,7 @@ public class FadeOutBehaviour: BehaviourBase, IFadeOutEffect
     {
         get
         {
-            if (!_elapsedTime.HasValue)
-                return null;
-
-            return Duration/_elapsedTime.Value;
+            return Duration/_elapsedTime;
         }
     }
 
@@ -69,7 +66,7 @@ public class FadeOutBehaviour: BehaviourBase, IFadeOutEffect
     /// <summary>
     /// Tracks progress of elapsed time.
     /// </summary>
-    public override void UpdateObjectState(DynamicObject obj)
+    public void UpdateObjectState(DynamicObject obj)
     {
         if (_elapsedTime.HasValue)
             _elapsedTime += GameEngine.Delta;

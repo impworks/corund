@@ -10,7 +10,7 @@ namespace Corund.Behaviours.Tween;
 /// <summary>
 /// Base class for property tween behaviours.
 /// </summary>
-public abstract class PropertyTweenBase<TObject, TPropBase, TProperty>: BehaviourBase, IPropertyTween
+public abstract class PropertyTweenBase<TObject, TPropBase, TProperty>: IBehaviour, IBindableBehaviour, IPropertyTween
     where TObject: DynamicObject, TPropBase
 {
     #region Constructor
@@ -86,15 +86,23 @@ public abstract class PropertyTweenBase<TObject, TPropBase, TProperty>: Behaviou
     /// <summary>
     /// Sets the initial object value.
     /// </summary>
-    public override void Bind(DynamicObject obj)
+    public void Bind(DynamicObject obj)
     {
         _initialValue = _descriptor.Getter((TObject) obj);
     }
 
     /// <summary>
+    /// Detaches from the object.
+    /// </summary>
+    public void Unbind(DynamicObject obj)
+    {
+        // does nothing
+    }
+
+    /// <summary>
     /// Advances the property animation.
     /// </summary>
-    public override void UpdateObjectState(DynamicObject obj)
+    public void UpdateObjectState(DynamicObject obj)
     {
         _elapsedTime += GameEngine.Delta;
 

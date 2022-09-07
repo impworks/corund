@@ -12,6 +12,11 @@ public class TiledSprite: Sprite, ITiledSprite
 {
     #region Constructor
 
+    public TiledSprite(string assetName, Vector2? effectiveSize = null)
+        : this(GameEngine.Content.Load<Texture2D>(assetName), effectiveSize)
+    {
+    }
+
     public TiledSprite(Texture2D texture, Vector2? effectiveSize = null)
         : base(texture)
     {
@@ -69,9 +74,9 @@ public class TiledSprite: Sprite, ITiledSprite
     /// <summary>
     /// Renders the tiled rectangle to the screen.
     /// </summary>
-    public override void Draw(TransformInfo transform, Color tint, float zOrder)
+    public override void Draw(TransformInfo transform, BlendState blend, Color tint, float zOrder)
     {
-        GameEngine.Render.TryBeginBatch(BlendState, true);
+        GameEngine.Render.TryBeginBatch(blend, true);
         GameEngine.Render.SpriteBatch.Draw(
             Texture,
             transform.Position,

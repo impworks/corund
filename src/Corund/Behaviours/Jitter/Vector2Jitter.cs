@@ -10,7 +10,7 @@ namespace Corund.Behaviours.Jitter;
 /// Float jitter effect.
 /// </summary>
 [DebuggerDisplay("Vector2Jitter: [{_descriptor.Name}] {_xRange}, {_yRange} (each {_delay} s, relative = {_isRelative})")]
-public class Vector2Jitter<TObject, TPropBase> : PropertyJitterBase<TObject, TPropBase, Vector2, Vector2>
+public class Vector2Jitter<TObject, TPropBase> : PropertyJitter<TObject, TPropBase, Vector2, Vector2>
     where TObject : DynamicObject, TPropBase
 {
     #region Constructor

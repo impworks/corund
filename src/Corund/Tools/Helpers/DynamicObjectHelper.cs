@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using Corund.Behaviours;
 using Corund.Behaviours.Jitter;
+using Corund.Behaviours.Movement;
 using Corund.Behaviours.Tween;
 using Corund.Engine;
 using Corund.Tools.Interpolation;
@@ -112,7 +114,7 @@ public static class DynamicObjectHelper
         Func<TTween> tweenFactory
     )
         where TObject: DynamicObject, TPropBase
-        where TTween: BehaviourBase, IReversible<TTween>
+        where TTween: IBehaviour, IReversible<TTween>
     {
         if (!tweenBack && !loop)
         {
@@ -233,6 +235,16 @@ public static class DynamicObjectHelper
     }
 
     /// <summary>
+    /// Turns the movement direction to the other object.
+    /// </summary>
+    public static void MoveTowards(this DynamicObject obj, DynamicObject other)
+    {
+        var objPos = obj.GetTransformInfo(false).Position;
+        var otherPos = other.GetTransformInfo(false).Position;
+        obj.Momentum = VectorHelper.FromLength(obj.Momentum.Length(), objPos.AngleTo(otherPos));
+    }
+
+    /// <summary>
     /// Moves to given point over the specified timespan.
     /// </summary>
     /// <param name="obj">Object to apply movement to.</param>
@@ -244,6 +256,70 @@ public static class DynamicObjectHelper
         obj.Tween(Property.Position, point, time, interpolation);
     }
 
+    /// <summary>
+    /// Initiates the movement along a jagged line of points with current speed.
+    /// </summary>
+    public static void MoveAlongLine(this DynamicObject obj, params Vector2[] points)
+    {
+        obj.Behaviours.Add(new LineMovementBehaviour(points));
+    }
+
+    /// <summary>
+    /// Initiates the movement along a jagged line of points, completing the movement in given time.
+    /// </summary>
+    public static void MoveAlongLine(this DynamicObject obj, float duration, params Vector2[] points)
+    {
+        obj.Behaviours.Add(new LineMovementBehaviour(points, duration));
+    }
+
+    /// <summary>
+    /// Initiates the movement along a jagged line of points with current speed.
+    /// </summary>
+    public static void MoveAlongLine(this DynamicObject obj, IEnumerable<Vector2> points)
+    {
+        obj.Behaviours.Add(new LineMovementBehaviour(points));
+    }
+
+    /// <summary>
+    /// Initiates the movement along a jagged line of points, completing the movement in given time.
+    /// </summary>
+    public static void MoveAlongLine(this DynamicObject obj, float duration, IEnumerable<Vector2> points)
+    {
+        obj.Behaviours.Add(new LineMovementBehaviour(points, duration));
+    }
+
+    /// <summary>
+    /// Initiates the movement along a curve with current speed.
+    /// </summary>
+    public static void MoveAlongCurve(this DynamicObject obj, params Vector2[] points)
+    {
+        obj.Behaviours.Add(new BezierMovementBehaviour(points));
+    }
+
+    /// <summary>
+    /// Initiates the movement along a curve, completing the movement in given time.
+    /// </summary>
+    public static void MoveAlongCurve(this DynamicObject obj, float duration, params Vector2[] points)
+    {
+        obj.Behaviours.Add(new BezierMovementBehaviour(points, duration));
+    }
+
+    /// <summary>
+    /// Initiates the movement along a curve with current speed.
+    /// </summary>
+    public static void MoveAlongCurve(this DynamicObject obj, IEnumerable<Vector2> points)
+    {
+        obj.Behaviours.Add(new BezierMovementBehaviour(points));
+    }
+
+    /// <summary>
+    /// Initiates the movement along a curve, completing the movement in given time.
+    /// </summary>
+    public static void MoveAlongCurve(this DynamicObject obj, float duration, IEnumerable<Vector2> points)
+    {
+        obj.Behaviours.Add(new BezierMovementBehaviour(points, duration));
+    }
+
     #endregion
 
     #region Helpers
@@ -251,7 +327,7 @@ public static class DynamicObjectHelper
     /// <summary>
     /// Adds a behaviour in a deferred manner.
     /// </summary>
-    private static void AddBehaviour(DynamicObject obj, BehaviourBase behaviour)
+    private static void AddBehaviour(DynamicObject obj, IBehaviour behaviour)
     {
         GameEngine.Defer(() => obj.Behaviours.Add(behaviour));
     }
@@ -259,7 +335,7 @@ public static class DynamicObjectHelper
     /// <summary>
     /// Adds a behaviour in a deferred manner.
     /// </summary>
-    private static void RemoveBehaviour(DynamicObject obj, BehaviourBase behaviour)
+    private static void RemoveBehaviour(DynamicObject obj, IBehaviour behaviour)
     {
         GameEngine.Defer(() => obj.Behaviours.Remove(behaviour));
     }

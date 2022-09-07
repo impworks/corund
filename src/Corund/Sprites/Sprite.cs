@@ -31,9 +31,9 @@ public class Sprite: SpriteBase
     /// <summary>
     /// Draws the sprite to the render target.
     /// </summary>
-    public override void Draw(TransformInfo transform, Color tint, float zOrder)
+    public override void Draw(TransformInfo transform, BlendState blend, Color tint, float zOrder)
     {
-        GameEngine.Render.TryBeginBatch(BlendState);
+        GameEngine.Render.TryBeginBatch(blend);
         GameEngine.Render.SpriteBatch.Draw(
             Texture,
             transform.Position,

@@ -1,7 +1,6 @@
 ﻿using Corund.Geometry;
 using Corund.Sprites;
 using Corund.Tools.UI;
-using Microsoft.Xna.Framework;
 
 namespace Corund.Tools.Helpers;
 
@@ -13,7 +12,7 @@ public static class SpriteHelper
     /// <summary>
     /// Adds default geometry and hotspot to the sprite.
     /// </summary>
-    public static T WithDefaultGeometry<T>(
+    public static T AddGeometry<T>(
         this T sprite,
         HorizontalAlignment halign = HorizontalAlignment.Center,
         VerticalAlignment valign = VerticalAlignment.Center
@@ -22,7 +21,7 @@ public static class SpriteHelper
     {
         var align = VectorHelper.GetAlignmentVector(halign, valign);
         var size = sprite.Size;
-        var hotSpot = new Vector2(size.X * align.X, size.Y * align.Y);
+        var hotSpot = size * align;
         var geo = new GeometryRect(-hotSpot.X, -hotSpot.Y, size.X, size.Y);
 
         sprite.HotSpot = hotSpot;

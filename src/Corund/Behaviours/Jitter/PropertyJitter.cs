@@ -7,12 +7,12 @@ namespace Corund.Behaviours.Jitter;
 /// <summary>
 /// Base class for property jitter behaviours.
 /// </summary>
-public abstract class PropertyJitterBase<TObject, TPropBase, TProperty, TRange>: BehaviourBase, IPropertyJitter
+public abstract class PropertyJitter<TObject, TPropBase, TProperty, TRange>: IBehaviour, IBindableBehaviour, IPropertyJitter
     where TObject: DynamicObject, TPropBase
 {
     #region Constructor
 
-    public PropertyJitterBase(IPropertyDescriptor<TPropBase, TProperty> descriptor, float delay, TRange range, bool isRelative)
+    public PropertyJitter(IPropertyDescriptor<TPropBase, TProperty> descriptor, float delay, TRange range, bool isRelative)
     {
         _descriptor = descriptor;
         _delay = delay;
@@ -71,7 +71,7 @@ public abstract class PropertyJitterBase<TObject, TPropBase, TProperty, TRange>:
     /// <summary>
     /// Advances jitter.
     /// </summary>
-    public override void UpdateObjectState(DynamicObject obj)
+    public void UpdateObjectState(DynamicObject obj)
     {
         _elapsedTime += GameEngine.Delta;
         if (_elapsedTime < _delay)
@@ -87,9 +87,17 @@ public abstract class PropertyJitterBase<TObject, TPropBase, TProperty, TRange>:
     }
 
     /// <summary>
+    /// Attaches to the object.
+    /// </summary>
+    public void Bind(DynamicObject obj)
+    {
+        // does nothing
+    }
+
+    /// <summary>
     /// Reverts last jitter.
     /// </summary>
-    public override void Unbind(DynamicObject obj)
+    public void Unbind(DynamicObject obj)
     {
         var clearValue = Subtract(_descriptor.Getter((TObject)obj), _lastJitter);
         _descriptor.Setter((TObject)obj, clearValue);

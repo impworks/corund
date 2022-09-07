@@ -10,14 +10,14 @@ namespace Corund.Behaviours;
 /// <summary>
 /// A utility object that handles behaviours attached to an object at runtime.
 /// </summary>
-public class BehaviourManager: IEnumerable<BehaviourBase>
+public class BehaviourManager: IEnumerable<IBehaviour>
 {
     #region Constructor
 
     public BehaviourManager(DynamicObject parent)
     {
         _parent = parent;
-        _behaviours = new List<BehaviourBase>(4);
+        _behaviours = new List<IBehaviour>(4);
     }
 
     #endregion
@@ -25,7 +25,7 @@ public class BehaviourManager: IEnumerable<BehaviourBase>
     #region Fields
 
     private readonly DynamicObject _parent;
-    private readonly List<BehaviourBase> _behaviours;
+    private readonly List<IBehaviour> _behaviours;
 
     #endregion
 
@@ -54,26 +54,26 @@ public class BehaviourManager: IEnumerable<BehaviourBase>
     /// <summary>
     /// Adds the behaviour to the list.
     /// </summary>
-    public void Add(BehaviourBase behaviour)
+    public void Add(IBehaviour behaviour)
     {
-        behaviour.Bind(_parent);
+        (behaviour as IBindableBehaviour)?.Bind(_parent);
         _behaviours.Add(behaviour);
     }
 
     /// <summary>
-    /// Inserts a behaviour at the specified position.
+    /// Adds the behaviours to the list.
     /// </summary>
-    public void Insert(int position, BehaviourBase behaviour)
+    public void Add(params IBehaviour[] behaviours)
     {
-        behaviour.Bind(_parent);
-        _behaviours.Insert(position, behaviour);
+        foreach (var b in behaviours)
+            Add(b);
     }
 
     /// <summary>
     /// Gets the first behaviour of specified type.
     /// Only exact matches are valid, no interfaces or base classes are supported.
     /// </summary>
-    public T Get<T>() where T : BehaviourBase
+    public T Get<T>() where T: IBehaviour
     {
         var targetType = typeof(T);
 
@@ -81,27 +81,27 @@ public class BehaviourManager: IEnumerable<BehaviourBase>
             if (behaviour.GetType() == targetType)
                 return (T)behaviour;
 
-        return null;
+        return default;
     }
 
     /// <summary>
     /// Removes the behaviour from the list.
     /// </summary>
-    public void Remove(BehaviourBase behaviour)
+    public void Remove(IBehaviour behaviour)
     {
-        behaviour.Unbind(_parent);
+        (behaviour as IBindableBehaviour)?.Unbind(_parent);
         _behaviours.Remove(behaviour);
     }
 
     /// <summary>
     /// Removes the first behaviour of specified type.
     /// </summary>
-    public void Remove<T>() where T : BehaviourBase
+    public void Remove<T>()
     {
         var targetType = typeof(T);
         for (var idx = 0; idx < _behaviours.Count; idx++)
         {
-            if (_behaviours[idx].GetType() == targetType)
+            if (_behaviours[idx].GetType().IsAssignableFrom(targetType))
             {
                 _behaviours.RemoveAt(idx);
                 return;
@@ -112,7 +112,7 @@ public class BehaviourManager: IEnumerable<BehaviourBase>
     /// <summary>
     /// Removes all behaviours which are derived from the specified type.
     /// </summary>
-    public void RemoveAll<T>() where T : BehaviourBase
+    public void RemoveAll<T>()
     {
         var targetType = typeof(T).GetTypeInfo();
 
@@ -121,11 +121,24 @@ public class BehaviourManager: IEnumerable<BehaviourBase>
                 _behaviours.RemoveAt(idx);
     }
 
+    /// <summary>
+    /// Checks if the list contains a behaviour.
+    /// </summary>
+    public bool Contains<T>()
+    {
+        var targetType = typeof(T);
+        foreach (var b in _behaviours)
+            if (b.GetType().IsAssignableFrom(targetType))
+                return true;
+
+        return false;
+    }
+
     #endregion
 
     #region IEnumerable implementation
 
-    public IEnumerator<BehaviourBase> GetEnumerator() => _behaviours.GetEnumerator();
+    public IEnumerator<IBehaviour> GetEnumerator() => _behaviours.GetEnumerator();
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
     #endregion

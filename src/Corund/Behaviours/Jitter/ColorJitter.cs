@@ -10,7 +10,7 @@ namespace Corund.Behaviours.Jitter;
 /// Color jitter effect.
 /// </summary>
 [DebuggerDisplay("ColorJitter: [{_descriptor.Name}] {_range} (each {_delay} s, relative = {_isRelative})")]
-public class ColorJitter<TObject, TPropBase> : PropertyJitterBase<TObject, TPropBase, Color, Vector4>
+public class ColorJitter<TObject, TPropBase> : PropertyJitter<TObject, TPropBase, Color, Vector4>
     where TObject: DynamicObject, TPropBase
 {
     #region Constructor

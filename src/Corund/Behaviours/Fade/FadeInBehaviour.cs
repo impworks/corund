@@ -11,7 +11,7 @@ namespace Corund.Behaviours.Fade;
 /// Creates a fade in effect when applied to an object.
 /// </summary>
 [DebuggerDisplay("FadeIn ({_style}, Duration = {Duration})")]
-public class FadeInBehaviour: BehaviourBase, IFadeInEffect
+public class FadeInBehaviour: IBehaviour, IBindableBehaviour, IFadeInEffect
 {
     #region Constructor
 
@@ -46,7 +46,7 @@ public class FadeInBehaviour: BehaviourBase, IFadeInEffect
     /// <summary>
     /// Animates object properties from effect-defined to actual.
     /// </summary>
-    public override void Bind(DynamicObject obj)
+    public void Bind(DynamicObject obj)
     {
         var opacity = obj.Opacity;
         var scale = obj.Scale;
@@ -64,10 +64,15 @@ public class FadeInBehaviour: BehaviourBase, IFadeInEffect
         }
     }
 
+    public void Unbind(DynamicObject obj)
+    {
+        // does nothing
+    }
+
     /// <summary>
     /// Tracks effect progress.
     /// </summary>
-    public override void UpdateObjectState(DynamicObject obj)
+    public void UpdateObjectState(DynamicObject obj)
     {
         _elapsedTime += GameEngine.Delta;
     }

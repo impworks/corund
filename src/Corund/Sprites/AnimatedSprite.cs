@@ -13,7 +13,12 @@ public class AnimatedSprite: SpriteBase
 {
     #region Constructor
 
-    public AnimatedSprite(Texture2D texture, int frameCount, float framesPerSecond)
+    public AnimatedSprite(string assetName, int frameCount, float framesPerSecond, bool loop = false)
+        : this(GameEngine.Content.Load<Texture2D>(assetName), frameCount, framesPerSecond, loop)
+    {
+    }
+
+    public AnimatedSprite(Texture2D texture, int frameCount, float framesPerSecond, bool loop = false)
         : base(texture)
     {
         FrameCount = frameCount;
@@ -24,6 +29,7 @@ public class AnimatedSprite: SpriteBase
 
         Size = new Vector2(texWidth / frameCount, Texture.Height);
         FrameDelay = 1 / framesPerSecond;
+        Loop = loop;
     }
 
     #endregion
@@ -84,6 +90,16 @@ public class AnimatedSprite: SpriteBase
         }
     }
 
+    /// <summary>
+    /// Flag indicating that the animation has completed and is paused at the last frame.
+    /// </summary>
+    public bool IsCompleted => _currentFrame == FrameCount - 1;
+
+    /// <summary>
+    /// Flag indicating that the animation must revert to first frame at the end.
+    /// </summary>
+    public readonly bool Loop;
+
     #endregion
 
     #region Methods
@@ -114,18 +130,18 @@ public class AnimatedSprite: SpriteBase
             CurrentFrame++;
             _elapsedFrameTime -= FrameDelay;
         }
-        else
+        else if(Loop)
         {
-            // todo: finish action
+            Reset();
         }
     }
 
     /// <summary>
     /// Draws the sprite's current frame to the render target.
     /// </summary>
-    public override void Draw(TransformInfo transform, Color tint, float zOrder)
+    public override void Draw(TransformInfo transform, BlendState blend, Color tint, float zOrder)
     {
-        GameEngine.Render.TryBeginBatch(BlendState);
+        GameEngine.Render.TryBeginBatch(blend);
         GameEngine.Render.SpriteBatch.Draw(
             Texture,
             transform.Position,

@@ -21,6 +21,11 @@ public class TimelineManager
     #region Fields
 
     /// <summary>
+    /// Flag indicating that the manager is currently on hold and no events are processed.
+    /// </summary>
+    public bool IsPaused;
+
+    /// <summary>
     /// Checks if the timeline has finished.
     /// </summary>
     public bool Finished => _keyFrames.Count == 0;
@@ -76,6 +81,9 @@ public class TimelineManager
     /// </summary>
     public void Update()
     {
+        if (IsPaused)
+            return;
+
         CurrentTime += GameEngine.Delta;
 
         if (Finished)

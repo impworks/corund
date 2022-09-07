@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Corund.Engine;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Corund.Tools.Helpers;
@@ -8,6 +9,16 @@ namespace Corund.Tools.Helpers;
 /// </summary>
 public static class TextureHelper
 {
+    /// <summary>
+    /// Creates a 1x1 texture with the specified color.
+    /// </summary>
+    public static Texture2D CreateColorTexture(GraphicsDevice device, Color color)
+    {
+        var texture = new Texture2D(device, 1, 1, false, SurfaceFormat.Color);
+        texture.SetData(new[] {color});
+        return texture;
+    }
+
     /// <summary>
     /// Fills the specified texture region with color.
     /// </summary>

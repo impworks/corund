@@ -15,7 +15,6 @@ public abstract class SpriteBase
     protected SpriteBase(Texture2D texture)
     {
         Texture = texture;
-        BlendState = BlendState.AlphaBlend;
     }
 
     #endregion
@@ -42,11 +41,6 @@ public abstract class SpriteBase
     /// </summary>
     public IGeometry Geometry;
 
-    /// <summary>
-    /// Gets or sets blend state for current sprite.
-    /// </summary>
-    public BlendState BlendState;
-
     #endregion
 
     #region Interface
@@ -70,7 +64,7 @@ public abstract class SpriteBase
     /// <summary>
     /// Renders the sprite to current render target.
     /// </summary>
-    public abstract void Draw(TransformInfo transform, Color tint, float zOrder);
+    public abstract void Draw(TransformInfo transform, BlendState blend, Color tint, float zOrder);
 
     #endregion
 }

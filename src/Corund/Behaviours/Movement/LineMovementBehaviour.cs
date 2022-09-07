@@ -7,11 +7,11 @@ namespace Corund.Behaviours.Movement;
 /// <summary>
 /// Movement along a path of straight lines.
 /// </summary>
-public class LineMovementBehaviour: PathBehaviourBase<LineSegment>
+public class LineMovementBehaviour: PathBehaviour<LineSegment>
 {
     #region Constructor
 
-    public LineMovementBehaviour(IEnumerable<Vector2> points, float duration)
+    public LineMovementBehaviour(IEnumerable<Vector2> points, float? duration = 0)
         : base(points, duration)
     {
 

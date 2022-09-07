@@ -7,7 +7,7 @@ namespace Corund.Behaviours.Fade;
 /// <summary>
 /// Creates an explosion object when the base object is destroyed.
 /// </summary>
-public class ExplosionBehaviour: BehaviourBase, IFadeOutEffect
+public class ExplosionBehaviour: IBehaviour, IFadeOutEffect
 {
     #region Constructor
 
@@ -54,7 +54,7 @@ public class ExplosionBehaviour: BehaviourBase, IFadeOutEffect
 
     #region Methods
 
-    public override void UpdateObjectState(DynamicObject obj)
+    public void UpdateObjectState(DynamicObject obj)
     {
         // nothing here
     }

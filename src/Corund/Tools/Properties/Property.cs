@@ -89,6 +89,24 @@ public static class Property
         (x, v) => x.Momentum = v,
         nameof(DynamicObject.Momentum)
     );
+    
+    /// <summary>
+    /// Descriptor for DynamicObject.Speed.
+    /// </summary>
+    public static IPropertyDescriptor<DynamicObject, float> Speed = new PropertyDescriptor<DynamicObject, float>(
+        x => x.Speed,
+        (x, v) => x.Speed = v,
+        nameof(DynamicObject.Speed)
+    );
+
+    /// <summary>
+    /// Descriptor for DynamicObject.Direction.
+    /// </summary>
+    public static IPropertyDescriptor<DynamicObject, float> Direction = new PropertyDescriptor<DynamicObject, float>(
+        x => x.Direction,
+        (x, v) => x.Direction = v,
+        nameof(DynamicObject.Direction)
+    );
 
     #endregion
 

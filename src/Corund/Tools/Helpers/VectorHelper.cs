@@ -19,8 +19,8 @@ public static class VectorHelper
 
         var x = vector.X;
         var y = vector.Y;
-        var distance = (float)Math.Sqrt(x*x + y*y);
-        var newAngle = (float)Math.Atan2(y, x) + angle;
+        var distance = MathF.Sqrt(x*x + y*y);
+        var newAngle = MathF.Atan2(y, x) + angle;
 
         return FromLength(distance, newAngle);
     }
@@ -31,8 +31,8 @@ public static class VectorHelper
     public static Vector2 FromLength(float length, float angle)
     {
         return new Vector2(
-            (float)(Math.Cos(angle) * length),
-            (float)(Math.Sin(angle) * length)
+            MathF.Cos(angle) * length,
+            MathF.Sin(angle) * length
         );
     }
 
@@ -42,7 +42,7 @@ public static class VectorHelper
     public static float AngleTo(this Vector2 p1, Vector2 p2)
     {
         var vec = p2 - p1;
-        return (float) Math.Atan2(vec.Y, vec.X);
+        return MathF.Atan2(vec.Y, vec.X);
     }
 
     /// <summary>

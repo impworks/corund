@@ -8,7 +8,7 @@ namespace Corund.Behaviours.Misc;
 /// <summary>
 /// Blink the object via opacity during a specified timespan.
 /// </summary>
-public class BlinkBehaviour : BehaviourBase, IEffect
+public class BlinkBehaviour: IBehaviour, IBindableBehaviour, IEffect
 {
     #region Constructor
 
@@ -68,10 +68,8 @@ public class BlinkBehaviour : BehaviourBase, IEffect
     /// <summary>
     /// Applies animation.
     /// </summary>
-    public override void Bind(DynamicObject obj)
+    public void Bind(DynamicObject obj)
     {
-        base.Bind(obj);
-
         _originalOpacity = obj.Opacity;
         var span = Duration / _blinkCount;
 
@@ -90,7 +88,7 @@ public class BlinkBehaviour : BehaviourBase, IEffect
     /// <summary>
     /// Updates effect state.
     /// </summary>
-    public override void UpdateObjectState(DynamicObject obj)
+    public void UpdateObjectState(DynamicObject obj)
     {
         _elapsedTime += GameEngine.Delta;
     }
@@ -98,7 +96,7 @@ public class BlinkBehaviour : BehaviourBase, IEffect
     /// <summary>
     /// Cancels all pending timer keyframes and sets value to original.
     /// </summary>
-    public override void Unbind(DynamicObject obj)
+    public void Unbind(DynamicObject obj)
     {
         GameEngine.Current.Timeline.Remove(_timerKey);
 

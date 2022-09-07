@@ -7,13 +7,21 @@ namespace Corund.Visuals.Primitives;
 /// <summary>
 /// Base class for various object containers.
 /// </summary>
-public abstract class ObjectGroupBase : DynamicObject, IObjectGroup
+public abstract class ObjectGroupBase : ObjectGroupBase<ObjectBase>
+{
+}
+
+/// <summary>
+/// Strogly typed base class for various object containers.
+/// </summary>
+public abstract class ObjectGroupBase<TElement> : DynamicObject, IObjectGroup, IEnumerable<TElement>
+    where TElement : ObjectBase
 {
     #region Constructors
 
     protected ObjectGroupBase()
     {
-        Children = new List<ObjectBase>();
+        Children = new List<TElement>();
     }
 
     #endregion
@@ -23,7 +31,7 @@ public abstract class ObjectGroupBase : DynamicObject, IObjectGroup
     /// <summary>
     /// List of objects managed by the group.
     /// </summary>
-    public readonly List<ObjectBase> Children;
+    public readonly List<TElement> Children;
 
     /// <summary>
     /// The shortcut to the number of objects in the list.
@@ -34,7 +42,7 @@ public abstract class ObjectGroupBase : DynamicObject, IObjectGroup
     /// Gets or sets a particular item in the list.
     /// </summary>
     /// <param name="id">Item's ID.</param>
-    public virtual ObjectBase this[int id]
+    public virtual TElement this[int id]
     {
         get => Children[id];
         set
@@ -55,7 +63,7 @@ public abstract class ObjectGroupBase : DynamicObject, IObjectGroup
     public virtual void Remove(ObjectBase obj)
     {
         obj.Parent = null;
-        Children.Remove(obj);
+        Children.Remove((TElement) obj);
     }
 
     /// <summary>
@@ -112,7 +120,7 @@ public abstract class ObjectGroupBase : DynamicObject, IObjectGroup
 
     #region IEnumerable implementation
 
-    public IEnumerator<ObjectBase> GetEnumerator()
+    public IEnumerator<TElement> GetEnumerator()
     {
         return Children.GetEnumerator();
     }

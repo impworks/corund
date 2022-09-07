@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Corund.Engine;
+using Corund.Tools.Helpers;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 
@@ -9,19 +10,22 @@ namespace Corund.Behaviours.Movement;
 /// <summary>
 /// Base class for path-related movements behaviours.
 /// </summary>
-public abstract class PathBehaviourBase<TSegment>: BehaviourBase, IEffect
+public abstract class PathBehaviour<TSegment>: IBehaviour, IBindableBehaviour, IEffect
     where TSegment: IPathSegment
 {
     #region Constructor
 
-    protected PathBehaviourBase(IEnumerable<Vector2> points, float duration)
+    protected PathBehaviour(IEnumerable<Vector2> points, float? duration = null)
     {
         _points = points.ToList();
         _segments = GetSegments(_points);
         _length = _segments.Sum(x => x.Length);
-        _speed = _length/duration;
 
-        Duration = duration;
+        if (duration is float d)
+        {
+            _speed = _length / d;
+            Duration = d;
+        }
     }
 
     #endregion
@@ -59,9 +63,9 @@ public abstract class PathBehaviourBase<TSegment>: BehaviourBase, IEffect
     private float _elapsedDistance;
 
     /// <summary>
-    /// Speed at which the path must be traversed.
+    /// Default speed (based on duration, if any is specified).
     /// </summary>
-    private readonly float _speed;
+    private float? _speed;
 
     #endregion
 
@@ -77,6 +81,11 @@ public abstract class PathBehaviourBase<TSegment>: BehaviourBase, IEffect
     /// </summary>
     public float? Progress => _elapsedDistance/_length;
 
+    /// <summary>
+    /// Flag indicating that the path movement has been completed.
+    /// </summary>
+    public bool IsFinished => Progress?.IsAlmost(1) == true;
+
     #endregion
 
     #region Methods
@@ -84,19 +93,31 @@ public abstract class PathBehaviourBase<TSegment>: BehaviourBase, IEffect
     /// <summary>
     /// Places the object to the start of the line.
     /// </summary>
-    public override void Bind(DynamicObject obj)
+    public void Bind(DynamicObject obj)
     {
+        if (_speed.HasValue)
+            obj.Speed = _speed.Value;
+
         obj.Position = _points[0];
+    }
+
+    /// <summary>
+    /// Detaches from the object.
+    /// </summary>
+    public void Unbind(DynamicObject obj)
+    {
+        // does nothing
     }
 
     /// <summary>
     /// Positions the object on the path.
     /// </summary>
-    public override void UpdateObjectState(DynamicObject obj)
+    public void UpdateObjectState(DynamicObject obj)
     {
         var oldPosition = GetCurrentPosition();
+        var speed = obj.Speed;
 
-        var dist = _speed*GameEngine.Delta;
+        var dist = speed*GameEngine.Delta;
         _elapsedDistance += dist;
         _currentSegmentElapsedDistance += dist;
 
@@ -117,7 +138,7 @@ public abstract class PathBehaviourBase<TSegment>: BehaviourBase, IEffect
 
         // update 
         var newPosition = GetCurrentPosition();
-        obj.Momentum = newPosition - oldPosition;
+        obj.Momentum = Vector2.Normalize(newPosition - oldPosition) * speed;
     }
 
     /// <summary>

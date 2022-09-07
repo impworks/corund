@@ -1,4 +1,5 @@
-﻿using Corund.Engine;
+﻿using Corund.Behaviours.Particles;
+using Corund.Engine;
 using Corund.Tools.Helpers;
 using Corund.Tools.Jitter;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,12 +9,13 @@ namespace Corund.Visuals.Particles;
 /// <summary>
 /// A group of particle objects.
 /// </summary>
-public abstract class ParticleGroup: ObjectGroup
+public abstract class ParticleSystem: ObjectGroup<ParticleObject>
 {
     #region Constructor
 
-    public ParticleGroup(int rate)
+    public ParticleSystem(int rate)
     {
+        ParticleBehaviours = new ParticleBehaviourManager(this);
         ParticleBlendState = BlendState.AlphaBlend;
         GenerationRate = rate;
 
@@ -34,11 +36,6 @@ public abstract class ParticleGroup: ObjectGroup
     /// </summary>
     private float _particleDelay;
 
-    /// <summary>
-    /// Number of particles per second to create.
-    /// </summary>
-    private int _generationRate;
-
     #endregion
 
     #region Properties
@@ -51,7 +48,7 @@ public abstract class ParticleGroup: ObjectGroup
     /// <summary>
     /// Number of particles generated during the entire lifespan of the group.
     /// </summary>
-    public int TotalParticleCount;
+    public int TotalParticleCount { get; private set; }
 
     /// <summary>
     /// Blend state for the particle system.
@@ -79,11 +76,6 @@ public abstract class ParticleGroup: ObjectGroup
     public JitteryValue ParticleLifeDuration;
 
     /// <summary>
-    /// Jittery duration of a particle's fade out effect.
-    /// </summary>
-    public JitteryValue ParticleFadeDuration;
-
-    /// <summary>
     /// Maximum number of particles before system self-destructs.
     /// </summary>
     public int? ParticleLimit;
@@ -93,13 +85,14 @@ public abstract class ParticleGroup: ObjectGroup
     /// </summary>
     public int GenerationRate
     {
-        get => _generationRate;
-        set
-        {
-            _generationRate = value;
-            _particleDelay = 1.0f/value;
-        }
+        get => (int)(1.0f/_particleDelay);
+        set => _particleDelay = 1.0f/value;
     }
+
+    /// <summary>
+    /// List of modifiers to be applied to each particle.
+    /// </summary>
+    public readonly ParticleBehaviourManager ParticleBehaviours;
 
     #endregion
 
@@ -108,6 +101,9 @@ public abstract class ParticleGroup: ObjectGroup
     public override void Update()
     {
         base.Update();
+
+        Children.RemoveAll(x => x.Age >= 1);
+        ParticleBehaviours.Update();
 
         if (IsActive)
         {
@@ -129,27 +125,21 @@ public abstract class ParticleGroup: ObjectGroup
                 }
             }
         }
-
-        Children.RemoveAll(obj =>
-        {
-            var pt = obj as ParticleObject;
-            return pt.ElapsedTime > pt.LifeDuration + pt.FadeDuration;
-        });
     }
 
     /// <summary>
-    /// Draws the particle system.
+    /// Reinitializes the particle system.
     /// </summary>
-    protected override void DrawInternal()
+    public void Reset()
     {
-        GameEngine.Render.TryBeginBatch(ParticleBlendState);
-
-        base.DrawInternal();
+        IsActive = true;
+        TotalParticleCount = 0;
+        Clear();
     }
-
+    
     #endregion
 
-    #region Helpers
+    #region Overridables
 
     /// <summary>
     /// Creates a new particle.
@@ -163,8 +153,8 @@ public abstract class ParticleGroup: ObjectGroup
     {
         obj.Position = ParticleOrigin.GetValue();
         obj.Momentum = VectorHelper.FromLength(ParticleSpeed.GetValue(), ParticleAngle.GetValue());
+        obj.ElapsedTime = 0;
         obj.LifeDuration = ParticleLifeDuration.GetValue();
-        obj.FadeDuration = ParticleFadeDuration.GetValue();
     }
 
     /// <summary>
@@ -173,6 +163,16 @@ public abstract class ParticleGroup: ObjectGroup
     protected virtual void OnLimitReached()
     {
         IsActive = false;
+    }
+
+    /// <summary>
+    /// Draws the particle system.
+    /// </summary>
+    protected override void DrawInternal()
+    {
+        GameEngine.Render.TryBeginBatch(ParticleBlendState);
+
+        base.DrawInternal();
     }
 
     #endregion

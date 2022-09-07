@@ -58,5 +58,18 @@ public struct BoundingBoxBuilder
         );
     }
 
+    /// <summary>
+    /// Gets the bounding box rectangle as a GeometryRect.
+    /// </summary>
+    public GeometryRect GetGeometryRect()
+    {
+        return new GeometryRect(
+            _left,
+            _top,
+            _right - _left,
+            _bottom - _top
+        );
+    }
+
     #endregion
 }

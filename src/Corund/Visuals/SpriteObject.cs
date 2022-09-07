@@ -4,6 +4,7 @@ using Corund.Engine;
 using Corund.Geometry;
 using Corund.Sprites;
 using Corund.Tools;
+using Corund.Tools.Helpers;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -29,6 +30,7 @@ public class SpriteObject: InteractiveObject
     public SpriteObject()
     {
         _sprites = new Dictionary<string, SpriteBase>();
+        BlendState = BlendState.AlphaBlend;
     }
 
     public SpriteObject(Sprite sprite)
@@ -60,6 +62,11 @@ public class SpriteObject: InteractiveObject
     /// Lookup for sprites available in current object.
     /// </summary>
     private readonly Dictionary<string, SpriteBase> _sprites;
+
+    /// <summary>
+    /// Gets or sets blend state for current sprite.
+    /// </summary>
+    public BlendState BlendState;
 
     #endregion
 
@@ -100,7 +107,7 @@ public class SpriteObject: InteractiveObject
 
         var transform = GetTransformInfo(true);
         var zOrder = GameEngine.Current.ZOrderFunction(this);
-        CurrentSprite.Draw(transform, Tint, zOrder);
+        CurrentSprite.Draw(transform, BlendState, Tint, zOrder);
     }
 
     #endregion
@@ -110,15 +117,21 @@ public class SpriteObject: InteractiveObject
     /// <summary>
     /// Adds a new sprite to list of available sprites.
     /// </summary>
-    protected void DefineSprite<T>(T sprite, string name = null)
+    public T DefineSprite<T>(T sprite, string name = null)
         where T : SpriteBase
     {
         if (string.IsNullOrEmpty(name))
             name = DEFAULT_SPRITE_NAME;
 
+        if (_sprites.ContainsKey(name))
+            throw new ArgumentException($"Sprite '{name}' is already defined.");
+
         _sprites[name] = sprite;
-        if (name == DEFAULT_SPRITE_NAME)
-            CurrentSprite = sprite;
+        CurrentSprite ??= sprite;
+
+        sprite.AddGeometry();
+
+        return sprite;
     }
 
     /// <summary>
@@ -137,13 +150,18 @@ public class SpriteObject: InteractiveObject
         if(!_sprites.TryGetValue(name, out var sprite))
             throw new ArgumentException($"Sprite '{name}' is not defined.", nameof(name));
 
-        if (CurrentSprite == sprite && !reset)
-            return;
-
         CurrentSprite = sprite;
 
         if(reset)
             CurrentSprite.Reset();
+    }
+
+    /// <summary>
+    /// Return the sprite by name, if it exists.
+    /// </summary>
+    public SpriteBase GetSprite(string name)
+    {
+        return _sprites.TryGetValue(name, out var sprite) ? sprite : null;
     }
 
     #endregion

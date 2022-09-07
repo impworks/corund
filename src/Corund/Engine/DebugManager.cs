@@ -1,5 +1,6 @@
 ﻿using System;
 using Corund.Geometry;
+using Corund.Tools.Helpers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -14,8 +15,7 @@ public class DebugManager
 
     public DebugManager(GraphicsDevice device)
     {
-        _boxTexture = new Texture2D(device, 1, 1, false, SurfaceFormat.Color);
-        _boxTexture.SetData(new[] { Color.Red });
+        _boxTexture = TextureHelper.CreateColorTexture(device, Color.Red);
     }
 
     #endregion

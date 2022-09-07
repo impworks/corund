@@ -11,7 +11,7 @@ public enum PauseMode
     /// <summary>
     /// Movement and rotation.
     /// </summary>
-    Momentum = 0x01,
+    Movement = 0x01,
 
     /// <summary>
     /// User-defined behaviours and tweened properties.
@@ -35,5 +35,5 @@ public enum PauseMode
     Shaders = 0x10,
 
     None = 0,
-    All = Momentum | Behaviours | SpriteAnimation | Shaders
+    All = Movement | Behaviours | SpriteAnimation | Shaders
 }

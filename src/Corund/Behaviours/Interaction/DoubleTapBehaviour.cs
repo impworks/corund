@@ -9,7 +9,7 @@ namespace Corund.Behaviours.Interaction;
 /// <summary>
 /// Fires a callback when the object has been double-tapped.
 /// </summary>
-public class DoubleTapBehaviour: BehaviourBase
+public class DoubleTapBehaviour: IBehaviour
 {
     #region Constants
 
@@ -55,7 +55,7 @@ public class DoubleTapBehaviour: BehaviourBase
 
     #region Methods
 
-    public override void UpdateObjectState(DynamicObject obj)
+    public void UpdateObjectState(DynamicObject obj)
     {
         if (obj is not InteractiveObject iobj)
             throw new ArgumentException("Object must inherit InteractiveObject to be used with this behaviour!");

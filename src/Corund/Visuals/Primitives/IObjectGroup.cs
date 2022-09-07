@@ -1,11 +1,9 @@
-﻿using System.Collections.Generic;
-
-namespace Corund.Visuals.Primitives;
+﻿namespace Corund.Visuals.Primitives;
 
 /// <summary>
 /// Interface for object groups that keep track of objects.
 /// </summary>
-public interface IObjectGroup: IEnumerable<ObjectBase>
+public interface IObjectGroup
 {
     /// <summary>
     /// Removes the object from this group.

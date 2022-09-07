@@ -7,11 +7,11 @@ namespace Corund.Behaviours.Movement;
 /// <summary>
 /// Movement along a path of straight lines.
 /// </summary>
-public class BezierMovementBehaviour : PathBehaviourBase<BezierSegment>
+public class BezierMovementBehaviour: PathBehaviour<BezierSegment>
 {
     #region Constructor
 
-    public BezierMovementBehaviour(IEnumerable<Vector2> points, float duration)
+    public BezierMovementBehaviour(IEnumerable<Vector2> points, float? duration = null)
         : base(points, duration)
     {
 

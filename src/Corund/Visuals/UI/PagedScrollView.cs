@@ -105,9 +105,9 @@ public class PagedScrollView: ScrollViewBase
     /// <summary>
     /// Inserts a new page at the specified index.
     /// </summary>
-    public void Insert(int id, ObjectBase obj)
+    public void Insert(ObjectBase obj, int id)
     {
-        _contentGroup.InsertAt(id, obj);
+        _contentGroup.Insert(obj, id);
         obj.Position = GetPageOffset(id, center: true);
         _contentSize = GetContentSize();
     }

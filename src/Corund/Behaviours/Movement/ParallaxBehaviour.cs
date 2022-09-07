@@ -8,7 +8,7 @@ namespace Corund.Behaviours.Movement;
 /// <summary>
 /// Positions object relative to camera with a coefficient.
 /// </summary>
-public class ParallaxBehaviour: BehaviourBase
+public class ParallaxBehaviour: IBehaviour, IBindableBehaviour
 {
     #region Constructor
 
@@ -58,7 +58,7 @@ public class ParallaxBehaviour: BehaviourBase
     /// <summary>
     /// Checks that object is the direct child of the frame.
     /// </summary>
-    public override void Bind(DynamicObject obj)
+    public void Bind(DynamicObject obj)
     {
         var isDirectChild = obj.Parent == null;
         if (!isDirectChild)
@@ -70,7 +70,7 @@ public class ParallaxBehaviour: BehaviourBase
     /// <summary>
     /// Cancels out the parallax effect.
     /// </summary>
-    public override void Unbind(DynamicObject obj)
+    public void Unbind(DynamicObject obj)
     {
         CancelParallax(obj);
     }
@@ -78,7 +78,7 @@ public class ParallaxBehaviour: BehaviourBase
     /// <summary>
     /// Updates the object's position relative to the camera.
     /// </summary>
-    public override void UpdateObjectState(DynamicObject obj)
+    public void UpdateObjectState(DynamicObject obj)
     {
         // to allow object's movement in parallaxed state, we reapply the effect each time
 

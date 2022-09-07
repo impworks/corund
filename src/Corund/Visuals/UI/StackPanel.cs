@@ -130,9 +130,9 @@ public class StackPanel: ObjectGroup, IGeometryObject
         return obj;
     }
 
-    public override T InsertAt<T>(int idx, T elem)
+    public override T Insert<T>(T elem, int idx)
     {
-        base.InsertAt(idx, elem);
+        base.Insert(elem, idx);
         RefreshLayout();
         return elem;
     }
