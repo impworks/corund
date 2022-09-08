@@ -29,6 +29,11 @@ public interface IGeometry
     bool IsOutsideBounds(Rectangle bounds, TransformInfo? selfTransform);
 
     /// <summary>
+    /// Checks if current geometry enters or leaves the rectangle from the specified side.
+    /// </summary>
+    bool CrossesBounds(Rectangle bounds, RectSide side, TransformInfo? selfTransform);
+
+    /// <summary>
     /// Returns the bounding box in parent coordinates, axes-aligned.
     /// </summary>
     Rectangle GetBoundingBox(TransformInfo? selfTransform);

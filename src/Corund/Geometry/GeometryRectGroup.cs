@@ -72,7 +72,7 @@ public class GeometryRectGroup: IGeometry
         for (var idx = 0; idx < Rectangles.Count; idx++)
         {
             var poly = Rectangles[idx].CreateRectPolygon(selfTransform);
-            if (GeometryHelper.AreRectsOverlapping(poly, otherPoly))
+            if (poly.Overlaps(otherPoly))
                 return true;
         }
 
@@ -96,7 +96,7 @@ public class GeometryRectGroup: IGeometry
             var otherPoly = other.Rectangles[idx].CreateRectPolygon(otherTransform);
 
             for (var idx2 = 0; idx2 < polys.Length; idx2++)
-                if (GeometryHelper.AreRectsOverlapping(polys[idx2], otherPoly))
+                if (polys[idx2].Overlaps(otherPoly))
                     return true;
         }
 
@@ -111,7 +111,7 @@ public class GeometryRectGroup: IGeometry
         for (var idx = 0; idx < Rectangles.Count; idx++)
         {
             var poly = Rectangles[idx].CreateRectPolygon(selfTransform);
-            if (!GeometryHelper.IsRectInsideBounds(poly, bounds))
+            if (!poly.IsInsideBounds(bounds))
                 return false;
         }
 
@@ -126,11 +126,26 @@ public class GeometryRectGroup: IGeometry
         for (var idx = 0; idx < Rectangles.Count; idx++)
         {
             var poly = Rectangles[idx].CreateRectPolygon(selfTransform);
-            if (!GeometryHelper.IsRectOutsideBounds(poly, bounds))
+            if (!poly.IsOutsideBounds(bounds))
                 return false;
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// Checks if the current geometry crosses the bounding rectangle on any of the sides.
+    /// </summary>
+    public bool CrossesBounds(Rectangle bounds, RectSide side, TransformInfo? selfTransform)
+    {
+        for (var idx = 0; idx < Rectangles.Count; idx++)
+        {
+            var poly = Rectangles[idx].CreateRectPolygon(selfTransform);
+            if (poly.CrossesBounds(bounds, side))
+                return true;
+        }
+
+        return false;
     }
 
     /// <summary>

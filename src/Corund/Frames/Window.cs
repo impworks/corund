@@ -1,5 +1,4 @@
 ﻿using Corund.Engine;
-using Corund.Geometry;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -83,7 +82,7 @@ public class Window: FrameBase
                 if (!GameEngine.Touch.CanHandle(touch, this))
                     continue;
 
-                if (!GeometryHelper.IsPointInsideRect(frameRect, touch.Position))
+                if (!frameRect.ContainsPoint(touch.Position))
                     continue;
 
                 GameEngine.Touch.Handle(touch, this);

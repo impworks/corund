@@ -41,8 +41,7 @@ public class GeometryRect: IGeometry
     /// </summary>
     public bool ContainsPoint(Vector2 point, TransformInfo? selfTransform)
     {
-        var rect = CreateRectPolygon(selfTransform);
-        return GeometryHelper.IsPointInsideRect(rect, point);
+        return CreateRectPolygon(selfTransform).ContainsPoint(point);
     }
 
     /// <summary>
@@ -62,7 +61,7 @@ public class GeometryRect: IGeometry
     {
         var poly = CreateRectPolygon(selfTransform);
         var otherPoly = other.CreateRectPolygon(otherTransform);
-        return GeometryHelper.AreRectsOverlapping(poly, otherPoly);
+        return poly.Overlaps(otherPoly);
     }
 
     /// <summary>
@@ -70,8 +69,7 @@ public class GeometryRect: IGeometry
     /// </summary>
     public bool IsInsideBounds(Rectangle bounds, TransformInfo? selfTransform)
     {
-        var poly = CreateRectPolygon(selfTransform);
-        return GeometryHelper.IsRectInsideBounds(poly, bounds);
+        return CreateRectPolygon(selfTransform).IsInsideBounds(bounds);
     }
 
     /// <summary>
@@ -79,8 +77,15 @@ public class GeometryRect: IGeometry
     /// </summary>
     public bool IsOutsideBounds(Rectangle bounds, TransformInfo? selfTransform)
     {
-        var poly = CreateRectPolygon(selfTransform);
-        return GeometryHelper.IsRectOutsideBounds(poly, bounds);
+        return CreateRectPolygon(selfTransform).IsOutsideBounds(bounds);
+    }
+
+    /// <summary>
+    /// Checks if the current geometry crosses the bounding rectangle on any of the sides.
+    /// </summary>
+    public bool CrossesBounds(Rectangle bounds, RectSide side, TransformInfo? selfTransform)
+    {
+        return CreateRectPolygon(selfTransform).CrossesBounds(bounds, side);
     }
 
     /// <summary>

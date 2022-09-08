@@ -80,6 +80,22 @@ public static class GeometryObjectHelper
         return obj.IsOutside(GameEngine.Current.Frame.Bounds);
     }
 
+    /// <summary>
+    /// Checks if the object crosses the specified side of the bounds.
+    /// </summary>
+    public static bool CrossesBounds(this IGeometryObject obj, Rectangle bounds, RectSide side)
+    {
+        return obj.Geometry?.CrossesBounds(bounds, side, obj.GetTransformInfo(false)) ?? false;
+    }
+
+    /// <summary>
+    /// Checks if the object crosses the specified side of the frame.
+    /// </summary>
+    public static bool CrossesFrameBounds(this IGeometryObject obj, RectSide side)
+    {
+        return obj.Geometry?.CrossesBounds(GameEngine.Current.Frame.Bounds, side, obj.GetTransformInfo(false)) ?? false;
+    }
+
     #endregion
 
     #region Touch
