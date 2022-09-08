@@ -106,8 +106,9 @@ public class SpriteObject: InteractiveObject
             return;
 
         var transform = GetTransformInfo(true);
+        var tint = GetMixedTintColor();
         var zOrder = GameEngine.Current.ZOrderFunction(this);
-        CurrentSprite.Draw(transform, BlendState, Tint, zOrder);
+        CurrentSprite.Draw(transform, BlendState, tint, zOrder);
     }
 
     #endregion

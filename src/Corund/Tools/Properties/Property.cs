@@ -1,4 +1,5 @@
-﻿using Corund.Frames;
+﻿using System;
+using Corund.Frames;
 using Corund.Sprites;
 using Corund.Visuals;
 using Corund.Visuals.Primitives;
@@ -21,6 +22,24 @@ public static class Property
         x => x.Position,
         (x, v) => x.Position = v,
         nameof(ObjectBase.Position)
+    );
+
+    /// <summary>
+    /// Descriptor for ObjectBase.Position.X.
+    /// </summary>
+    public static IPropertyDescriptor<ObjectBase, float> PositionX = new PropertyDescriptor<ObjectBase, float>(
+        x => x.Position.X,
+        (x, v) => x.Position.X = v,
+        nameof(ObjectBase.Position) + ".X"
+    );
+
+    /// <summary>
+    /// Descriptor for ObjectBase.Position.Y.
+    /// </summary>
+    public static IPropertyDescriptor<ObjectBase, float> PositionY = new PropertyDescriptor<ObjectBase, float>(
+        x => x.Position.Y,
+        (x, v) => x.Position.Y = v,
+        nameof(ObjectBase.Position) + ".Y"
     );
 
     /// <summary>
@@ -89,7 +108,7 @@ public static class Property
         (x, v) => x.Momentum = v,
         nameof(DynamicObject.Momentum)
     );
-    
+
     /// <summary>
     /// Descriptor for DynamicObject.Speed.
     /// </summary>
@@ -173,6 +192,18 @@ public static class Property
         (x, v) => x.Offset = v,
         nameof(ScrollView.Offset)
     );
+
+    #endregion
+
+    #region Custom
+
+    /// <summary>
+    /// Wraps an arbitrary setter into a property descriptor.
+    /// </summary>
+    public static PropertyDescriptor<DynamicObject, TProp> Custom<TProp>(TProp value, Action<TProp> setter)
+    {
+        return new PropertyDescriptor<DynamicObject, TProp>(_ => value, (_, v) => setter(v));
+    }
 
     #endregion
 }

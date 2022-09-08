@@ -9,7 +9,7 @@ namespace Corund.Behaviours.Jitter;
 /// <summary>
 /// Color jitter effect.
 /// </summary>
-[DebuggerDisplay("ColorJitter: [{_descriptor.Name}] {_range} (each {_delay} s, relative = {_isRelative})")]
+[DebuggerDisplay("ColorJitter: [{_descriptor.Name}] {Range} ({Rate}/s, relative = {_isRelative})")]
 public class ColorJitter<TObject, TPropBase> : PropertyJitter<TObject, TPropBase, Color, Vector4>
     where TObject: DynamicObject, TPropBase
 {
@@ -19,11 +19,11 @@ public class ColorJitter<TObject, TPropBase> : PropertyJitter<TObject, TPropBase
     /// Creates a new ColorJitter effect.
     /// </summary>
     /// <param name="descriptor">Property to affect.</param>
-    /// <param name="delay">Time between value changes in seconds.</param>
+    /// <param name="rate">Number of jits per second.</param>
     /// <param name="range">Jitter magnitude for color components.</param>
     /// <param name="isRelative">Flag indicating that magnitude is a fraction of the actual value, rather than an absolute.</param>
-    public ColorJitter(IPropertyDescriptor<TPropBase, Color> descriptor, float delay, Vector4 range, bool isRelative = false)
-        : base(descriptor, delay, range, isRelative)
+    public ColorJitter(IPropertyDescriptor<TPropBase, Color> descriptor, float rate, Vector4 range, bool isRelative = false)
+        : base(descriptor, rate, range, isRelative)
     {
     }
 
@@ -36,7 +36,7 @@ public class ColorJitter<TObject, TPropBase> : PropertyJitter<TObject, TPropBase
 
     protected override Vector4 Generate(Color value)
     {
-        var r = _isRelative ? _range * value.ToVector4() : _range;
+        var r = _isRelative ? Range * value.ToVector4() : Range;
         return new Vector4(
             RandomHelper.Float(-r.X, r.X),
             RandomHelper.Float(-r.Y, r.Y),

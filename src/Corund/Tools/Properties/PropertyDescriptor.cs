@@ -11,7 +11,7 @@ public class PropertyDescriptor<TObject, TProperty>: IPropertyDescriptor<TObject
 {
     #region Constructor
 
-    public PropertyDescriptor(Func<TObject, TProperty> getter, Action<TObject, TProperty> setter, string name)
+    public PropertyDescriptor(Func<TObject, TProperty> getter, Action<TObject, TProperty> setter, string name = null)
     {
         Getter = getter;
         Setter = setter;

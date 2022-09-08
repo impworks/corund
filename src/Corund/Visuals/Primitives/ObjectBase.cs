@@ -101,7 +101,7 @@ public abstract class ObjectBase
     /// <summary>
     /// Returns the absolute position of the object.
     /// </summary>
-    public TransformInfo GetTransformInfo(bool toScreen)
+    public TransformInfo GetTransformInfo(bool toScreen = false)
     {
         var position = Position;
         var scale = ScaleVector;
@@ -109,11 +109,8 @@ public abstract class ObjectBase
 
         // traverse all visual tree parents to the frame
         var curr = Parent;
-        while (curr != null)
+        while (curr != null && curr is not FrameBase)
         {
-            if (curr is FrameBase)
-                break;
-
             angle += curr.Angle;
             scale *= curr.ScaleVector;
             position = position.Rotate(curr.Angle)*curr.ScaleVector + curr.Position;
@@ -132,6 +129,23 @@ public abstract class ObjectBase
 
         // this does not include ResolutionAdaptationMode transforms
         return new TransformInfo(position, angle, scale);
+    }
+
+    /// <summary>
+    /// Returns the tint color to use for an object, considering parent colors.
+    /// </summary>
+    public Color GetMixedTintColor()
+    {
+        var coeff = 1.0f / byte.MaxValue;
+        var alpha = Tint.A * coeff;
+        var curr = Parent;
+        while (curr != null && curr is not FrameBase)
+        {
+            alpha *= curr.Tint.A * coeff;
+            curr = curr.Parent;
+        }
+
+        return new Color(Tint, alpha);
     }
 
     /// <summary>

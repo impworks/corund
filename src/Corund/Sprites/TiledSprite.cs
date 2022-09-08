@@ -1,4 +1,5 @@
-﻿using Corund.Engine;
+﻿using System;
+using Corund.Engine;
 using Corund.Tools;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -88,6 +89,14 @@ public class TiledSprite: Sprite, ITiledSprite
             SpriteEffects.None,
             zOrder
         );
+    }
+
+    /// <summary>
+    /// Get a portion of the current frame's texture as a sequence of colors.
+    /// </summary>
+    public override Color[] GetTextureRegion(Rectangle rect)
+    {
+        throw new NotImplementedException("Not implemented yet.");
     }
 
     /// <summary>

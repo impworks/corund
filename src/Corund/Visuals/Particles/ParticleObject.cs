@@ -76,11 +76,12 @@ public class ParticleObject : MovingObject
         // sic! SpriteBatch.Begin is called once in ParticleGroup.DrawInternal
 
         var transform = GetTransformInfo(true);
+        var tint = GetMixedTintColor();
         GameEngine.Render.SpriteBatch.Draw(
             _texture,
             transform.Position,
             null,
-            Tint,
+            tint,
             transform.Angle,
             _hotSpot,
             transform.ScaleVector,

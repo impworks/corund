@@ -104,11 +104,12 @@ public abstract class ScrollViewBase: InteractiveObject, IView
             var z = GameEngine.Current.ZOrderFunction(this);
             var tf = GetTransformInfo(true);
             var box = _viewRect.GetBoundingBox(tf);
+            var tint = GetMixedTintColor();
             GameEngine.Render.SpriteBatch.Draw(
                 rt.RenderTarget,
                 tf.Position,
                 box,
-                Tint,
+                tint,
                 0,
                 Vector2.Zero,
                 tf.ScaleVector,

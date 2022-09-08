@@ -12,12 +12,13 @@ public abstract class PropertyJitter<TObject, TPropBase, TProperty, TRange>: IBe
 {
     #region Constructor
 
-    public PropertyJitter(IPropertyDescriptor<TPropBase, TProperty> descriptor, float delay, TRange range, bool isRelative)
+    public PropertyJitter(IPropertyDescriptor<TPropBase, TProperty> descriptor, float rate, TRange range, bool isRelative)
     {
         _descriptor = descriptor;
-        _delay = delay;
-        _range = range;
         _isRelative = isRelative;
+
+        Rate = rate;
+        Range = range;
     }
 
     #endregion
@@ -30,11 +31,6 @@ public abstract class PropertyJitter<TObject, TPropBase, TProperty, TRange>: IBe
     private readonly IPropertyDescriptor<TPropBase, TProperty> _descriptor;
 
     /// <summary>
-    /// Delay between jitter applications (in seconds).
-    /// </summary>
-    private readonly float _delay;
-
-    /// <summary>
     /// Time elapsed since last jitter application.
     /// </summary>
     private float _elapsedTime;
@@ -45,12 +41,6 @@ public abstract class PropertyJitter<TObject, TPropBase, TProperty, TRange>: IBe
     protected readonly bool _isRelative;
 
     /// <summary>
-    /// Jitter range.
-    /// Works as a radius: the new value is modified in the range of [-x, x] for each of the components.
-    /// </summary>
-    protected readonly TRange _range;
-
-    /// <summary>
     /// Previous jitter value (to cancel out before applying a new one).
     /// </summary>
     protected TRange _lastJitter;
@@ -58,6 +48,17 @@ public abstract class PropertyJitter<TObject, TPropBase, TProperty, TRange>: IBe
     #endregion
 
     #region Properties
+
+    /// <summary>
+    /// Number of jits per second.
+    /// </summary>
+    public float Rate;
+
+    /// <summary>
+    /// Jitter range.
+    /// Works as a radius: the new value is modified in the range of [-x, x] for each of the components.
+    /// </summary>
+    public TRange Range;
 
     /// <summary>
     /// Name of the property handled by current jitter.
@@ -74,10 +75,11 @@ public abstract class PropertyJitter<TObject, TPropBase, TProperty, TRange>: IBe
     public void UpdateObjectState(DynamicObject obj)
     {
         _elapsedTime += GameEngine.Delta;
-        if (_elapsedTime < _delay)
+        var delay = 1 / Rate;
+        if (_elapsedTime < delay)
             return;
 
-        _elapsedTime -= _delay;
+        _elapsedTime -= delay;
 
         var currentValue = _descriptor.Getter((TObject) obj);
         var clearValue = Subtract(currentValue, _lastJitter);

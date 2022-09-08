@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using Corund.Behaviours;
 using Corund.Behaviours.Jitter;
 using Corund.Behaviours.Movement;
@@ -22,49 +23,106 @@ public static class DynamicObjectHelper
     /// <summary>
     /// Tweens a float property.
     /// </summary>
-    public static void Tween<TObject, TPropBase>(this TObject obj, IPropertyDescriptor<TPropBase, float> descriptor, float target, float duration, InterpolationMethod interpolation = null, bool tweenBack = false, bool loop = false)
+    public static void Tween<TObject, TPropBase>(
+        this TObject obj,
+        IPropertyDescriptor<TPropBase, float> descriptor,
+        float target,
+        float duration,
+        InterpolationMethod interpolation = null,
+        bool tweenBack = false,
+        bool loop = false
+    )
         where TObject : DynamicObject, TPropBase
     {
-        ApplyTween(
-            obj,
-            descriptor,
-            duration,
-            loop,
-            tweenBack,
-            () => new FloatTween<TObject, TPropBase>(descriptor, target, duration, interpolation)
-        );
+        var factory = () => new FloatTween<TObject, TPropBase>(descriptor, target, duration, interpolation);
+        ApplyTween(obj, descriptor, duration, loop, tweenBack, factory);
+    }
+
+    /// <summary>
+    /// Tweens a float property.
+    /// </summary>
+    public static void Tween(
+        this DynamicObject obj,
+        Action<float> setter,
+        float initialValue,
+        float target,
+        float duration,
+        InterpolationMethod interpolation = null,
+        bool tweenBack = false,
+        bool loop = false
+    )
+    {
+        Tween(obj, Property.Custom(initialValue, setter), target, duration, interpolation, tweenBack, loop);
     }
 
     /// <summary>
     /// Tweens a vector property.
     /// </summary>
-    public static void Tween<TObject, TPropBase>(this TObject obj, IPropertyDescriptor<TPropBase, Vector2> descriptor, Vector2 target, float duration, InterpolationMethod interpolation = null, bool tweenBack = false, bool loop = false)
+    public static void Tween<TObject, TPropBase>(
+        this TObject obj,
+        IPropertyDescriptor<TPropBase, Vector2> descriptor,
+        Vector2 target,
+        float duration,
+        InterpolationMethod interpolation = null,
+        bool tweenBack = false,
+        bool loop = false
+    )
         where TObject : DynamicObject, TPropBase
     {
-        ApplyTween(
-            obj,
-            descriptor,
-            duration,
-            loop,
-            tweenBack,
-            () => new Vector2Tween<TObject, TPropBase>(descriptor, target, duration, interpolation)
-        );
+        var factory = () => new Vector2Tween<TObject, TPropBase>(descriptor, target, duration, interpolation);
+        ApplyTween(obj, descriptor, duration, loop, tweenBack, factory);
+    }
+
+    /// <summary>
+    /// Tweens a vector property.
+    /// </summary>
+    public static void Tween(
+        this DynamicObject obj,
+        Action<Vector2> setter,
+        Vector2 initialValue,
+        Vector2 target,
+        float duration,
+        InterpolationMethod interpolation = null,
+        bool tweenBack = false,
+        bool loop = false
+    )
+    {
+        Tween(obj, Property.Custom(initialValue, setter), target, duration, interpolation, tweenBack, loop);
     }
 
     /// <summary>
     /// Tweens a color property.
     /// </summary>
-    public static void Tween<TObject, TPropBase>(this TObject obj, IPropertyDescriptor<TPropBase, Color> descriptor, Color target, float duration, InterpolationMethod interpolation = null, bool tweenBack = false, bool loop = false)
+    public static void Tween<TObject, TPropBase>(
+        this TObject obj,
+        IPropertyDescriptor<TPropBase, Color> descriptor,
+        Color target,
+        float duration,
+        InterpolationMethod interpolation = null,
+        bool tweenBack = false,
+        bool loop = false
+    )
         where TObject : DynamicObject, TPropBase
     {
-        ApplyTween(
-            obj,
-            descriptor,
-            duration,
-            loop,
-            tweenBack,
-            () => new ColorTween<TObject, TPropBase>(descriptor, target, duration, interpolation)
-        );
+        var factory = () => new ColorTween<TObject, TPropBase>(descriptor, target, duration, interpolation);
+        ApplyTween(obj, descriptor, duration, loop, tweenBack, factory);
+    }
+
+    /// <summary>
+    /// Tweens a color property.
+    /// </summary>
+    public static void Tween(
+        this DynamicObject obj,
+        Action<Color> setter,
+        Color initialValue,
+        Color target,
+        float duration,
+        InterpolationMethod interpolation = null,
+        bool tweenBack = false,
+        bool loop = false
+    )
+    {
+        Tween(obj, Property.Custom(initialValue, setter), target, duration, interpolation, tweenBack, loop);
     }
 
     /// <summary>
@@ -118,7 +176,7 @@ public static class DynamicObjectHelper
     {
         if (!tweenBack && !loop)
         {
-            AddBehaviour(obj, tweenFactory());
+            DeferAdd(obj, tweenFactory());
             return;
         }
 
@@ -127,7 +185,7 @@ public static class DynamicObjectHelper
         void ApplyTweenInternal()
         {
             var tween = tweenFactory();
-            AddBehaviour(obj, tween);
+            DeferAdd(obj, tween);
 
             if (tweenBack)
             {
@@ -135,7 +193,7 @@ public static class DynamicObjectHelper
                     duration,
                     () =>
                     {
-                        AddBehaviour(obj, tween.Reverse());
+                        DeferAdd(obj, tween.Reverse());
 
                         if (loop)
                             GameEngine.Current.Timeline.Add(duration, ApplyTweenInternal);
@@ -166,28 +224,91 @@ public static class DynamicObjectHelper
     /// <summary>
     /// Add jitter effect to a float property.
     /// </summary>
-    public static void Jitter<TObject, TPropBase>(this TObject obj, IPropertyDescriptor<TPropBase, float> descriptor, float delay, float range, bool isRelative = false)
+    public static void Jitter<TObject, TPropBase>(
+        this TObject obj,
+        IPropertyDescriptor<TPropBase, float> descriptor,
+        float rate,
+        float range,
+        bool isRelative = false
+    )
         where TObject : DynamicObject, TPropBase
     {
-        AddBehaviour(obj, new FloatJitter<TObject, TPropBase>(descriptor, delay, range, isRelative));
+        DeferAdd(obj, new FloatJitter<TObject, TPropBase>(descriptor, rate, range, isRelative));
+    }
+
+    /// <summary>
+    /// Add jitter effect to a float property.
+    /// </summary>
+    public static void Jitter(
+        this DynamicObject obj,
+        Action<float> setter,
+        float value,
+        float rate,
+        float range,
+        bool isRelative = false
+    )
+    {
+        Jitter(obj, Property.Custom(value, setter), rate, range, isRelative);
     }
 
     /// <summary>
     /// Add jitter effect to a vector property.
     /// </summary>
-    public static void Jitter<TObject, TPropBase>(this TObject obj, IPropertyDescriptor<TPropBase, Vector2> descriptor, float delay, float xRange, float yRange, bool isRelative = false)
+    public static void Jitter<TObject, TPropBase>(
+        this TObject obj,
+        IPropertyDescriptor<TPropBase, Vector2> descriptor,
+        float rate,
+        Vector2 range,
+        bool isRelative = false
+    )
         where TObject : DynamicObject, TPropBase
     {
-        AddBehaviour(obj, new Vector2Jitter<TObject, TPropBase>(descriptor, delay, new Vector2(xRange, yRange), isRelative));
+        DeferAdd(obj, new Vector2Jitter<TObject, TPropBase>(descriptor, rate, range, isRelative));
+    }
+
+    /// <summary>
+    /// Add jitter effect to a vector property.
+    /// </summary>
+    public static void Jitter(
+        this DynamicObject obj,
+        Action<Vector2> setter,
+        Vector2 value,
+        float rate,
+        Vector2 range,
+        bool isRelative = false
+    )
+    {
+        Jitter(obj, Property.Custom(value, setter), rate, range, isRelative);
     }
 
     /// <summary>
     /// Add jitter effect to a color property.
     /// </summary>
-    public static void Jitter<TObject, TPropBase>(this TObject obj, IPropertyDescriptor<TPropBase, Color> descriptor, float delay, Vector4 range, bool isRelative = false)
+    public static void Jitter<TObject, TPropBase>(
+        this TObject obj,
+        IPropertyDescriptor<TPropBase, Color> descriptor,
+        float rate,
+        Vector4 range,
+        bool isRelative = false
+    )
         where TObject : DynamicObject, TPropBase
     {
-        AddBehaviour(obj, new ColorJitter<TObject, TPropBase>(descriptor, delay, range, isRelative));
+        DeferAdd(obj, new ColorJitter<TObject, TPropBase>(descriptor, rate, range, isRelative));
+    }
+
+    /// <summary>
+    /// Add jitter effect to a color property.
+    /// </summary>
+    public static void Jitter(
+        this DynamicObject obj,
+        Action<Color> setter,
+        Color value,
+        float rate,
+        Vector4 range,
+        bool isRelative = false
+    )
+    {
+        Jitter(obj, Property.Custom(value, setter), rate, range, isRelative);
     }
 
     /// <summary>
@@ -200,7 +321,7 @@ public static class DynamicObjectHelper
 
         foreach (var behaviour in obj.Behaviours)
             if (behaviour is IPropertyJitter jitter && jitter.PropertyName == name)
-                RemoveBehaviour(obj, behaviour);
+                DeferRemove(obj, behaviour);
     }
 
     /// <summary>
@@ -210,7 +331,7 @@ public static class DynamicObjectHelper
     {
         foreach (var behaviour in obj.Behaviours)
             if(behaviour is IPropertyJitter)
-                RemoveBehaviour(obj, behaviour);
+                DeferRemove(obj, behaviour);
     }
 
     #endregion
@@ -223,7 +344,10 @@ public static class DynamicObjectHelper
     public static void Stop(this DynamicObject obj)
     {
         obj.Momentum = Vector2.Zero;
-        obj.StopTweening(Property.Position);
+        obj.Rotation = 0;
+        obj.StopTweening(Property.Position, false);
+        obj.StopTweening(Property.Rotation, false);
+        obj.StopTweening(Property.Momentum, false);
     }
 
     /// <summary>
@@ -239,8 +363,8 @@ public static class DynamicObjectHelper
     /// </summary>
     public static void MoveTowards(this DynamicObject obj, DynamicObject other)
     {
-        var objPos = obj.GetTransformInfo(false).Position;
-        var otherPos = other.GetTransformInfo(false).Position;
+        var objPos = obj.GetTransformInfo().Position;
+        var otherPos = other.GetTransformInfo().Position;
         obj.Momentum = VectorHelper.FromLength(obj.Momentum.Length(), objPos.AngleTo(otherPos));
     }
 
@@ -261,7 +385,7 @@ public static class DynamicObjectHelper
     /// </summary>
     public static void MoveAlongLine(this DynamicObject obj, params Vector2[] points)
     {
-        obj.Behaviours.Add(new LineMovementBehaviour(points));
+        DeferAdd(obj, new LineMovementBehaviour(points));
     }
 
     /// <summary>
@@ -269,7 +393,7 @@ public static class DynamicObjectHelper
     /// </summary>
     public static void MoveAlongLine(this DynamicObject obj, float duration, params Vector2[] points)
     {
-        obj.Behaviours.Add(new LineMovementBehaviour(points, duration));
+        DeferAdd(obj, new LineMovementBehaviour(points, duration));
     }
 
     /// <summary>
@@ -277,7 +401,7 @@ public static class DynamicObjectHelper
     /// </summary>
     public static void MoveAlongLine(this DynamicObject obj, IEnumerable<Vector2> points)
     {
-        obj.Behaviours.Add(new LineMovementBehaviour(points));
+        DeferAdd(obj, new LineMovementBehaviour(points));
     }
 
     /// <summary>
@@ -285,7 +409,7 @@ public static class DynamicObjectHelper
     /// </summary>
     public static void MoveAlongLine(this DynamicObject obj, float duration, IEnumerable<Vector2> points)
     {
-        obj.Behaviours.Add(new LineMovementBehaviour(points, duration));
+        DeferAdd(obj, new LineMovementBehaviour(points, duration));
     }
 
     /// <summary>
@@ -293,7 +417,7 @@ public static class DynamicObjectHelper
     /// </summary>
     public static void MoveAlongCurve(this DynamicObject obj, params Vector2[] points)
     {
-        obj.Behaviours.Add(new BezierMovementBehaviour(points));
+        DeferAdd(obj, new BezierMovementBehaviour(points));
     }
 
     /// <summary>
@@ -301,7 +425,7 @@ public static class DynamicObjectHelper
     /// </summary>
     public static void MoveAlongCurve(this DynamicObject obj, float duration, params Vector2[] points)
     {
-        obj.Behaviours.Add(new BezierMovementBehaviour(points, duration));
+        DeferAdd(obj, new BezierMovementBehaviour(points, duration));
     }
 
     /// <summary>
@@ -309,7 +433,7 @@ public static class DynamicObjectHelper
     /// </summary>
     public static void MoveAlongCurve(this DynamicObject obj, IEnumerable<Vector2> points)
     {
-        obj.Behaviours.Add(new BezierMovementBehaviour(points));
+        DeferAdd(obj, new BezierMovementBehaviour(points));
     }
 
     /// <summary>
@@ -317,7 +441,7 @@ public static class DynamicObjectHelper
     /// </summary>
     public static void MoveAlongCurve(this DynamicObject obj, float duration, IEnumerable<Vector2> points)
     {
-        obj.Behaviours.Add(new BezierMovementBehaviour(points, duration));
+        DeferAdd(obj, new BezierMovementBehaviour(points, duration));
     }
 
     #endregion
@@ -327,18 +451,12 @@ public static class DynamicObjectHelper
     /// <summary>
     /// Adds a behaviour in a deferred manner.
     /// </summary>
-    private static void AddBehaviour(DynamicObject obj, IBehaviour behaviour)
-    {
-        GameEngine.Defer(() => obj.Behaviours.Add(behaviour));
-    }
+    private static void DeferAdd(DynamicObject obj, IBehaviour behaviour) => GameEngine.Defer(() => obj.Behaviours.Add(behaviour));
 
     /// <summary>
     /// Adds a behaviour in a deferred manner.
     /// </summary>
-    private static void RemoveBehaviour(DynamicObject obj, IBehaviour behaviour)
-    {
-        GameEngine.Defer(() => obj.Behaviours.Remove(behaviour));
-    }
+    private static void DeferRemove(DynamicObject obj, IBehaviour behaviour) => GameEngine.Defer(() => obj.Behaviours.Remove(behaviour));
 
     #endregion
 }

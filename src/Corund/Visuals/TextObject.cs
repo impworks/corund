@@ -159,6 +159,7 @@ public class TextObject: InteractiveObject
     protected override void DrawInternal()
     {
         var transform = GetTransformInfo(true);
+        var tint = GetMixedTintColor();
 
         GameEngine.Render.TryBeginBatch(BlendState);
         for (var idx = 0; idx < _preparedText.Length; idx++)
@@ -170,7 +171,7 @@ public class TextObject: InteractiveObject
                 _font,
                 line,
                 transform.Translate(position),
-                Tint,
+                tint,
                 transform.Angle,
                 Vector2.Zero,
                 transform.ScaleVector,

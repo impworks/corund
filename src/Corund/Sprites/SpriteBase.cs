@@ -66,5 +66,10 @@ public abstract class SpriteBase
     /// </summary>
     public abstract void Draw(TransformInfo transform, BlendState blend, Color tint, float zOrder);
 
+    /// <summary>
+    /// Returns the raw texture color data for the specified region.
+    /// </summary>
+    public abstract Color[] GetTextureRegion(Rectangle rect);
+
     #endregion
 }

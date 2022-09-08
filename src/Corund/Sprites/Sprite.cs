@@ -47,5 +47,15 @@ public class Sprite: SpriteBase
         );
     }
 
+    /// <summary>
+    /// Get a portion of the current frame's texture as a sequence of colors.
+    /// </summary>
+    public override Color[] GetTextureRegion(Rectangle rect)
+    {
+        var result = new Color[rect.Width * rect.Height];
+        Texture.GetData(0, rect, result, 0, result.Length);
+        return result;
+    }
+
     #endregion
 }
