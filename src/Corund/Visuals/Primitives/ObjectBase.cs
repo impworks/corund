@@ -151,15 +151,18 @@ public abstract class ObjectBase
     /// <summary>
     /// Attaches another object to this one as a child.
     /// </summary>
-    protected void Attach(ObjectBase obj)
+    protected T Attach<T>(T obj)
+        where T: ObjectBase
     {
-        if (obj == null)
-            return;
+        if (obj != null)
+        {
+            if (obj.Parent is IObjectGroup group)
+                group.Remove(obj);
 
-        if(obj.Parent is IObjectGroup group)
-            group.Remove(obj);
+            obj.Parent = this;
+        }
 
-        obj.Parent = this;
+        return obj;
     }
 
     #endregion
@@ -255,6 +258,7 @@ public abstract class ObjectBase
         if (list == null)
             return;
 
+        Parent = null;
         GameEngine.Defer(() => list.Remove(this));
     }
 

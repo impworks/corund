@@ -24,6 +24,6 @@ public class FitResolutionAdapter : CenterResolutionAdapter
         var scale = 1.0f / Math.Max(frameViewSize.X / vp.X, frameViewSize.Y / vp.Y);
         var newSize = frameViewSize * scale;
         var offset = (vp - newSize) / 2;
-        return new TransformInfo(offset, 0, Vector2.One);
+        return new TransformInfo(offset, 0, new Vector2(scale));
     }
 }

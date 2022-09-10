@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Corund.Engine;
 using Corund.Geometry;
+using Corund.Tools.Helpers;
 using Corund.Tools.UI;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
@@ -72,6 +74,9 @@ public class TextObject: InteractiveObject
     /// </summary>
     private VerticalAlignment _verticalAlignment;
 
+    private float? _maxWidth;
+    private float? _maxHeight;
+
     #endregion
 
     #region Properties
@@ -88,7 +93,9 @@ public class TextObject: InteractiveObject
                 return;
 
             _font = value;
+
             RefreshGeometry();
+            RefreshScale();
         }
     }
 
@@ -104,9 +111,10 @@ public class TextObject: InteractiveObject
                 return;
 
             _originalText = value;
-            _preparedText = value?.Split('\n') ?? new string[0];
+            _preparedText = value?.Split('\n') ?? Array.Empty<string>();
 
             RefreshGeometry();
+            RefreshScale();
         }
     }
 
@@ -139,6 +147,44 @@ public class TextObject: InteractiveObject
 
             _verticalAlignment = value;
             RefreshGeometry();
+        }
+    }
+
+    /// <summary>
+    /// Maximum width. If the text exceeds it, it is automatically resized.
+    /// </summary>
+    public float? MaxWidth
+    {
+        get => _maxWidth;
+        set
+        {
+            if (_maxWidth == null && value == null)
+                return;
+
+            if (_maxWidth != null && value != null && _maxWidth.Value.IsAlmost(value.Value))
+                return;
+
+            _maxWidth = value;
+            RefreshScale();
+        }
+    }
+
+    /// <summary>
+    /// Maximum height. If the text exceeds it, it is automatically resized.
+    /// </summary>
+    public float? MaxHeight
+    {
+        get => _maxHeight;
+        set
+        {
+            if (_maxHeight == null && value == null)
+                return;
+
+            if (_maxHeight != null && value != null && _maxHeight.Value.IsAlmost(value.Value))
+                return;
+
+            _maxHeight = value;
+            RefreshScale();
         }
     }
 
@@ -186,7 +232,7 @@ public class TextObject: InteractiveObject
     /// </summary>
     private void RefreshGeometry()
     {
-        if (_preparedText.Length == 0)
+        if (_originalText.Length == 0)
         {
             _geometry = null;
             return;
@@ -217,6 +263,23 @@ public class TextObject: InteractiveObject
         }
 
         _geometry = new GeometryRectGroup(rects.ToArray());
+    }
+
+    /// <summary>
+    /// Updates the Scale coefficient so that the text fits in the limits.
+    /// </summary>
+    private void RefreshScale()
+    {
+        if (_maxWidth == null && _maxHeight == null)
+            return;
+
+        var size = _font.MeasureString(_originalText);
+        var xc = size.X > _maxWidth ? _maxWidth.Value / size.X : 1;
+        var yc = size.Y > _maxHeight ? _maxHeight.Value / size.Y : 1;
+        var coeff = MathF.Min(xc, yc);
+
+        if (coeff < 1)
+            Scale = coeff;
     }
 
     #endregion

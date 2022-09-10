@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 
@@ -137,6 +138,20 @@ public class ObjectGroup<TElement>: ObjectGroupBase<TElement>
         Children.Insert(idx, obj);
 
         return obj;
+    }
+
+    /// <summary>
+    /// Replaces a child of the group with another value, keeping order.
+    /// </summary>
+    public virtual void Replace(TElement from, TElement to)
+    {
+        var idx = Children.IndexOf(from);
+        if (idx == -1)
+            throw new ArgumentException("Object to be replaced not found");
+
+        from.Parent = null;
+        to.Parent = this;
+        Children[idx] = to;
     }
 
     #endregion

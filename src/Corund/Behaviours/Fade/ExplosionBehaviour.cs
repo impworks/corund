@@ -68,7 +68,7 @@ public class ExplosionBehaviour: IBehaviour, IFadeOutEffect
 
         var explosion = _factory();
         explosion.Position = obj.GetTransformInfo(toScreen: false).Position;
-        GameEngine.Current.Frame.Add(explosion);
+        GameEngine.Defer(() => GameEngine.Current.Frame.Add(explosion));
 
         if (_timeout != null)
             GameEngine.Current.Timeline.Add(_timeout.Value, () => explosion.RemoveSelf());

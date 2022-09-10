@@ -152,7 +152,8 @@ public abstract class ParticleSystem: ObjectGroup<ParticleObject>
     protected virtual void ConfigureParticle(ParticleObject obj)
     {
         obj.Position = ParticleOrigin.GetValue();
-        obj.Momentum = VectorHelper.FromLength(ParticleSpeed.GetValue(), ParticleAngle.GetValue());
+        obj.Angle = ParticleAngle.GetValue();
+        obj.Momentum = VectorHelper.FromLength(ParticleSpeed.GetValue(), obj.Angle);
         obj.ElapsedTime = 0;
         obj.LifeDuration = ParticleLifeDuration.GetValue();
     }

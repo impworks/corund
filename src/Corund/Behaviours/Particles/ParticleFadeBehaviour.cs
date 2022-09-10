@@ -22,7 +22,7 @@ namespace Corund.Behaviours.Particles
             if (endThreshold < 0 || endThreshold > 1)
                 throw new ArgumentOutOfRangeException(nameof(endThreshold));
 
-            if (endThreshold >= startThreshold)
+            if (endThreshold <= startThreshold)
                 throw new ArgumentOutOfRangeException(nameof(startThreshold), "The startThreshold value must be lower than endThreshold.");
 
             _startThreshold = startThreshold;

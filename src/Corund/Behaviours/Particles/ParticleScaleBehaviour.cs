@@ -12,6 +12,18 @@ namespace Corund.Behaviours.Particles
         /// <summary>
         /// Creates a behaviour that updates the object's scale.
         /// </summary>
+        /// <param name="scale">Resulting scale.</param>
+        /// <param name="startThreshold">Scale start threshold (0..1). Particle scale is 1 before it's age reached this value.</param>
+        /// <param name="endThreshold">Scale end threshold (0..1). Particle scale is  transparent after it's age reached this value.</param>
+        public ParticleScaleBehaviour(float scale, float startThreshold = 0f, float endThreshold = 1f)
+            : this(new Vector2(scale, scale), startThreshold, endThreshold)
+        {
+        }
+
+        /// <summary>
+        /// Creates a behaviour that updates the object's scale.
+        /// </summary>
+        /// <param name="scale">Resulting scale.</param>
         /// <param name="startThreshold">Scale start threshold (0..1). Particle scale is 1 before it's age reached this value.</param>
         /// <param name="endThreshold">Scale end threshold (0..1). Particle scale is  transparent after it's age reached this value.</param>
         public ParticleScaleBehaviour(Vector2 scale, float startThreshold = 0f, float endThreshold = 1f)
@@ -22,7 +34,7 @@ namespace Corund.Behaviours.Particles
             if (endThreshold < 0 || endThreshold > 1)
                 throw new ArgumentOutOfRangeException(nameof(endThreshold));
 
-            if (endThreshold >= startThreshold)
+            if (endThreshold <= startThreshold)
                 throw new ArgumentOutOfRangeException(nameof(startThreshold), "The startThreshold value must be lower than endThreshold.");
 
             _scale = scale;
