@@ -93,7 +93,7 @@ public class SpriteObject: InteractiveObject
     {
         base.Update();
 
-        if((PauseMode & PauseMode.SpriteAnimation) != 0)
+        if((PauseMode & PauseMode.SpriteAnimation) == 0)
             CurrentSprite?.Update();
     }
 

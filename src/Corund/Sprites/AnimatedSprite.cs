@@ -13,12 +13,12 @@ public class AnimatedSprite: SpriteBase
 {
     #region Constructor
 
-    public AnimatedSprite(string assetName, int frameCount, float framesPerSecond, bool loop = false)
+    public AnimatedSprite(string assetName, int frameCount, float framesPerSecond, bool loop = true)
         : this(GameEngine.Content.Load<Texture2D>(assetName), frameCount, framesPerSecond, loop)
     {
     }
 
-    public AnimatedSprite(Texture2D texture, int frameCount, float framesPerSecond, bool loop = false)
+    public AnimatedSprite(Texture2D texture, int frameCount, float framesPerSecond, bool loop = true)
         : base(texture)
     {
         FrameCount = frameCount;
@@ -30,6 +30,7 @@ public class AnimatedSprite: SpriteBase
         Size = new Vector2(texWidth / frameCount, Texture.Height);
         FrameDelay = 1 / framesPerSecond;
         Loop = loop;
+        CurrentFrame = 0;
     }
 
     #endregion

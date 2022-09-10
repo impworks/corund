@@ -130,12 +130,21 @@ public struct RectPolygon
     /// <summary>
     /// Checks if the polygon crosses the specified side of the rectangle bounds.
     /// </summary>
-    public bool CrossesBounds(Rectangle bounds, RectSide side)
+    public bool CrossesBounds(Rectangle bounds, RectSide side, bool? leaves, Vector2? momentum)
     {
-        return (side.HasFlag(RectSide.Left) && RCrossesX(this, bounds.Left) && RInsideY(this, bounds))
-               || (side.HasFlag(RectSide.Right) && RCrossesX(this, bounds.Right) && RInsideY(this, bounds))
-               || (side.HasFlag(RectSide.Top) && RCrossesY(this, bounds.Top) && RInsideX(this, bounds))
-               || (side.HasFlag(RectSide.Bottom) && RCrossesY(this, bounds.Bottom) && RInsideX(this, bounds));
+        return (side.HasFlag(RectSide.Left) && RCrossesX(this, bounds.Left) && RInsideY(this, bounds) && DirMatches(leaves, -1, momentum?.X))
+               || (side.HasFlag(RectSide.Right) && RCrossesX(this, bounds.Right) && RInsideY(this, bounds) && DirMatches(leaves, 1, momentum?.X))
+               || (side.HasFlag(RectSide.Top) && RCrossesY(this, bounds.Top) && RInsideX(this, bounds) && DirMatches(leaves, -1, momentum?.Y))
+               || (side.HasFlag(RectSide.Bottom) && RCrossesY(this, bounds.Bottom) && RInsideX(this, bounds) && DirMatches(leaves, 1, momentum?.Y));
+
+        // checks that the movement direction indicates moving in or out
+        static bool DirMatches(bool? leaves, int coeff, float? axis)
+        {
+            if (leaves == null || axis == null)
+                return true;
+            coeff *= leaves.Value ? 1 : -1;
+            return axis * coeff > 0;
+        }
 
         // Checks that the points lie at the different sides of a horizontal line
         static bool RCrossesY(RectPolygon r, float y)

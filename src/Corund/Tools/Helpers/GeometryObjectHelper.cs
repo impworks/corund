@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Corund.Engine;
 using Corund.Geometry;
+using Corund.Visuals.Primitives;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input.Touch;
 
@@ -85,7 +86,7 @@ public static class GeometryObjectHelper
     /// </summary>
     public static bool CrossesBounds(this IGeometryObject obj, Rectangle bounds, RectSide side)
     {
-        return obj.Geometry?.CrossesBounds(bounds, side, obj.GetTransformInfo(false)) ?? false;
+        return obj.Geometry?.CrossesBounds(bounds, side, obj.GetTransformInfo(false), null, null) ?? false;
     }
 
     /// <summary>
@@ -93,7 +94,43 @@ public static class GeometryObjectHelper
     /// </summary>
     public static bool CrossesFrameBounds(this IGeometryObject obj, RectSide side)
     {
-        return obj.Geometry?.CrossesBounds(GameEngine.Current.Frame.Bounds, side, obj.GetTransformInfo(false)) ?? false;
+        return obj.Geometry?.CrossesBounds(GameEngine.Current.Frame.Bounds, side, obj.GetTransformInfo(false), null, null) ?? false;
+    }
+
+    /// <summary>
+    /// Checks if the object moves out of the bounds on the given side.
+    /// </summary>
+    public static bool LeavesBounds<T>(this T obj, Rectangle bounds, RectSide side)
+        where T : MovingObject, IGeometryObject
+    {
+        return obj.Geometry?.CrossesBounds(bounds, side, obj.GetTransformInfo(), true, obj.Momentum) ?? false;
+    }
+
+    /// <summary>
+    /// Checks if the object moves into the bounds on the given side.
+    /// </summary>
+    public static bool EntersBounds<T>(this T obj, Rectangle bounds, RectSide side)
+        where T : MovingObject, IGeometryObject
+    {
+        return obj.Geometry?.CrossesBounds(bounds, side, obj.GetTransformInfo(), false, obj.Momentum) ?? false;
+    }
+
+    /// <summary>
+    /// Checks if the object moves out of the frame bounds on the given side.
+    /// </summary>
+    public static bool LeavesFrameBounds<T>(this T obj, RectSide side)
+        where T : MovingObject, IGeometryObject
+    {
+        return obj.Geometry?.CrossesBounds(GameEngine.Current.Frame.Bounds, side, obj.GetTransformInfo(), true, obj.Momentum) ?? false;
+    }
+
+    /// <summary>
+    /// Checks if the object moves into the frame bounds on the given side.
+    /// </summary>
+    public static bool EntersFrameBounds<T>(this T obj, RectSide side)
+        where T : MovingObject, IGeometryObject
+    {
+        return obj.Geometry?.CrossesBounds(GameEngine.Current.Frame.Bounds, side, obj.GetTransformInfo(), false, obj.Momentum) ?? false;
     }
 
     #endregion

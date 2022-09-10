@@ -145,7 +145,8 @@ public abstract class ObjectBase
             curr = curr.Parent;
         }
 
-        return new Color(Tint, alpha);
+        var vec = Tint.ToVector3() * alpha;
+        return new Color(vec.X, vec.Y, vec.Z, alpha);
     }
 
     /// <summary>
@@ -165,101 +166,21 @@ public abstract class ObjectBase
         return obj;
     }
 
-    #endregion
-
-    #region Visual layering
-
     /// <summary>
-    /// Bring the object 1 layer down in the drawing order.
+    /// Removes a child from the current object.
     /// </summary>
-    public void BringDown()
+    public virtual void Remove(ObjectBase obj)
     {
-        var list = (Parent as ObjectGroup)?.Children;
-        var index = list?.IndexOf(this);
-
-        if (index == null || index == list.Count - 1)
-            return;
-
-        var position = index.Value;
-        GameEngine.Defer(() =>
-            {
-                var tmp = list[position];
-                list[position] = list[position + 1];
-                list[position + 1] = tmp;
-            }
-        );
+        if(obj.Parent == this)
+            obj.Parent = null;
     }
 
     /// <summary>
-    /// Bring the object to the bottom of current object batch.
-    /// </summary>
-    public void BringToBack()
-    {
-        var list = (Parent as ObjectGroup)?.Children;
-        var index = list?.IndexOf(this);
-
-        if (index == null || index == list.Count - 1)
-            return;
-
-        GameEngine.Defer(() =>
-            {
-                list.Remove(this);
-                list.Add(this);
-            }
-        );
-    }
-
-    /// <summary>
-    /// Bring the object 1 layer up in the drawing order.
-    /// </summary>
-    public void BringUp()
-    {
-        var list = (Parent as ObjectGroup)?.Children;
-        var index = list?.IndexOf(this);
-
-        if (index == null || index == 0)
-            return;
-
-        var position = index.Value;
-        GameEngine.Defer(() =>
-            {
-                var tmp = list[position];
-                list[position] = list[position - 1];
-                list[position - 1] = tmp;
-            }
-        );
-    }
-
-    /// <summary>
-    /// Bring the object to the top of current object batch.
-    /// </summary>
-    public void BringToFront()
-    {
-        var list = (Parent as ObjectGroup)?.Children;
-        var index = list?.IndexOf(this);
-
-        if (index == null || index == 0)
-            return;
-
-        GameEngine.Defer(() =>
-            {
-                list.Remove(this);
-                list.Insert(0, this);
-            }
-        );
-    }
-
-    /// <summary>
-    /// RemoveSelf the object from visual list.
+    /// Removes the object from its parent.
     /// </summary>
     public virtual void RemoveSelf(bool immediate = false)
     {
-        var list = (Parent as ObjectGroup)?.Children;
-        if (list == null)
-            return;
-
-        Parent = null;
-        GameEngine.Defer(() => list.Remove(this));
+        GameEngine.Defer(() => Parent?.Remove(this));
     }
 
     #endregion

@@ -31,7 +31,7 @@ public interface IGeometry
     /// <summary>
     /// Checks if current geometry enters or leaves the rectangle from the specified side.
     /// </summary>
-    bool CrossesBounds(Rectangle bounds, RectSide side, TransformInfo? selfTransform);
+    bool CrossesBounds(Rectangle bounds, RectSide side, TransformInfo? selfTransform, bool? leaves, Vector2? momentum);
 
     /// <summary>
     /// Returns the bounding box in parent coordinates, axes-aligned.

@@ -1,6 +1,5 @@
 ﻿using Corund.Engine.Config;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 
@@ -40,10 +39,6 @@ public class EmbeddedContentProvider : IContentProvider
     /// </summary>
     public Stream GetResource(string name)
     {
-        var resources = _assembly.GetManifestResourceNames();
-        foreach(var r in resources)
-            Debug.WriteLine(r);
-
         var stream = _assembly.GetManifestResourceStream($@"{_prefix}.{name.Replace('/', '.')}.xnb");
 
         if (stream == null)

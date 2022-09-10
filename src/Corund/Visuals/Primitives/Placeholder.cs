@@ -6,15 +6,30 @@
     public class Placeholder<TObject>: ObjectBase
         where TObject: ObjectBase
     {
+        private TObject _value;
+
         public Placeholder(TObject value = null)
         {
-            Value = value;
+            Value = Attach(value);
         }
 
         /// <summary>
         /// Current contents of the wrapper.
         /// </summary>
-        public TObject Value;
+        public TObject Value
+        {
+            get => _value;
+            set
+            {
+                if (_value == value)
+                    return;
+
+                if(_value != null)
+                    _value.Parent = null;
+
+                _value = Attach(value);
+            }
+        }
 
         public override void Update() => Value?.Update();
         public override void Draw() => Value?.Draw();

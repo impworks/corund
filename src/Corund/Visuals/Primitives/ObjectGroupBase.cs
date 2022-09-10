@@ -61,9 +61,9 @@ public abstract class ObjectGroupBase<TElement> : DynamicObject, IObjectGroup, I
     /// <summary>
     /// Remove an object object from the list.
     /// </summary>
-    public virtual void Remove(ObjectBase obj)
+    public override void Remove(ObjectBase obj)
     {
-        obj.Parent = null;
+        base.Remove(obj);
         Children.Remove((TElement) obj);
     }
 

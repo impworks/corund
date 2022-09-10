@@ -136,12 +136,12 @@ public class GeometryRectGroup: IGeometry
     /// <summary>
     /// Checks if the current geometry crosses the bounding rectangle on any of the sides.
     /// </summary>
-    public bool CrossesBounds(Rectangle bounds, RectSide side, TransformInfo? selfTransform)
+    public bool CrossesBounds(Rectangle bounds, RectSide side, TransformInfo? selfTransform, bool? leaves, Vector2? momentum)
     {
         for (var idx = 0; idx < Rectangles.Count; idx++)
         {
             var poly = Rectangles[idx].CreateRectPolygon(selfTransform);
-            if (poly.CrossesBounds(bounds, side))
+            if (poly.CrossesBounds(bounds, side, leaves, momentum))
                 return true;
         }
 

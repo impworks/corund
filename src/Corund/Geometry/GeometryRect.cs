@@ -83,9 +83,9 @@ public class GeometryRect: IGeometry
     /// <summary>
     /// Checks if the current geometry crosses the bounding rectangle on any of the sides.
     /// </summary>
-    public bool CrossesBounds(Rectangle bounds, RectSide side, TransformInfo? selfTransform)
+    public bool CrossesBounds(Rectangle bounds, RectSide side, TransformInfo? selfTransform, bool? leaves, Vector2? momentum)
     {
-        return CreateRectPolygon(selfTransform).CrossesBounds(bounds, side);
+        return CreateRectPolygon(selfTransform).CrossesBounds(bounds, side, leaves, momentum);
     }
 
     /// <summary>

@@ -73,7 +73,7 @@ public class MultiShader : IShader
     }
 
     /// <summary>
-    /// Draws the render target to an underlying 
+    /// Draws the render target to an underlying surface.
     /// </summary>
     private void Draw(DynamicObject obj, Texture2D tex)
     {

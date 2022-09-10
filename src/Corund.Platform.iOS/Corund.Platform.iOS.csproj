@@ -3,6 +3,8 @@
         <TargetFramework>net6.0-ios</TargetFramework>
         <MonoGamePlatform>iOS</MonoGamePlatform>
     </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'" />
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'" />
     <ItemGroup>
         <EmbeddedResource Include="Content\Resources\**\*.xnb" />
     </ItemGroup>

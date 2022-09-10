@@ -10,12 +10,12 @@ namespace Corund.Behaviours.Movement
     {
         public void UpdateObjectState(DynamicObject obj)
         {
-            obj.Angle = -obj.Direction;
+            obj.Angle = obj.Direction;
         }
 
         public void UpdateParticleState(ParticleObject obj, ParticleSystem system)
         {
-            obj.Angle = -obj.Direction;
+            obj.Angle = obj.Direction;
         }
     }
 }

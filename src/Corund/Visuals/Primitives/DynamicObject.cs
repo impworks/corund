@@ -115,7 +115,7 @@ public abstract class DynamicObject : MovingObject
     public override void RemoveSelf(bool immediate = false)
     {
         if(immediate)
-            base.RemoveSelf(immediate);
+            base.RemoveSelf(true);
         else
             FadeOut();
     }

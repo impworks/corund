@@ -34,8 +34,30 @@ public static class DynamicObjectHelper
     )
         where TObject : DynamicObject, TPropBase
     {
-        var factory = () => new FloatTween<TObject, TPropBase>(descriptor, target, duration, interpolation);
-        ApplyTween(obj, descriptor, duration, loop, tweenBack, factory);
+        var tween = new FloatTween<TObject, TPropBase>(descriptor, target, duration, interpolation);
+        DeferAdd(obj, tween);
+
+        if (tweenBack)
+        {
+            GameEngine.Current.Timeline.Add(
+                duration,
+                () => DeferAdd(obj, tween.Reverse())
+            );
+        }
+
+        if (loop)
+        {
+            var origValue = descriptor.Getter(obj);
+
+            GameEngine.Current.Timeline.Add(
+                tweenBack ? duration * 2 : duration,
+                () =>
+                {
+                    descriptor.Setter(obj, origValue);
+                    obj.Tween(descriptor, target, duration, interpolation, tweenBack, loop);
+                }
+            );
+        }
     }
 
     /// <summary>
@@ -69,8 +91,30 @@ public static class DynamicObjectHelper
     )
         where TObject : DynamicObject, TPropBase
     {
-        var factory = () => new Vector2Tween<TObject, TPropBase>(descriptor, target, duration, interpolation);
-        ApplyTween(obj, descriptor, duration, loop, tweenBack, factory);
+        var tween = new Vector2Tween<TObject, TPropBase>(descriptor, target, duration, interpolation);
+        DeferAdd(obj, tween);
+
+        if (tweenBack)
+        {
+            GameEngine.Current.Timeline.Add(
+                duration,
+                () => DeferAdd(obj, tween.Reverse())
+            );
+        }
+
+        if (loop)
+        {
+            var origValue = descriptor.Getter(obj);
+
+            GameEngine.Current.Timeline.Add(
+                tweenBack ? duration * 2 : duration,
+                () =>
+                {
+                    descriptor.Setter(obj, origValue);
+                    obj.Tween(descriptor, target, duration, interpolation, tweenBack, loop);
+                }
+            );
+        }
     }
 
     /// <summary>
@@ -104,8 +148,30 @@ public static class DynamicObjectHelper
     )
         where TObject : DynamicObject, TPropBase
     {
-        var factory = () => new ColorTween<TObject, TPropBase>(descriptor, target, duration, interpolation);
-        ApplyTween(obj, descriptor, duration, loop, tweenBack, factory);
+        var tween = new ColorTween<TObject, TPropBase>(descriptor, target, duration, interpolation);
+        DeferAdd(obj, tween);
+
+        if (tweenBack)
+        {
+            GameEngine.Current.Timeline.Add(
+                duration,
+                () => DeferAdd(obj, tween.Reverse())
+            );
+        }
+
+        if (loop)
+        {
+            var origValue = descriptor.Getter(obj);
+
+            GameEngine.Current.Timeline.Add(
+                tweenBack ? duration * 2 : duration,
+                () =>
+                {
+                    descriptor.Setter(obj, origValue);
+                    obj.Tween(descriptor, target, duration, interpolation, tweenBack, loop);
+                }
+            );
+        }
     }
 
     /// <summary>
@@ -152,69 +218,6 @@ public static class DynamicObjectHelper
             var tween = behaviour as IPropertyTween;
             tween?.StopTween(obj, skipToFinalValue);
         }
-    }
-
-    /// <summary>
-    /// Applies a complex tweening effect with optional tween reverse and looping.
-    /// </summary>
-    /// <param name="obj">Object to animate.</param>
-    /// <param name="descriptor">Tween property descriptor.</param>
-    /// <param name="duration">Effect duration.</param>
-    /// <param name="loop">Flag indicating that animation must be repeated until it is cancelled.</param>
-    /// <param name="tweenBack">Flag indicating that after tweening to target value, property must be tweened back (before stopping or looping).</param>
-    /// <param name="tweenFactory">Tween factory.</param>
-    private static void ApplyTween<TObject, TPropBase, TProperty, TTween>(
-        TObject obj,
-        IPropertyDescriptor<TPropBase, TProperty> descriptor,
-        float duration,
-        bool loop,
-        bool tweenBack,
-        Func<TTween> tweenFactory
-    )
-        where TObject: DynamicObject, TPropBase
-        where TTween: IBehaviour, IReversible<TTween>
-    {
-        if (!tweenBack && !loop)
-        {
-            DeferAdd(obj, tweenFactory());
-            return;
-        }
-
-        var origValue = descriptor.Getter(obj);
-
-        void ApplyTweenInternal()
-        {
-            var tween = tweenFactory();
-            DeferAdd(obj, tween);
-
-            if (tweenBack)
-            {
-                GameEngine.Current.Timeline.Add(
-                    duration,
-                    () =>
-                    {
-                        DeferAdd(obj, tween.Reverse());
-
-                        if (loop)
-                            GameEngine.Current.Timeline.Add(duration, ApplyTweenInternal);
-                    }
-                );
-            }
-            else if (loop)
-            {
-                GameEngine.Current.Timeline.Add(
-                    duration,
-                    () =>
-                    {
-                        descriptor.Setter(obj, origValue);
-
-                        ApplyTweenInternal();
-                    }
-                );
-            }
-        }
-
-        ApplyTweenInternal();
     }
 
     #endregion
