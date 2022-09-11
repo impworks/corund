@@ -15,6 +15,8 @@ public class SoundManager
     public SoundManager()
     {
         _soundCache = new Dictionary<string, SoundEffectInfo>();
+        SoundEnabled = true;
+        MusicEnabled = true;
     }
 
     #endregion
