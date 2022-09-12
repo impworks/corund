@@ -138,7 +138,8 @@ public abstract class PathBehaviour<TSegment>: IBehaviour, IBindableBehaviour, I
 
         // update 
         var newPosition = GetCurrentPosition();
-        obj.Momentum = Vector2.Normalize(newPosition - oldPosition) * speed;
+        var diff = newPosition - oldPosition;
+        obj.Momentum = diff.LengthSquared().IsAlmostZero() ? Vector2.Zero : Vector2.Normalize(diff) * speed;
     }
 
     /// <summary>

@@ -46,7 +46,7 @@ public class InertialBehaviour: IBehaviour
     {
         var source = IsRelative ? obj.Speed * Coefficient : Coefficient;
         var speed = obj.Speed * (1 + (source * GameEngine.Delta));
-        obj.Speed = MathF.Min(speed, 0);
+        obj.Speed = MathF.Max(speed, 0);
     }
 
     #endregion
