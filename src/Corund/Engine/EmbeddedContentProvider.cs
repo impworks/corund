@@ -1,5 +1,4 @@
-﻿using Corund.Engine.Config;
-using System;
+﻿using System;
 using System.IO;
 using System.Reflection;
 
@@ -8,7 +7,7 @@ namespace Corund.Engine;
 /// <summary>
 /// IContentProvider implementation that returns data from an embedded resource stream.
 /// </summary>
-public class EmbeddedContentProvider : IContentProvider
+public class EmbeddedContentProvider
 {
     #region Constructor
 
@@ -37,9 +36,9 @@ public class EmbeddedContentProvider : IContentProvider
     /// <summary>
     /// Returns the stream for specified resource, if any.
     /// </summary>
-    public Stream GetResource(string name)
+    public Stream GetResource(string name, string extension = "xnb")
     {
-        var stream = _assembly.GetManifestResourceStream($@"{_prefix}.{name.Replace('/', '.')}.xnb");
+        var stream = _assembly.GetManifestResourceStream($@"{_prefix}.{name.Replace('/', '.')}.{extension}");
 
         if (stream == null)
             throw new ArgumentException($"Embedded resource '{name}' is not available on this platform!");

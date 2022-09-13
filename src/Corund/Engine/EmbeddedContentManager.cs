@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using Corund.Engine.Config;
 using Microsoft.Xna.Framework.Content;
 
 namespace Corund.Engine;
@@ -12,10 +11,10 @@ public class EmbeddedContentManager : ContentManager
 {
     #region Constructor
 
-    public EmbeddedContentManager(IServiceProvider serviceProvider, IContentProvider contentProvider)
+    public EmbeddedContentManager(IServiceProvider serviceProvider, EmbeddedContentProvider provider)
         : base(serviceProvider)
     {
-        _contentProvider = contentProvider;
+        Provider = provider;
     }
 
     #endregion
@@ -25,19 +24,13 @@ public class EmbeddedContentManager : ContentManager
     /// <summary>
     /// Reference to platform-specific content provider.
     /// </summary>
-    private readonly IContentProvider _contentProvider;
+    public readonly EmbeddedContentProvider Provider;
 
     #endregion
 
     #region Methods
 
-    /// <summary>
-    /// Returns the stream from the platform-specific assembly resource.
-    /// </summary>
-    protected override Stream OpenStream(string assetName)
-    {
-        return _contentProvider.GetResource(assetName);
-    }
+    protected override Stream OpenStream(string assetName) => Provider.GetResource(assetName);
 
     #endregion
 }

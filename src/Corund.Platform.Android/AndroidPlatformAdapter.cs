@@ -2,6 +2,7 @@
 using Corund.Engine.Config;
 using Corund.Engine.Prompts;
 using Corund.Platform.Android.Tools;
+using Corund.Sound;
 
 namespace Corund.Platform.Android;
 
@@ -10,7 +11,8 @@ namespace Corund.Platform.Android;
 /// </summary>
 public class AndroidPlatformAdapter : IPlatformAdapter
 {
-    public IContentProvider GetEmbeddedContentProvider() => new EmbeddedContentProvider(GetType().Assembly, "Corund.Platform.Android.Content.Resources");
+    public EmbeddedContentProvider GetEmbeddedContentProvider() => new EmbeddedContentProvider(GetType().Assembly, "Corund.Platform.Android.Content.Resources");
     public IAccelerometerManager GetAccelerometerManager() => new AndroidAccelerometerManager();
     public IPromptManager GetPromptManager() => new AndroidPromptManager();
+    public IMusicPlayer GetMusicPlayer() => null; // uses default one
 }

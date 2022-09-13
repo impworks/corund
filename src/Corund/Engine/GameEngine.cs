@@ -28,7 +28,7 @@ public static partial class GameEngine
         Screen = new ScreenManager(opts);
         Render = new RenderManager(opts);
         Frames = new FrameManager();
-        Sound = new SoundManager();
+        Sound = new SoundManager(opts);
         Touch = new TouchManager();
         Debug = new DebugManager(Render.Device);
         Accelerometer = opts.PlatformAdapter?.GetAccelerometerManager();

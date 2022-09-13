@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Corund.Engine;
+using Corund.Engine.Config;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Media;
 
 namespace Corund.Sound;
 
@@ -12,9 +12,11 @@ public class SoundManager
 {
     #region Constructor
 
-    public SoundManager()
+    public SoundManager(GameEngineOptions opts)
     {
         _soundCache = new Dictionary<string, SoundEffectInfo>();
+        _musicPlayer = opts.PlatformAdapter?.GetMusicPlayer() ?? new DefaultMusicPlayer();
+
         SoundEnabled = true;
         MusicEnabled = true;
     }
@@ -24,17 +26,12 @@ public class SoundManager
     #region Fields
 
     private bool _soundEnabled;
-    private bool _musicEnabled;
+    private IMusicPlayer _musicPlayer;
 
     /// <summary>
     /// List of sound effect instances currently initialized.
     /// </summary>
     private readonly Dictionary<string, SoundEffectInfo> _soundCache;
-
-    /// <summary>
-    /// The music effect.
-    /// </summary>
-    private Song _music;
 
     #endregion
 
@@ -43,7 +40,7 @@ public class SoundManager
     /// <summary>
     /// Gets the flag indicating that game is in focus and can play sounds.
     /// </summary>
-    public bool CanPlayMusic => MediaPlayer.GameHasControl;
+    public bool CanPlayMusic => _musicPlayer.CanPlayMusic;
 
     /// <summary>
     /// Gets or sets sound playback availability.
@@ -64,17 +61,14 @@ public class SoundManager
     /// </summary>
     public bool MusicEnabled
     {
-        get => _musicEnabled;
-        set
-        {
-            _musicEnabled = value;
-
-            if (value)
-                PlayMusic();
-            else
-                StopMusic();
-        }
+        get => _musicPlayer.MusicEnabled;
+        set => _musicPlayer.MusicEnabled = value;
     }
+
+    /// <summary>
+    /// Checks if there's currently any music playing.
+    /// </summary>
+    public bool IsMusicPlaying => _musicPlayer.IsMusicPlaying;
 
     #endregion
 
@@ -158,30 +152,11 @@ public class SoundManager
     #region Music
 
     /// <summary>
-    /// Load the music.
-    /// </summary>
-    public void LoadMusic(string assetName)
-    {
-        _music = GameEngine.Content.Load<Song>(assetName);
-    }
-
-    /// <summary>
     /// Play a background music.
     /// </summary>
-    public void PlayMusic(bool force = false)
+    public void PlayMusic(string assetName = null, bool force = false)
     {
-        if (!MusicEnabled || _music == null)
-            return;
-
-        if (!CanPlayMusic && !force)
-            return;
-
-        if(IsMusicPlaying() && !force)
-            return;
-
-        MediaPlayer.Play(_music);
-        MediaPlayer.IsRepeating = true;
-        MediaPlayer.Volume = 1;
+        _musicPlayer.PlayMusic(assetName, force);
     }
 
     /// <summary>
@@ -189,16 +164,7 @@ public class SoundManager
     /// </summary>
     public void StopMusic()
     {
-        if (CanPlayMusic && IsMusicPlaying())
-            MediaPlayer.Pause();
-    }
-
-    /// <summary>
-    /// Checks if music is playing.
-    /// </summary>
-    public bool IsMusicPlaying()
-    {
-        return MediaPlayer.State == MediaState.Playing;
+        _musicPlayer.StopMusic();
     }
 
     #endregion

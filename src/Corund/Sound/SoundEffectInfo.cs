@@ -67,6 +67,8 @@ public class SoundEffectInfo
         if (IsPlaying && !allowOverlap)
             return _instances[0];
 
+        RefreshInstances();
+
         var inst = Effect.CreateInstance();
         _instances.Add(inst);
 
@@ -98,15 +100,8 @@ public class SoundEffectInfo
     /// </summary>
     private bool RefreshInstances()
     {
-        var list = new List<SoundEffectInstance>();
-        foreach (var curr in _instances)
-        {
-            if (curr.State == SoundState.Playing)
-                list.Add(curr);
-        }
-
-        _instances = list;
-        return list.Count > 0;
+        _instances.RemoveAll(x => x.State != SoundState.Playing);
+        return _instances.Count > 0;
     }
 
     #endregion

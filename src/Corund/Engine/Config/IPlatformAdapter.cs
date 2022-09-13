@@ -1,4 +1,5 @@
 ﻿using Corund.Engine.Prompts;
+using Corund.Sound;
 
 namespace Corund.Engine.Config;
 
@@ -10,7 +11,7 @@ public interface IPlatformAdapter
     /// <summary>
     /// Returns the content provider that returns default resources (shaders, fonts, etc).
     /// </summary>
-    IContentProvider GetEmbeddedContentProvider();
+    EmbeddedContentProvider GetEmbeddedContentProvider();
 
     /// <summary>
     /// Returns the accelerometer wrapper.
@@ -21,4 +22,9 @@ public interface IPlatformAdapter
     /// Returns the platform-specific prompt manager.
     /// </summary>
     IPromptManager GetPromptManager();
+
+    /// <summary>
+    /// Returns the platform-specific music player.
+    /// </summary>
+    IMusicPlayer GetMusicPlayer();
 }
