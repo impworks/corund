@@ -36,7 +36,7 @@ public class RenderManager
         _renderTargetPool = new Stack<RenderTarget2D>(4);
 
         SpriteBatch = new SpriteBatch(Device);
-        WorldViewProjection = GetWorldViewProjectionMatrix(Device.Viewport.Width, Device.Viewport.Height);
+        WorldViewProjection = GetWorldViewProjectionMatrix();
     }
 
     #endregion
@@ -77,7 +77,7 @@ public class RenderManager
 
     /// <summary>
     /// Default WorldViewProjection matrix that matches the behaviour of SpriteBatch.
-    /// To be used by shaders.
+    /// To be used by single-pass shaders.
     /// </summary>
     public readonly Matrix WorldViewProjection;
 
@@ -211,10 +211,12 @@ public class RenderManager
     /// <summary>
     /// Creates the default WorldViewProjection matrix.
     /// </summary>
-    private static Matrix GetWorldViewProjectionMatrix(float width, float height)
+    private Matrix GetWorldViewProjectionMatrix()
     {
+        var s = GameEngine.Screen;
+        var scr = s.Size / (s.NativeSize / s.Size);
         var halfPixel = Matrix.CreateTranslation(-0.5f, -0.5f, 0);
-        var offCenter = Matrix.CreateOrthographicOffCenter(0, width, height, 0, 0, 1);
+        var offCenter = Matrix.CreateOrthographicOffCenter(0, scr.X, scr.Y, 0, 0, 1);
         return halfPixel * offCenter;
     }
 

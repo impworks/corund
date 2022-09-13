@@ -13,11 +13,17 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin ../../Resources/Fonts/default.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:TextureFormat=Compressed
-/build:../../Resources/Fonts/default.spritefont
+#begin ../../Resources/Effects/color-overlay.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:../../Resources/Effects/color-overlay.fx
+
+#begin ../../Resources/Effects/desaturate.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:../../Resources/Effects/desaturate.fx
 
 #begin ../../Resources/Effects/gauss-blur.fx
 /importer:EffectImporter
@@ -31,11 +37,11 @@
 /processorParam:DebugMode=Auto
 /build:../../Resources/Effects/radial-blur.fx
 
-#begin ../../Resources/Effects/color-overlay.fx
+#begin ../../Resources/Effects/swirl.fx
 /importer:EffectImporter
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
-/build:../../Resources/Effects/color-overlay.fx
+/build:../../Resources/Effects/swirl.fx
 
 #begin ../../Resources/Effects/texture-overlay.fx
 /importer:EffectImporter
@@ -43,21 +49,10 @@
 /processorParam:DebugMode=Auto
 /build:../../Resources/Effects/texture-overlay.fx
 
-#begin ../../Resources/Effects/desaturate.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:../../Resources/Effects/desaturate.fx
-
-#begin ../../Resources/Effects/swirl.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:../../Resources/Effects/swirl.fx
-
-#begin ../../Resources/Effects/foo.fx
-/importer:EffectImporter
-/processor:EffectProcessor
-/processorParam:DebugMode=Auto
-/build:../../Resources/Effects/foo.fx
+#begin ../../Resources/Fonts/default.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:../../Resources/Fonts/default.spritefont
 

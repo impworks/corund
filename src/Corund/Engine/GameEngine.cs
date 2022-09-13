@@ -25,9 +25,9 @@ public static partial class GameEngine
         Options = opts;
         Content = opts.Content;
 
+        Screen = new ScreenManager(opts);
         Render = new RenderManager(opts);
         Frames = new FrameManager();
-        Screen = new ScreenManager(opts);
         Sound = new SoundManager();
         Touch = new TouchManager();
         Debug = new DebugManager(Render.Device);

@@ -20,7 +20,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Effects", "Effects", "{4893
 	ProjectSection(SolutionItems) = preProject
 		src\Resources\Effects\color-overlay.fx = src\Resources\Effects\color-overlay.fx
 		src\Resources\Effects\desaturate.fx = src\Resources\Effects\desaturate.fx
-		src\Resources\Effects\foo.fx = src\Resources\Effects\foo.fx
 		src\Resources\Effects\gauss-blur.fx = src\Resources\Effects\gauss-blur.fx
 		src\Resources\Effects\radial-blur.fx = src\Resources\Effects\radial-blur.fx
 		src\Resources\Effects\swirl.fx = src\Resources\Effects\swirl.fx

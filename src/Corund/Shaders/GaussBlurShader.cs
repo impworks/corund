@@ -17,7 +17,6 @@ public class GaussBlurShader : ShaderBase
     public GaussBlurShader()
         : this(new Vector2(2))
     {
-            
     }
 
     public GaussBlurShader(Vector2 blurAmount)
@@ -26,6 +25,7 @@ public class GaussBlurShader : ShaderBase
             throw new ArgumentException("ContentProvider is not specified in GameEngine configuration!");
 
         _effect = GameEngine.EmbeddedContent.Load<Effect>("Effects/gauss-blur");
+        _projection = GetProjectionMatrix();
 
         Amount = blurAmount;
     }
@@ -48,6 +48,11 @@ public class GaussBlurShader : ShaderBase
     /// Blur parameters for 2ns pass (blur Y).
     /// </summary>
     private BlurParameters _verticalParameters;
+
+    /// <summary>
+    /// Projection matrix to use.
+    /// </summary>
+    private Matrix _projection;
 
     #endregion
 
@@ -87,7 +92,7 @@ public class GaussBlurShader : ShaderBase
         {
             using (new RenderContext(rt2.RenderTarget, Color.Transparent))
             {
-                _effect.Parameters["WorldViewProjection"].SetValue(GameEngine.Render.WorldViewProjection);
+                _effect.Parameters["WorldViewProjection"].SetValue(_projection);
                 _effect.Parameters["SampleWeights"].SetValue(_horizontalParameters.Weights);
                 _effect.Parameters["SampleOffsets"].SetValue(_horizontalParameters.Offsets);
                 
@@ -172,6 +177,17 @@ public class GaussBlurShader : ShaderBase
     {
         var theta = dx > 0 ? _amount.X : _amount.Y;
         return (float)(1.0 / Math.Sqrt(2 * Math.PI * theta) * Math.Exp(-(n * n) / (2 * theta * theta)));
+    }
+
+    /// <summary>
+    /// Returns the proper projection matrix for the shader.
+    /// </summary>
+    private Matrix GetProjectionMatrix()
+    {
+        var size = GameEngine.Screen.Size;
+        var halfPixel = Matrix.CreateTranslation(-0.5f, -0.5f, 0);
+        var offCenter = Matrix.CreateOrthographicOffCenter(0, size.X, size.Y, 0, 0, 1);
+        return halfPixel * offCenter;
     }
 
     #endregion

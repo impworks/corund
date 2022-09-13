@@ -30,14 +30,7 @@ public abstract class SinglePassShaderBase: ShaderBase
 
             ConfigureShader(obj);
 
-            GameEngine.Render.SpriteBatch.Begin(
-                0,
-                BlendState.AlphaBlend,
-                GameEngine.Render.GetSamplerState(false),
-                null,
-                null,
-                _effect
-            );
+            GameEngine.Render.SpriteBatch.Begin(0, BlendState.AlphaBlend, GameEngine.Render.GetSamplerState(false), null, null, _effect);
             GameEngine.Render.SpriteBatch.Draw(rt.RenderTarget, RenderTargetRect, Color.White);
             GameEngine.Render.SpriteBatch.End();
         }

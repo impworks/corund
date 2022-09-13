@@ -227,7 +227,7 @@ public class TouchManager
         var source = inFrame ? LocalTouches : GlobalTouches;
         for (var idx = 0; idx < source.Count; idx++)
         {
-            var touch = GlobalTouches[idx];
+            var touch = source[idx];
             if (touch.Id == id)
                 return touch;
         }
