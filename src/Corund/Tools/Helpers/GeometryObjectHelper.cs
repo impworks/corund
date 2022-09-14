@@ -34,11 +34,6 @@ public static class GeometryObjectHelper
         if (obj.Geometry == null || other.Geometry == null)
             return false;
 
-        // shortcut for objects within the same group:
-        // skip coordinate translation
-        if (other.Parent == obj.Parent)
-            return obj.Geometry.Overlaps(other.Geometry, null, null);
-
         var transform = obj.GetTransformInfo(false);
         var otherTransform = other.GetTransformInfo(false);
 
