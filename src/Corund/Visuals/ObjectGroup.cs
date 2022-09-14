@@ -154,5 +154,37 @@ public class ObjectGroup<TElement>: ObjectGroupBase<TElement>
         Children[idx] = to;
     }
 
+    /// <summary>
+    /// Makes an object the topmost in its group.
+    /// </summary>
+    public virtual void ReorderToFront(TElement obj)
+    {
+        var idx = Children.IndexOf(obj);
+        if (idx == -1)
+            throw new ArgumentException("Object to be reordered not found");
+
+        if (idx == 0)
+            return;
+
+        Children.RemoveAt(idx);
+        Children.Insert(0, obj);
+    }
+
+    /// <summary>
+    /// Makes an object the furthest in its group.
+    /// </summary>
+    public virtual void ReorderToBack(TElement obj)
+    {
+        var idx = Children.IndexOf(obj);
+        if (idx == -1)
+            throw new ArgumentException("Object to be reordered not found");
+
+        if (idx == Children.Count - 1)
+            return;
+
+        Children.RemoveAt(idx);
+        Children.Add(obj);
+    }
+
     #endregion
 }
