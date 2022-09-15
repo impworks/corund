@@ -204,6 +204,9 @@ public class TextObject: InteractiveObject
 
     protected override void DrawInternal()
     {
+        if (_originalText.Length == 0)
+            return;
+
         var transform = GetTransformInfo(true);
         var tint = GetMixedTintColor();
 
