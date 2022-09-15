@@ -160,10 +160,7 @@ public class ObjectGroup<TElement>: ObjectGroupBase<TElement>
     public virtual void ReorderToFront(TElement obj)
     {
         var idx = Children.IndexOf(obj);
-        if (idx == -1)
-            throw new ArgumentException("Object to be reordered not found");
-
-        if (idx == 0)
+        if (idx <= 1)
             return;
 
         Children.RemoveAt(idx);
@@ -176,10 +173,7 @@ public class ObjectGroup<TElement>: ObjectGroupBase<TElement>
     public virtual void ReorderToBack(TElement obj)
     {
         var idx = Children.IndexOf(obj);
-        if (idx == -1)
-            throw new ArgumentException("Object to be reordered not found");
-
-        if (idx == Children.Count - 1)
+        if (idx == -1 || idx == Children.Count - 1)
             return;
 
         Children.RemoveAt(idx);
