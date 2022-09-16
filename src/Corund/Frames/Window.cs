@@ -22,6 +22,7 @@ public class Window: FrameBase
     {
         _shadowTexture = new Texture2D(GameEngine.Render.Device, 1, 1);
         ShadowColor = new Color(Color.Black, 0.4f);
+        Scale = 1f;
     }
 
     #endregion
@@ -110,7 +111,7 @@ public class Window: FrameBase
         var batch = GameEngine.Render.SpriteBatch;
         batch.Draw(
             _shadowTexture,
-            GameEngine.Screen.Rect,
+            new Rectangle(0, 0, (int)GameEngine.Screen.NativeSize.X, (int)GameEngine.Screen.NativeSize.Y),
             Color.White
         );
 

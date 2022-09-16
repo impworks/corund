@@ -41,7 +41,7 @@ public abstract class FrameBase: ObjectGroup, IDisposable
         Timeline = new TimelineManager();
         Camera = new Camera();
         ZOrderFunction = _ => _zOrder -= 0.0001f;
-        ResolutionAdaptationTransform = GameEngine.Options.ResolutionAdapter.GetFrameTransformInfo(ViewSize);
+        ResolutionAdaptationTransform = GameEngine.Options.ResolutionAdapter.GetFrameTransformInfo(screen);
     }
          
     #endregion
