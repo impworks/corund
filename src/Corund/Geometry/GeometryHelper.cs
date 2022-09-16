@@ -30,37 +30,5 @@ public static class GeometryHelper
         return new GeometryRectGroup(result);
     }
 
-    /// <summary>
-    /// Finds the smallest rectangle that contains the entire hierarchy.
-    /// </summary>
-    public static GeometryRect FindContainingRect(IEnumerable<IGeometry> items)
-    {
-        var bb = new BoundingBoxBuilder();
-        foreach (var item in items)
-        {
-            if (item is GeometryRect rect)
-            {
-                IncludeRect(bb, rect);
-            }
-            else if (item is GeometryRectGroup group)
-            {
-                foreach(var grect in group.Rectangles)
-                    IncludeRect(bb, grect);
-            }
-            else
-            {
-                throw new ArgumentException($"Unknown item type: '{item.GetType()}'");
-            }
-        }
-
-        return bb.GetGeometryRect();
-
-        static void IncludeRect(BoundingBoxBuilder bb, GeometryRect rect)
-        {
-            bb.AddPoint(rect.Position);
-            bb.AddPoint(rect.Position + rect.Size);
-        }
-    }
-
     #endregion
 }

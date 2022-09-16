@@ -5,7 +5,7 @@ namespace Corund.Geometry;
 /// <summary>
 /// A helper for building a bounding box for a set of points.
 /// </summary>
-public struct BoundingBoxBuilder
+public class BoundingBoxBuilder
 {
     #region Fields
 
